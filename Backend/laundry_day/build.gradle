@@ -1,0 +1,170 @@
+buildscript { // 쿼리DSL추가 빌드
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.12'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	// 쿼리DSL추가 빌드
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	// jacoco 테스트 커버리지
+	id 'jacoco'
+}
+
+group = 'com.meta'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// 스프링 jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// 롬복
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// 스프링 security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	//    h2 dependency 추가
+	runtimeOnly 'com.h2database:h2'
+
+	//    mysql dependency 추가
+//    implementation 'mysql:mysql-connector-java'
+//    runtimeOnly 'mysql:mysql-connector-java'
+
+	//JWT dependency 추가
+	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	//쿼리dsl dependency 추가
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	//@Valid dependency 추가
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 쿼리DSL추가 빌드
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl { //쿼리DSL추가 빌드
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets { //쿼리DSL추가 빌드
+	main.java.srcDir querydslDir
+}
+configurations { //쿼리DSL추가 빌드
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl { //쿼리DSL추가 빌드
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+// jacoco 테스트 커버리지
+//jacoco 상세설명 ↓
+//https://velog.io/@lxxjn0/%EC%BD%94%EB%93%9C-%EB%B6%84%EC%84%9D-%EB%8F%84%EA%B5%AC-%EC%A0%81%EC%9A%A9%EA%B8%B0-2%ED%8E%B8-JaCoCo-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacoco {
+	toolVersion = "0.8.8"
+	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
+	def Qdomains = []
+	for (qPattern in '**/QA'..'**/QZ') {
+		Qdomains.add(qPattern + '*')
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(
+				files(classDirectories.files.collect {
+					fileTree(dir: it, excludes: [
+							"**/*Application*",
+							"**/*Config*",
+							"**/*Dto*",
+							"**/*Request*",
+							"**/*Response*",
+							"**/*Interceptor*",
+							"**/*Exception*",
+							//제외할 파일 경로
+							"**/*jwt",
+							"**/*util"
+					] + Qdomains)
+				})
+		)
+	}
+	finalizedBy 'jacocoTestCoverageVerification'
+}
+
+//jacocoTestCoverageVerification 내용 상세설명 ↓
+//https://velog.io/@lxxjn0/%EC%BD%94%EB%93%9C-%EB%B6%84%EC%84%9D-%EB%8F%84%EA%B5%AC-%EC%A0%81%EC%9A%A9%EA%B8%B0-2%ED%8E%B8-JaCoCo-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+jacocoTestCoverageVerification {
+	def Qdomains = []
+	for (qPattern in '*.QA'..'*.QZ') {
+		Qdomains.add(qPattern + '*')
+	}
+
+	violationRules {
+		rule {
+			enabled = true
+			element = 'CLASS'
+
+			/** value에 들어가는 코드
+			 * COVEREDCOUNT : 커버된 개수
+			 * COVEREDRATIO : 커버된 비율, 0부터 1사이의 숫자로 1이 100%이다.
+			 * MISSEDCOUNT : 커버되지 않은 개수
+			 * MISSEDRATIO : 커버되지 않은 비율, 0부터 1사이의 숫자로 1이 100%이다.
+			 * TOTALCOUNT : 전체 개수
+			 */
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.70
+			}
+
+			excludes = [
+					"**.*Application*",
+					"**.*Config*",
+					"**.*Dto*",
+					"**.*Request*",
+					"**.*Response*",
+					"**.*Interceptor*",
+					"**.*Exception*",
+					//클래스명이나 ~로 끝나는 것으로 입력
+					"**.*JwtAuthFilter",
+					"**.*JwtUtil",
+					"**.*UserDetailsImpl",
+					"**.*UserDetailsServiceImpl",
+					"**.*Authority",
+					"**.*TimeStamped"
+			] + Qdomains
+		}
+	}
+}
