@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,18 +29,24 @@ public class AddressDetails extends TimeStamped {
     @Column
     private String significant;
 
-    @Enumerated(value = EnumType.STRING)
-    private AccessMethod accessMethod;
+    @Column
+    private String accessMethod;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
     private User user;
 
     @Builder
-    public AddressDetails(String address, String significant, AccessMethod accessMethod, User user) {
+    public AddressDetails(String address, String significant, String accessMethod, User user) {
         this.address = address;
         this.significant = significant;
         this.accessMethod = accessMethod;
         this.user = user;
+    }
+
+    public void update(String address, String significant, String accessMethod) {
+        this.address = address;
+        this.significant = significant;
+        this.accessMethod = accessMethod;
     }
 }
