@@ -20,7 +20,7 @@ public class TimeStamped {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column
+    @Column(updatable = false)
     private LocalDateTime modifiedAt;
 }
 
