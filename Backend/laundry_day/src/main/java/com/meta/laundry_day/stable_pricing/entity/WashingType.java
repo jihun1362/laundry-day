@@ -41,4 +41,8 @@ public class WashingType extends TimeStamped {
         this.typeName = typeName;
         this.user = user;
     }
+
+    public void update(String typeName) {
+        this.typeName = typeName;
+    }
 }

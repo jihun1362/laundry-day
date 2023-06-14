@@ -54,7 +54,7 @@ public class WebSecurityConfig {
         // api 권한 허용정책 설정
         http.authorizeRequests()
                 .antMatchers("/api/users/signup/**", "/api/users/login/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/events/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/events/**", "/api/stable-price").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위해 JwtAuthFilter 적용
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)

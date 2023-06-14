@@ -44,4 +44,9 @@ public class StablePricing extends TimeStamped {
         this.user = user;
         this.washingType = washingType;
     }
+
+    public void update(String clothesType, Long price) {
+        this.clothesType = clothesType;
+        this.price = price;
+    }
 }
