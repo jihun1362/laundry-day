@@ -36,6 +36,9 @@ a {text-decoration: none;}
   width: 100%;
   height: 44px;
 }
+.signup-form input:not([type=checkbox]).on {
+  border: 1.5px solid #df0c0c;
+}
 .signup-form .email_input, .pw_input, 
 .pwConfirm_input, .name_input, .phone_input {
   margin-bottom: 30px;
@@ -48,11 +51,22 @@ a {text-decoration: none;}
   font-size: 14px;
   margin-bottom: 10px;
 }
-.error-msg {
+.error-msg, .error-pw-msg, .error-phone-msg {
   display: none;
   color: #df0c0c;;
   font-size: 14px;
   margin-top: 10px;
+}
+/* 빈칸일 때, 메시지 */
+.error-msg.show {
+  display: block;
+}
+/* 잘못 입력했을 때, 메시지 */
+.error-pw-msg.show {
+  display: block;
+}
+.pw-match.show {
+  display: block;
 }
 .error-msg > iconify-icon {
   vertical-align: -1.5px;

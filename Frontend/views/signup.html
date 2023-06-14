@@ -32,9 +32,13 @@
     <!-- VUE -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
 
+    <!-- CryptoJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
     <!-- JS -->
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
+    <script defer src="../js/signup.js"></script>
   </head>
   <body>
     <div id="signup">
@@ -53,6 +57,8 @@
           <label for="user_pw">비밀번호<span class="signup_required">*</span></label>
           <p class="msg">영문, 숫자, 특수문자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
           <input type="password" id="user_pw" name="password" placeholder="비밀번호" required>
+          <p class="pw-validation error-msg"><iconify-icon icon="material-symbols:error"></iconify-icon>비밀번호를 입력해 주세요.</p>
+          <p class="pw-validation error-pw-msg"><iconify-icon icon="material-symbols:error"></iconify-icon>영문, 숫자, 특수문자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
         </div>
         <div class="pwConfirm_input">
           <label for="pwConfirm">비밀번호 확인<span class="signup_required">*</span></label>
@@ -68,8 +74,8 @@
           <label for="user_phone">휴대폰<span class="signup_required">*</span></label>
           <p class="msg">휴대폰 번호를 입력해 주세요. 예: 010-1234-5678</p>
           <input type="tel" id="user_phone" name="phone" required pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}">
-          <p class="phone-validation error-msg"><iconify-icon icon="material-symbols:error"></iconify-icon>유효하지 않은 휴대폰 번호입니다. 예: 010-1234-5678</p>
           <p class="phone-validation error-msg"><iconify-icon icon="material-symbols:error"></iconify-icon>하이픈(-)을 포함하여 휴대폰 번호를 입력해 주세요.</p>
+          <p class="phone-validation error-phone-msg"><iconify-icon icon="material-symbols:error"></iconify-icon>유효하지 않은 휴대폰 번호입니다.</p>
           <button>휴대폰 인증하기</button>
         </div>
         <div class="term_input">
@@ -79,6 +85,7 @@
         <div class="terms_input">
           <input type="checkbox" id="terms" name="terms">
           <label for="terms" class="terms">개인정보 수집 및 이용 동의<span>(필수)</span><a href="javascript:void(0)">내용보기</a></label>
+          <p class="term-validation error-msg"><iconify-icon icon="material-symbols:error"></iconify-icon>필수 항목에 동의해 주세요.</p>
         </div>
         <button type="submit" class="signup-btn">회원 가입하기</button> 
       </form>
