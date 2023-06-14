@@ -22,11 +22,16 @@ public enum ErrorCode {
     ADMIN_SERVICE_ACCESS_BLOCK("사용자로 로그인하세요.", 400),
 
     //주소
-    ADDRESS_NOT_FOUND("해당 주소를 찾을수가 없습니다.",404),
+    ADDRESS_NOT_FOUND("해당 주소를 찾을수가 없습니다.", 404),
+
+    //이벤트
+    EVENT_NOT_FOUND("해당 이벤트를 찾을수가 없습니다.", 404),
 
     //401 잘못된 권한 접근
     AUTHORIZATION_DELETE_FAIL("삭제 권한이 없습니다.", 401),
     AUTHORIZATION_UPDATE_FAIL("수정 권한이 없습니다.", 401),
+    AUTHORIZATION_FAIL("권한이 없습니다.", 401),
+
 
     //필터부분 에러
     FORBIDDEN_ERROR("서버 사용 권한이 없습니다.", 403),

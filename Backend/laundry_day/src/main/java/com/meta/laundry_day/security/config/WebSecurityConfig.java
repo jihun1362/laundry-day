@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -53,7 +54,7 @@ public class WebSecurityConfig {
         // api 권한 허용정책 설정
         http.authorizeRequests()
                 .antMatchers("/api/users/signup/**", "/api/users/login/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/products/detail", "/api/products/search").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/events/**").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위해 JwtAuthFilter 적용
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
