@@ -58,6 +58,9 @@ dependencies {
 
 	//aws dependency 추가
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	//json파싱 dependency 추가
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 tasks.named('test') {
