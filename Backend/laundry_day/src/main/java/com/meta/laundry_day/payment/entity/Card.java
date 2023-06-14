@@ -24,35 +24,43 @@ public class Card extends TimeStamped {
     private Long id;
 
     @Column(nullable = false)
-    private int mainCard = 0;
+    private int mainCard;
 
     @Column(nullable = false)
     private String cardNumber;
 
-    @Column(name = "expiration_Date_M",nullable = false)
-    private String expirationDateM;
-
-    @Column(name = "expiration_Date_Y",nullable = false)
-    private String expirationDateY;
+    @Column(nullable = false)
+    private String cardCompany;
 
     @Column(nullable = false)
-    private String birthDate;
+    private String customerKey;
 
     @Column(nullable = false)
     private String billingKey;
+
+    @Column(nullable = false, length = 1000)
+    private String cardResponseData;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
     private User user;
 
     @Builder
-    public Card(int mainCard, String cardNumber, String expirationDateM, String expirationDateY, String birthDate, String billingKey, User user) {
+    public Card(int mainCard, String cardNumber, String cardCompany, String customerKey, String billingKey, User user, String cardResponseData) {
         this.mainCard = mainCard;
         this.cardNumber = cardNumber;
-        this.expirationDateM = expirationDateM;
-        this.expirationDateY = expirationDateY;
-        this.birthDate = birthDate;
+        this.cardCompany = cardCompany;
+        this.customerKey = customerKey;
         this.billingKey = billingKey;
         this.user = user;
+        this.cardResponseData = cardResponseData;
+    }
+
+    public void representativeDesignate() {
+        this.mainCard = 1;
+    }
+
+    public void delRepresentativeDesignate() {
+        this.mainCard = 0;
     }
 }
