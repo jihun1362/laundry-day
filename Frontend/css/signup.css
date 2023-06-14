@@ -1,0 +1,177 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+/* common */
+.signup-form label {
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.signup_required {
+  color: #df0c0c;
+  vertical-align: 1px;
+  margin-left: 2px;
+}
+.signup-form input:not([type=checkbox]) {
+  box-sizing: border-box;
+  font-size: 13px;
+  text-indent: 15px;
+  border: 1px solid #ddd;
+  outline: none;
+  width: 100%;
+  height: 44px;
+}
+.signup-form input:not([type=checkbox]).on {
+  border: 1.5px solid #df0c0c;
+}
+.signup-form .email_input, .pw_input, 
+.pwConfirm_input, .name_input, .phone_input {
+  margin-bottom: 30px;
+}
+.signup-form > .email, .pw, .pwConfirm, .name, .phone  {
+  margin-bottom: 15px;
+}
+.msg {
+  color: #828C94;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.error-msg, .error-pw-msg, .error-phone-msg {
+  display: none;
+  color: #df0c0c;;
+  font-size: 14px;
+  margin-top: 10px;
+}
+/* 빈칸일 때, 메시지 */
+.error-msg.show {
+  display: block;
+}
+/* 잘못 입력했을 때, 메시지 */
+.error-pw-msg.show {
+  display: block;
+}
+.pw-match.show {
+  display: block;
+}
+.error-msg > iconify-icon {
+  vertical-align: -1.5px;
+  margin-right: 2px;
+}
+button {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  vertical-align: top;
+  border: none;
+  width: 100%;
+  height: 50px;
+  margin-top: 10px;
+  padding: 0;
+  background-color: #000;
+  cursor: pointer;
+}
+
+/* signup */
+#signup {
+  background-color: #fff;
+}
+.signup-form {
+  position: relative;
+  width: 400px;
+  margin: 100px auto 110px;
+}
+.signup-form > h3 {
+  border-bottom: 2px solid #000;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 60px;
+  padding-bottom: 30px;
+}
+.signup-form > .phone_input button {
+  color: #000;
+  border: 1px solid #bbb;
+  margin-bottom: 30px;
+  background-color: #fff;
+}
+.signup-form > .term_input, .terms_input {
+  position: relative;
+  line-height: 14px;
+}
+.signup-form > .terms_input {
+  margin-bottom: 20px;
+}
+.signup-form input[type=checkbox] {
+  vertical-align: -.5px;  
+}
+.signup-form .term, .terms {
+  font-size: 15px;
+}
+.signup-form > .term_input > .term > span {
+  color: #828C94;
+  font-size: 14px;
+  font-weight: 600;
+  vertical-align: 1px;
+  margin-left: 5px;
+}
+.signup-form > .terms_input > .terms > span {
+  color: #828C94;
+  font-size: 14px;
+  font-weight: 600;
+  vertical-align: 1px;
+  margin-left: 5px;
+}
+.signup-form > .term_input > .term > a {
+  position: absolute;
+  right: 0;
+  color: #717a81;
+  font-size: 13px;
+  text-decoration: underline;
+}
+.signup-form > .terms_input > .terms > a {
+  position: absolute;
+  right: 0;
+  color: #717a81;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  .signup-form {
+    position: relative;
+    top: 102px;
+    width: 400px;
+    margin: 100px auto 212px;
+  }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  .signup-form {
+    position: relative;
+    top: 102px;
+    width: 400px;
+    margin: 100px auto 212px;
+  }
+}
