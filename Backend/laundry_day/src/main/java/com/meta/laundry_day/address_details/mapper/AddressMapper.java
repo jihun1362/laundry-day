@@ -4,11 +4,9 @@ import com.meta.laundry_day.address_details.dto.AddressRequestDto;
 import com.meta.laundry_day.address_details.dto.AddressResponseDto;
 import com.meta.laundry_day.address_details.entity.AddressDetails;
 import com.meta.laundry_day.user.entity.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class AddressMapper {
     public AddressResponseDto toResponse(AddressDetails addressDetails) {
         return AddressResponseDto.builder()

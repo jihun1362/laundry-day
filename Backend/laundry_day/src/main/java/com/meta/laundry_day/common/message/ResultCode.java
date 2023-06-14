@@ -20,6 +20,12 @@ public enum ResultCode {
     ADDRESS_MODIFY_SUCCESS("주소를 수정하였습니다.", 200),
     ADDRESS_DELETE_SUCCESS("주소를 삭제하였습니다.", 200),
 
+    //이벤트
+    EVENT_CREATE_SUCCESS("이벤트가 등록되었습니다.", 200),
+    EVENT_LIST_REQUEST_SUCCESS("이벤트 목록을 조회하였습니다.", 200),
+    EVENT_DETAIL_REQUEST_SUCCESS("이벤트를 조회하였습니다.", 200),
+    EVENT_MODIFY_SUCCESS("이벤트를 수정하였습니다.", 200),
+
 
     ;
     private final String msg;

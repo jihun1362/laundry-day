@@ -33,22 +33,22 @@ public class AddressDetailsController {
 
     @PostMapping("")
     public ResponseEntity<ResponseDto<ResultCode>> addressCreate(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                 @RequestBody AddressRequestDto addressRequestDto){
+                                                                 @RequestBody AddressRequestDto addressRequestDto) {
         addressDetailsService.addressCreate(userDetails.getUser(), addressRequestDto);
         return ResponseEntity.status(201)
                 .body(new ResponseDto<>(ADDRESS_CREATE_SUCCESS, null));
     }
 
     @GetMapping("")
-    public ResponseEntity<ResponseDto<List<AddressResponseDto>>> addressList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseDto<List<AddressResponseDto>>> addressList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(ADDRESS_LIST_REQUEST_SUCCESS, addressDetailsService.addressList(userDetails.getUser())));
     }
 
     @PutMapping("/{addressId}")
     public ResponseEntity<ResponseDto<ResultCode>> updateAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                            @RequestBody AddressRequestDto addressRequestDto,
-                                            @PathVariable Long addressId) {
+                                                                 @RequestBody AddressRequestDto addressRequestDto,
+                                                                 @PathVariable Long addressId) {
         addressDetailsService.updateAddress(userDetails.getUser(), addressRequestDto, addressId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(ADDRESS_MODIFY_SUCCESS, null));
@@ -56,7 +56,7 @@ public class AddressDetailsController {
 
     @DeleteMapping("/{addressId}")
     public ResponseEntity<ResponseDto<ResultCode>> deleteAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                            @PathVariable Long addressId) {
+                                                                 @PathVariable Long addressId) {
         addressDetailsService.deleteAddress(userDetails.getUser(), addressId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(ADDRESS_DELETE_SUCCESS, null));

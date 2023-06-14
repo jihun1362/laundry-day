@@ -39,24 +39,39 @@ public class EventDetails extends TimeStamped {
     private Double discountRate;
 
     @Column(nullable = false)
-    private String until;
+    private String dateFrom;
 
     @Column(nullable = false)
-    private int status = 1;
+    private String dateUntil;
+
+    @Column(nullable = false)
+    private int status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
     private User user;
 
     @Builder
-    public EventDetails(String title, String content, String image, Long accumulatePoint, Double discountRate, String until, int status, User user) {
+    public EventDetails(String title, String content, String image, Long accumulatePoint, Double discountRate, String dateFrom, String dateUntil, int status, User user) {
         this.title = title;
         this.content = content;
         this.image = image;
         this.accumulatePoint = accumulatePoint;
         this.discountRate = discountRate;
-        this.until = until;
+        this.dateFrom = dateFrom;
+        this.dateUntil = dateUntil;
         this.status = status;
         this.user = user;
+    }
+
+
+    public void update(String title, String content, Long accumulatePoint, double discountRate, String from, String until, String imageUri) {
+        this.title = title;
+        this.content = content;
+        this.image = imageUri;
+        this.accumulatePoint = accumulatePoint;
+        this.discountRate = discountRate;
+        this.dateFrom = from;
+        this.dateUntil = until;
     }
 }
