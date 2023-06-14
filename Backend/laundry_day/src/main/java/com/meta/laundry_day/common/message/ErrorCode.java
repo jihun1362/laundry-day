@@ -27,6 +27,9 @@ public enum ErrorCode {
     //이벤트
     EVENT_NOT_FOUND("해당 이벤트를 찾을수가 없습니다.", 404),
 
+    //안정가
+    STABLEPRICING_NOT_FOUND("해당 안정가를 찾을수가 없습니다.", 404),
+
     //401 잘못된 권한 접근
     AUTHORIZATION_DELETE_FAIL("삭제 권한이 없습니다.", 401),
     AUTHORIZATION_UPDATE_FAIL("수정 권한이 없습니다.", 401),

@@ -26,7 +26,14 @@ public enum ResultCode {
     EVENT_DETAIL_REQUEST_SUCCESS("이벤트를 조회하였습니다.", 200),
     EVENT_MODIFY_SUCCESS("이벤트를 수정하였습니다.", 200),
 
-
+    //안정가
+    WASHINFTYPE_CREATE_SUCCESS("세탁타입이 등록되었습니다.", 200),
+    WASHINFTYPE_MODIFY_SUCCESS("세탁타입이 수정되었습니다.", 200),
+    WASHINFTYPE_DELETE_SUCCESS("세탁타입이 삭제되였습니다.", 200),
+    STABLEPRICING_LIST_REQUEST_SUCCESS("안정가 목록을 조회하였습니다.", 200),
+    STABLEPRICING_CREATE_SUCCESS("안정가를 등록하었습니다.", 200),
+    STABLEPRICING_MODIFY_SUCCESS("안정가를 수정하였습니다.", 200),
+    STABLEPRICING_DELETE_SUCCESS("안정가를 삭제하였습니다.", 200),
     ;
     private final String msg;
     private final int statusCode;
