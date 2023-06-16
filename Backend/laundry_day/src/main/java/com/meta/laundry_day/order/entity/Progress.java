@@ -31,14 +31,26 @@ public class Progress extends TimeStamped {
     @Enumerated(value = EnumType.STRING)
     private ProgressStatus status;
 
+    @Column(nullable = false)
+    private int laundryRegist;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Order_Id", nullable = false)
     private Order order;
 
     @Builder
-    public Progress(Long userId, ProgressStatus status, Order order) {
+    public Progress(Long userId, ProgressStatus status, Order order, int laundryRegist) {
         this.userId = userId;
         this.status = status;
+        this.laundryRegist = laundryRegist;
         this.order = order;
+    }
+
+    public void doneRegist() {
+        this.laundryRegist = 0;
+    }
+
+    public void update(ProgressStatus status) {
+        this.status=status;
     }
 }

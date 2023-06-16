@@ -24,6 +24,7 @@ public class UserMapper {
                 .nickname(signupRequestDto.getNickname())
                 .phoneNumber(signupRequestDto.getPhoneNumber())
                 .role(UserRoleEnum.USER)
+                .point(0L)
                 .build();
     }
 }

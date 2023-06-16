@@ -23,12 +23,21 @@ public enum ErrorCode {
 
     //카드
     REP_CARD_DESIGNATE_ERROR("대표카드 지정은 한 카드만 가능합니다.", 400),
+    CARD_INFORM_NOT_FOUNT_ERROR("카드 정보를 찾을 수 없습니다.", 400),
+
+    //주문
+    ORDER_ONLY_ONE_ERROR("중복으로 세탁 주문은 불가능합니다.", 400),
+    LAUNDRY_RESIST_DONE_ERROR("세탁물 등록이 완료되어 더 등록 할수 없습니다.", 400),
+    LAUNDRY_PICKUP_START_ERROR("세탁물 수거가 시작되어 주문을 취소할 수 없습니다.", 400),
 
     //404 찾을 수 없음
-    ADDRESS_NOT_FOUND("해당 주소를 찾을수가 없습니다.", 404),
-    EVENT_NOT_FOUND("해당 이벤트를 찾을수가 없습니다.", 404),
-    STABLEPRICING_NOT_FOUND("해당 안정가를 찾을수가 없습니다.", 404),
-    CARD_NOT_FOUND("해당 안정가를 찾을수가 없습니다.", 404),
+    ADDRESS_NOT_FOUND("해당 주소를 찾을 수가 없습니다.", 404),
+    EVENT_NOT_FOUND("해당 이벤트를 찾을 수가 없습니다.", 404),
+    STABLEPRICING_NOT_FOUND("해당 안정가를 찾을 수가 없습니다.", 404),
+    CARD_NOT_FOUND("해당 안정가를 찾을 수가 없습니다.", 404),
+    ORDER_NOT_FOUND("해당 주문을 찾을 수가 없습니다.", 404),
+    PROGRESS_NOT_FOUND("해당 진행 상태을 찾을 수가 없습니다.", 404),
+    LAUNDRY_NOT_FOUND("해당 주문을 찾을 수가 없습니다.", 404),
 
     //401 잘못된 권한 접근
     AUTHORIZATION_DELETE_FAIL("삭제 권한이 없습니다.", 401),

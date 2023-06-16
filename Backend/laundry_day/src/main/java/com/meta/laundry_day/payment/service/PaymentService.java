@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.meta.laundry_day.common.message.ErrorCode.ADDRESS_NOT_FOUND;
+import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_DELETE_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_UPDATE_FAIL;
+import static com.meta.laundry_day.common.message.ErrorCode.CARD_INFORM_NOT_FOUNT_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.CARD_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.REP_CARD_DESIGNATE_ERROR;
 
@@ -43,14 +45,15 @@ public class PaymentService {
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\"authKey\":\"" + requestDto.getAuthKey() + "\",\"customerKey\":\"" + requestDto.getCustomerKey() + "\"}"))
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
 
         // JSONParser로 JSONObject로 변환
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(response.body());
-        System.out.println(jsonObject.get("billingKey"));
-        System.out.println(jsonObject.get("cardNumber"));
-        System.out.println(jsonObject.get("card"));
+
+        //카드 정보 없으면 에러
+        if (jsonObject.get("billingKey") == null || jsonObject.get("customerKey") == null) {
+            throw new CustomException(CARD_INFORM_NOT_FOUNT_ERROR);
+        }
 
         Card card = paymentMapper.toCard(jsonObject, user, response.body());
 
@@ -85,7 +88,7 @@ public class PaymentService {
 
         //권한체크
         if (!card.getUser().getId().equals(user.getId())) {
-            throw new CustomException(AUTHORIZATION_UPDATE_FAIL);
+            throw new CustomException(AUTHORIZATION_DELETE_FAIL);
         }
 
         List<Card> cards = cardRepository.findAllByUser(user);
@@ -108,5 +111,14 @@ public class PaymentService {
         if (count == 2) {
             throw new CustomException(REP_CARD_DESIGNATE_ERROR);
         }
+    }
+
+    public Long deliveryFeeCheck(Long amount) {
+        if (amount >= 30000) {
+            return 0L;
+        } else if (amount >= 15000) {
+            return 3000L;
+        } else
+            return 5000L;
     }
 }

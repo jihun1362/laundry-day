@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,10 +28,6 @@ public class PaymentDtails extends TimeStamped {
     private String userId;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private PaymentMeans paymentMeans;
-
-    @Column(nullable = false)
     private Long basicAmount;
 
     @Column
@@ -41,6 +35,9 @@ public class PaymentDtails extends TimeStamped {
 
     @Column
     private Double discountRate;
+
+    @Column(nullable = false)
+    private Long deliveryFee;
 
     @Column(nullable = false)
     private Double totalAmount;
@@ -51,7 +48,16 @@ public class PaymentDtails extends TimeStamped {
     @Column(nullable = false)
     private String paymentDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(nullable = false)
+    private String customerKey;
+
+    @Column(nullable = false)
+    private String cardNumber;
+
+    @Column(nullable = false)
+    private String cardCompany;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Card_Id")
     private Card card;
 
@@ -60,15 +66,18 @@ public class PaymentDtails extends TimeStamped {
     private Order order;
 
     @Builder
-    public PaymentDtails(String userId, PaymentMeans paymentMeans, Long basicAmount, Long usePoint, Double discountRate, Double totalAmount, int status, String paymentDate, Card card, Order order) {
+    public PaymentDtails(String userId, Long basicAmount, Long usePoint, Double discountRate, Long deliveryFee, Double totalAmount, int status, String paymentDate, String customerKey, String cardNumber, String cardCompany, Card card, Order order) {
         this.userId = userId;
-        this.paymentMeans = paymentMeans;
         this.basicAmount = basicAmount;
         this.usePoint = usePoint;
         this.discountRate = discountRate;
+        this.deliveryFee = deliveryFee;
         this.totalAmount = totalAmount;
         this.status = status;
         this.paymentDate = paymentDate;
+        this.customerKey = customerKey;
+        this.cardNumber = cardNumber;
+        this.cardCompany = cardCompany;
         this.card = card;
         this.order = order;
     }

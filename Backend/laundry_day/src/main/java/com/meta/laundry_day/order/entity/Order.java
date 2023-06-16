@@ -2,6 +2,7 @@ package com.meta.laundry_day.order.entity;
 
 import com.meta.laundry_day.address_details.entity.AddressDetails;
 import com.meta.laundry_day.common.TimeStamped;
+import com.meta.laundry_day.payment.entity.Card;
 import com.meta.laundry_day.payment.entity.PaymentDtails;
 import com.meta.laundry_day.user.entity.User;
 import lombok.Builder;
@@ -36,41 +37,53 @@ public class Order extends TimeStamped {
     private String washingMethod;
 
     @Column(nullable = false)
-    private int consentToNotice = 1;
+    private String address;
 
     @Column
     private String orderRequest;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    private int status;
 
     @Column(nullable = false)
-    private int status = 0;
+    private int usePoint;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AddressDetails_Id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AddressDetails_Id")
     private AddressDetails addressDetails;
 
-    @OneToOne(mappedBy = "order",fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Card_Id")
+    private Card card;
+
+    @OneToOne(mappedBy = "order",fetch = FetchType.LAZY)
     private PaymentDtails paymentDtails;
 
     @OneToOne(mappedBy = "order",fetch = FetchType.LAZY)
     private Progress progress;
 
     @Builder
-    public Order(LaundryType laundryType, String washingMethod, int consentToNotice, String orderRequest, PaymentMethod paymentMethod, int status, User user, AddressDetails addressDetails, PaymentDtails paymentDtails, Progress progress) {
+    public Order(LaundryType laundryType, String washingMethod, String address, String orderRequest, int status,int usePoint, User user, AddressDetails addressDetails, Card card) {
         this.laundryType = laundryType;
         this.washingMethod = washingMethod;
-        this.consentToNotice = consentToNotice;
-        this.orderRequest = orderRequest;
-        this.paymentMethod = paymentMethod;
+        this.address = address;
         this.status = status;
+        this.usePoint = usePoint;
+        this.orderRequest = orderRequest;
         this.user = user;
         this.addressDetails = addressDetails;
+        this.card = card;
+    }
+
+    public void setPaymentDtails(PaymentDtails paymentDtails) {
+        this.paymentDtails = paymentDtails;
+    }
+
+    public void setProgress(Progress progress) {
+        this.progress = progress;
     }
 }

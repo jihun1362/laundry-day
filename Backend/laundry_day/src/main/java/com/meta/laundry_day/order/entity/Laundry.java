@@ -21,13 +21,10 @@ import javax.persistence.ManyToOne;
 @Entity
 @Getter
 @NoArgsConstructor
-public class IndividualLaundry extends TimeStamped {
+public class Laundry extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private Long orderId;
 
     @Column(nullable = false)
     private String image;
@@ -37,6 +34,12 @@ public class IndividualLaundry extends TimeStamped {
 
     @Column
     private Long surcharge;
+
+    @Column(nullable = false)
+    private String clothesType;
+
+    @Column(nullable = false)
+    private Long stablePrice;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -50,19 +53,24 @@ public class IndividualLaundry extends TimeStamped {
     @JoinColumn(name = "Progress_Id", nullable = false)
     private Progress progress;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "StablePricing_Id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "StablePricing_Id")
     private StablePricing stablePricing;
 
     @Builder
-    public IndividualLaundry(Long orderId, String image, String surchargeDetail, Long surcharge, LaundryStatus status, User user, Progress progress, StablePricing stablePricing) {
-        this.orderId = orderId;
+    public Laundry(String image, String surchargeDetail, Long surcharge, String clothesType, Long stablePrice, LaundryStatus status, User user, Progress progress, StablePricing stablePricing) {
         this.image = image;
         this.surchargeDetail = surchargeDetail;
         this.surcharge = surcharge;
+        this.clothesType = clothesType;
+        this.stablePrice = stablePrice;
         this.status = status;
         this.user = user;
         this.progress = progress;
         this.stablePricing = stablePricing;
+    }
+
+    public void update(LaundryStatus status) {
+        this.status = status;
     }
 }
