@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.meta.laundry_day.common.message.ErrorCode.ADDRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ADMIN_SERVICE_ACCESS_BLOCK;
+import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_DELETE_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_UPDATE_FAIL;
 
 @Service
@@ -70,7 +71,7 @@ public class AddressDetailsService {
 
         //권한체크
         if (!address.getUser().getId().equals(user.getId())) {
-            throw new CustomException(AUTHORIZATION_UPDATE_FAIL);
+            throw new CustomException(AUTHORIZATION_DELETE_FAIL);
         }
 
         addressDetailRepository.deleteById(addressId);

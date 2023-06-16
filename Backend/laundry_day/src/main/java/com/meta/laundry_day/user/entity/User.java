@@ -33,16 +33,28 @@ public class User extends TimeStamped {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Column
+    private Long point;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
     @Builder
-    public User(String email, String password, String nickname, String phoneNumber, UserRoleEnum role) {
+    public User(String email, String password, String nickname, String phoneNumber, UserRoleEnum role, Long point) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.role = role;
+        this.point = point;
+    }
+
+    public void addPoint(Long point){
+        this.point += point;
+    }
+
+    public void usePoint(Long point){
+        this.point -= point;
     }
 }

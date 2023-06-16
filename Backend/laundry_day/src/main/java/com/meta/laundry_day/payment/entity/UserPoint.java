@@ -1,4 +1,4 @@
-package com.meta.laundry_day.user_point.entity;
+package com.meta.laundry_day.payment.entity;
 
 import com.meta.laundry_day.common.TimeStamped;
 import com.meta.laundry_day.user.entity.User;
@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,14 +29,15 @@ public class UserPoint extends TimeStamped {
     private Long point;
 
     @Column(nullable = false)
-    private int division = 1;
+    @Enumerated(value = EnumType.STRING)
+    private PointDivision division;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
     private User user;
 
     @Builder
-    public UserPoint(Long point, int division, User user) {
+    public UserPoint(Long point, PointDivision division, User user) {
         this.point = point;
         this.division = division;
         this.user = user;

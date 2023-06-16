@@ -34,11 +34,21 @@ public enum ResultCode {
     STABLEPRICING_MODIFY_SUCCESS("안정가를 수정하였습니다.", 200),
     STABLEPRICING_DELETE_SUCCESS("안정가를 삭제하였습니다.", 200),
 
-    //주소
+    //카드
     CARD_CREATE_SUCCESS("카드를 등록하였습니다.", 201),
     CARD_LIST_REQUEST_SUCCESS("카드 목록을 조회하였습니다.", 200),
     REP_CARD_DESIGNATE_SUCCESS("대표카드를 카드를 지정하였습니다.", 200),
     CARD_DELETE_SUCCESS("카드를 삭제하였습니다.", 200),
+
+    //주문
+    ORDER_CREATE_SUCCESS("세탁 주문을 요청하였습니다.", 201),
+    ORDER_REQUEST_SUCCESS("세탁 주문 조회하였습니다.", 200),
+    LAUNDRY_CREATE_SUCCESS("세탁물을 등록하였습니다.", 201),
+    LAUNDRY_UPDATE_SUCCESS("세탁물 세탁 상태를 변경하였습니다.", 200),
+    LAUNDRY_REGIST_SUCCESS("세탁물 등록을 완료하였습니다.", 200),
+    ORDER_PROGRESS_CHECK_SUCCESS("주문 진행 상태를 조회하였습니다.", 200),
+    ORDER_PROGRESS_UPDATE_SUCCESS("주문 진행 상태를 변경하였습니다.", 200),
+    ORDER_DELETE_SUCCESS("세탁 주문을 취소하였습니다.", 200),
 
     ;
     private final String msg;
