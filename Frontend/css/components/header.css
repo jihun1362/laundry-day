@@ -191,6 +191,7 @@ header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size:
   background-color: #fff;
   border: 1.5px solid #000;
   position: fixed;
+  z-index: 1000;
   left: 50%;
   transform: translate(-50%, 0);
   width: 350px;
