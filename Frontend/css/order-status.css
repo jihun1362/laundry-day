@@ -1,0 +1,263 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+.breadcrumb {
+  position: relative;
+  top: 20px;
+  left: 60px;
+}
+.breadcrumb > ul {
+  display: flex;
+}
+.breadcrumb > ul > li {
+  font-size: 14px;
+}
+.breadcrumb > ul > li + li::before {
+  content: '>';
+  color: #000;
+  margin: 0 10px;
+}
+.breadcrumb > ul > li + li {
+  color: #0d6bbd;
+  font-weight: 600;
+}
+.breadcrumb > ul > li > a {
+  color: #000;
+}
+.breadcrumb > ul > li > a > iconify-icon {
+  margin-right: 5px;
+}
+
+#order-status {
+  background-color: #fff;
+}
+.laundry-receipt {
+  width: 400px;
+  margin: 100px auto 110px;
+}
+.overall-status {
+  margin-bottom: 50px;
+}
+.overall-status > span {
+  display: block;
+}
+.overall-status > .status-summary {
+  color: #0d6bbd;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 5px 0 10px;
+}
+.overall-status > #date {
+  font-size: 14px;
+}
+.order-details > .tab-menu {
+  display: flex;
+}
+.order-details > .tab-menu > li {
+  padding: 0 5px;
+}
+.order-details > .tab-menu > .t_status {
+  margin-right: 45px;
+}
+.order-details > .tab-menu > li.on {
+  border-bottom: 2px solid #000;
+  padding-bottom: 3px;
+}
+.order-details > .tab-menu > li a {
+  color: #ccc;
+  font-size: 18px;
+  font-weight: 500;
+}
+.order-details > .tab-menu > li.on a {
+  color: #000;
+  font-weight: 700;
+}
+.order-details > .tab-content h3 {
+  font-weight: 600;
+  margin: 40px 0 10px;
+}
+.order-details > .tab-content .laundry-wrap {
+  border-top: 1px solid #000;
+  display: flex;
+  padding: 10px 0;
+  position: relative;
+}
+.order-details > .tab-content > .c_status, .c_payment {
+  position: relative;
+}
+.order-details > .tab-content .laundry-wrap + .laundry-wrap {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.order-details > .tab-content .laundry-wrap > .laundry-info {
+  display: flex;
+}
+.order-details > .tab-content .laundry-wrap > .laundry-info > img {
+  width: 120px;
+  height: 120px;
+}
+.order-details > .tab-content .laundry-wrap > .laundry-info > .laundry-info-detail {
+  margin: 10px 0 0 10px;
+}
+.order-details > .tab-content .laundry-wrap > .laundry-info > .laundry-info-detail > .laundry-type {
+  font-weight: 600;
+}
+.order-details > .tab-content .laundry-wrap > .laundry-info > .laundry-info-detail > .laundry-num {
+  color: #aaa;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.order-details > .tab-content .laundry-wrap > .laundry-status, .laundry-price {
+  color: #0d6bbd;
+  font-weight: 600;
+  text-align: right;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+.order-details > .tab-content .laundry-count {
+  font-size: 14.5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.order-details > .tab-content .laundry-count > .laundry-count-num {
+  font-weight: 600;
+  margin-right: 1px;
+}
+.order-details > .tab-content > div {
+  display: none;
+}
+.order-details > .tab-content > div.on {
+  display: block;
+}
+.payment-details {
+  margin-top: 50px;
+}
+.payment-details em {
+  font-style: normal;
+}
+.payment-details > h3 {
+  font-size: 0;
+}
+.payment-details > .calc-list {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 30px;
+}
+.payment-details > .calc-list > li {
+  display: flex;
+  position: relative;
+  margin-bottom: 10px;
+}
+.payment-details > .calc-list> li:last-child {
+  margin-bottom: 0;
+}
+.payment-details > .calc-list > li > strong {
+  font-weight: 500;
+}
+.payment-details > .calc-list > li > p {
+  position: absolute;
+  right: 0;
+}
+.payment-details > .calc-list > li > p > em {
+  font-weight: 600;
+}
+.payment-details > .price-sum {
+  display: flex;
+  position: relative;
+  margin-top: 30px;
+}
+.payment-details > .price-sum > strong {
+  font-weight: 500;
+}
+.payment-details > .price-sum > p {
+  position: absolute;
+  right: 0;
+}
+.payment-details > .price-sum .price-sum-detail {
+  font-size: 20px;
+  font-weight: 700;
+}
+.payment-details > .notice > p {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 25px;
+}
+.payment-details > .notice > p + p {
+  margin-top: 5px;
+}
+.request-field {
+  margin-top: 50px;
+}
+.request-field > h3 {
+  font-size: 18px;
+}
+.request-field > p {
+  margin-top: 10px;
+}
+.order-help {
+  background-color: #eff7fd;
+  border-radius: 20px;
+  margin-top: 50px;
+  padding: 30px 0;
+  text-align: center;
+}
+.order-help > h3 {
+  font-weight: 500;
+}
+.order-help > a {
+  display: inline-block;
+  color: #0d6bbd;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  .breadcrumb {
+    position: relative;
+    top: 112px;
+    width: 700px;
+  }
+  .laundry-receipt {
+    position: relative;
+    top: 102px;
+    width: 700px;
+    margin: 100px auto 212px;
+  }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  .breadcrumb {
+    position: relative;
+    top: 112px;
+    width: 700px;
+  }
+  .laundry-receipt {
+    position: relative;
+    top: 102px;
+    width: 700px;
+    margin: 100px auto 212px;
+  }
+}
