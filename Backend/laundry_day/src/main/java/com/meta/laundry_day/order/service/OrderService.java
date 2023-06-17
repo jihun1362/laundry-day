@@ -4,6 +4,8 @@ import com.meta.laundry_day.address_details.entity.AddressDetails;
 import com.meta.laundry_day.address_details.repository.AddressDetailRepository;
 import com.meta.laundry_day.common.config.S3Uploader;
 import com.meta.laundry_day.common.exception.CustomException;
+import com.meta.laundry_day.event_details.entity.EventDetails;
+import com.meta.laundry_day.event_details.repository.EventDetailsRepository;
 import com.meta.laundry_day.order.dto.LaundryRequestDto;
 import com.meta.laundry_day.order.dto.LaundryResponseDto;
 import com.meta.laundry_day.order.dto.OrderReaponseDto;
@@ -19,7 +21,11 @@ import com.meta.laundry_day.order.repository.LaundryRepository;
 import com.meta.laundry_day.order.repository.OrderRepository;
 import com.meta.laundry_day.order.repository.ProgressRepository;
 import com.meta.laundry_day.payment.entity.Card;
+import com.meta.laundry_day.payment.entity.Payment;
+import com.meta.laundry_day.payment.mapper.PaymentMapper;
 import com.meta.laundry_day.payment.repository.CardRepository;
+import com.meta.laundry_day.payment.repository.PaymentRepository;
+import com.meta.laundry_day.payment.service.PaymentService;
 import com.meta.laundry_day.stable_pricing.entity.StablePricing;
 import com.meta.laundry_day.stable_pricing.repository.StablePricingRepository;
 import com.meta.laundry_day.user.entity.User;
@@ -36,10 +42,11 @@ import java.util.List;
 import static com.meta.laundry_day.common.message.ErrorCode.ADDRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_DELETE_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_FAIL;
-import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_UPDATE_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.CARD_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_NOT_FOUND;
+import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_PICKUP_NOT_DONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_PICKUP_START_ERROR;
+import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_REGIST_DONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_RESIST_DONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_ONLY_ONE_ERROR;
@@ -56,8 +63,12 @@ public class OrderService {
     private final ProgressRepository progressRepository;
     private final LaundryRepository laundryRepository;
     private final StablePricingRepository stablePricingRepository;
+    private final EventDetailsRepository eventDetailsRepository;
+    private final PaymentRepository paymentRepository;
     private final OrderMapper orderMapper;
+    private final PaymentMapper paymentMapper;
     private final S3Uploader s3Uploader;
+    private final PaymentService paymentService;
 
     @Transactional
     public void createOrder(User user, OrderRequestDto requestDto, Long addressId, Long cardId) {
@@ -82,7 +93,7 @@ public class OrderService {
 
         //권한체크
         if (!order.getUser().getId().equals(user.getId())) {
-            throw new CustomException(AUTHORIZATION_UPDATE_FAIL);
+            throw new CustomException(AUTHORIZATION_FAIL);
         }
 
         return orderMapper.toResponse(order);
@@ -97,6 +108,11 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
         Progress progress = progressRepository.findByOrder(order);
+
+        //세탁물 수거전 등록 불가
+        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)){
+            throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
+        }
 
         //세탁물 등록 완료전만 등록가능
         if (progress.getLaundryRegist() == 0) {
@@ -116,7 +132,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void registLaundry(User user, Long progressId) {
+    public void doneLaundry(User user, Long progressId) {
         Progress progress = progressRepository.findById(progressId).orElseThrow(() -> new CustomException(PROGRESS_NOT_FOUND));
 
         //관리자권한 아니면 예외보내기
@@ -124,7 +140,59 @@ public class OrderService {
             throw new CustomException(AUTHORIZATION_FAIL);
         }
 
+        //세탁물 수거전 완료 불가
+        if (!progress.getStatus().equals(ProgressStatus.수거완료)){
+            throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
+        }
+
+        //페이먼트 중복으로 안생기게 제한
+        if (progress.getLaundryRegist() == 0) {
+            throw new CustomException(LAUNDRY_REGIST_DONE_ERROR);
+        }
+
         progress.doneRegist();
+
+        List<Laundry> laundrys = laundryRepository.findAllByProgress(progress);
+
+        Long totalStablePrice = 0L;
+
+        Long totalSurcharge = 0L;
+
+        for (Laundry l : laundrys) {
+            totalStablePrice += l.getStablePrice();
+            totalSurcharge += l.getSurcharge();
+        }
+
+        Long amount = totalStablePrice + totalSurcharge;
+
+        Long deliveryFee = paymentService.deliveryFeeCheck(amount);
+
+        EventDetails event = eventDetailsRepository.findAllTopByOrderByDiscountRateDesc();
+
+        Double discountRate = 0.0;
+
+        if (event != null){
+            discountRate = event.getDiscountRate();
+        }
+
+        //0 나누기 예외 뜨는거 방지
+        if (discountRate == 0) {
+            discountRate = 1.0;
+        }
+
+        Long pay = amount + deliveryFee;
+        Double discount = pay / discountRate;
+        double usePoint = 0;
+
+        if (user.getPoint() - (pay - discount) >= 0) {
+            usePoint = pay - discount;
+        }
+
+        Double totalAmount = pay - discount - usePoint;
+
+        Payment payment = paymentMapper.toPayment(progress.getOrder().getId(), amount, usePoint, discountRate, totalStablePrice, totalSurcharge, deliveryFee, totalAmount);
+
+        paymentRepository.save(payment);
     }
 
     @Transactional
@@ -142,7 +210,6 @@ public class OrderService {
     @Transactional(readOnly = true)
     public ProgressResponeDto progressCheck(User user) {
         List<Order> orders = orderRepository.findAllByUser(user);
-
         Order order = null;
         for (Order o : orders) {
             if (o.getStatus() == 1) order = o;
@@ -159,7 +226,13 @@ public class OrderService {
             }
         }
 
-        return orderMapper.toResponse(progress, laundryResponseDtoList, user);
+        Payment payment = paymentRepository.findByOrderId(order.getId());
+
+        if (progress.getStatus().equals(ProgressStatus.수거준비중)||progress.getStatus().equals(ProgressStatus.수거진행중)||progress.getStatus().equals(ProgressStatus.수거완료)) {
+            return orderMapper.toResponse(progress, laundryResponseDtoList);
+        }
+
+        return orderMapper.toResponse(progress, laundryResponseDtoList, payment);
     }
 
     @Transactional
@@ -169,6 +242,11 @@ public class OrderService {
         //관리자권한 아니면 예외보내기
         if (user.getRole().equals(UserRoleEnum.USER)) {
             throw new CustomException(AUTHORIZATION_FAIL);
+        }
+
+        if (String.valueOf(ProgressStatus.배송완료).equals(status)) {
+            Order order = orderRepository.findByProgress(progress);
+            order.doneOrder();
         }
 
         progress.update(ProgressStatus.valueOf(status));
@@ -185,8 +263,8 @@ public class OrderService {
 
         Progress progress = progressRepository.findByOrder(order);
 
-        if (!progress.getStatus().equals(ProgressStatus.수거준비중)){
-            throw  new CustomException(LAUNDRY_PICKUP_START_ERROR);
+        if (!progress.getStatus().equals(ProgressStatus.수거준비중)) {
+            throw new CustomException(LAUNDRY_PICKUP_START_ERROR);
         }
 
         progressRepository.delete(progress);

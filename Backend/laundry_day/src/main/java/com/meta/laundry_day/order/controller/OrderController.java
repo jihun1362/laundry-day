@@ -70,10 +70,10 @@ public class OrderController {
                 .body(new ResponseDto<>(LAUNDRY_CREATE_SUCCESS, null));
     }
 
-    @PatchMapping("/laundry/regist/{progressId}")
-    public ResponseEntity<ResponseDto<ResultCode>> registLaundry(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @PatchMapping("/laundry/done/{progressId}")
+    public ResponseEntity<ResponseDto<ResultCode>> doneLaundry(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                  @PathVariable Long progressId) {
-        orderService.registLaundry(userDetails.getUser(), progressId);
+        orderService.doneLaundry(userDetails.getUser(), progressId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(LAUNDRY_REGIST_SUCCESS, null));
     }

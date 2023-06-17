@@ -10,10 +10,11 @@ import java.util.List;
 public class ProgressResponeDto {
     private Long progressId;
     private String status;
-    private Long stablePrice;
-    private Long surcharge;
+    private Long totalStablePrice;
+    private Long totalSurcharge;
     private Long deliveryFee;
-    private Long usePoint;
+    private Double discountRate;
+    private Double usePoint;
     private List<LaundryResponseDto> laundryResponseDtoList;
     private String createAt;
 }

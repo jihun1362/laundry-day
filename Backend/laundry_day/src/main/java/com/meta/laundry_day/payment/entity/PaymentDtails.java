@@ -25,13 +25,13 @@ public class PaymentDtails extends TimeStamped {
     private Long id;
 
     @Column(nullable = false)
-    private String userId;
+    private Long userId;
 
     @Column(nullable = false)
     private Long basicAmount;
 
     @Column
-    private Long usePoint;
+    private Double usePoint;
 
     @Column
     private Double discountRate;
@@ -43,12 +43,6 @@ public class PaymentDtails extends TimeStamped {
     private Double totalAmount;
 
     @Column(nullable = false)
-    private int status = 0;
-
-    @Column(nullable = false)
-    private String paymentDate;
-
-    @Column(nullable = false)
     private String customerKey;
 
     @Column(nullable = false)
@@ -56,6 +50,9 @@ public class PaymentDtails extends TimeStamped {
 
     @Column(nullable = false)
     private String cardCompany;
+
+    @Column(nullable = false, length = 5000)
+    private String receipt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Card_Id")
@@ -66,18 +63,17 @@ public class PaymentDtails extends TimeStamped {
     private Order order;
 
     @Builder
-    public PaymentDtails(String userId, Long basicAmount, Long usePoint, Double discountRate, Long deliveryFee, Double totalAmount, int status, String paymentDate, String customerKey, String cardNumber, String cardCompany, Card card, Order order) {
+    public PaymentDtails(Long userId, Long basicAmount, Double usePoint, Double discountRate, Long deliveryFee, Double totalAmount, String customerKey, String cardNumber, String cardCompany, String receipt, Card card, Order order) {
         this.userId = userId;
         this.basicAmount = basicAmount;
         this.usePoint = usePoint;
         this.discountRate = discountRate;
         this.deliveryFee = deliveryFee;
         this.totalAmount = totalAmount;
-        this.status = status;
-        this.paymentDate = paymentDate;
         this.customerKey = customerKey;
         this.cardNumber = cardNumber;
         this.cardCompany = cardCompany;
+        this.receipt = receipt;
         this.card = card;
         this.order = order;
     }

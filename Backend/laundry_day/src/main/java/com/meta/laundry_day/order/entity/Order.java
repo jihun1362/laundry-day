@@ -86,4 +86,8 @@ public class Order extends TimeStamped {
     public void setProgress(Progress progress) {
         this.progress = progress;
     }
+
+    public void doneOrder() {
+        this.status = 0;
+    }
 }
