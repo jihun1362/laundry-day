@@ -96,13 +96,29 @@ Vue.component('app-header', {
       window.location.href = '/Frontend/views/laundry-request.html';
     },
     hideModal() {
+      // 오늘 하루 보지 않음을 선택한 경우 쿠키를 생성하여 상태 저장
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 1); // 다음 날로 설정
+      document.cookie = `hideModal=true; expires=${expirationDate.toUTCString()}; path=/`;
+      
       this.isModalVisible = false;
+    },
+    shouldShowModal() {
+      // 쿠키에서 hideModal 상태를 확인하여 모달을 표시할지 여부를 결정
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith('hideModal=true')) {
+          return false; // 오늘 하루 보지 않음 선택한 경우 모달 표시 안 함
+        }
+      }
+      return true; // 모달을 표시해야 함
     }
   },
   mounted() {
     window.addEventListener('resize', this.checkSize);
     // URL에 "laundry-request.html"이 포함되어 있는 경우 모달을 표시
-    if (window.location.href.includes('laundry-request.html')) {
+    if (window.location.href.includes('laundry-request.html') && this.shouldShowModal()) {
       this.isModalVisible = true;
     }
   },
