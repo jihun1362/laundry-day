@@ -38,7 +38,7 @@ Vue.component('app-header', {
         <ul>
           <li class="user"><a href="/Frontend/views/login.html">계정<iconify-icon icon="mdi:account"></iconify-icon></a></li>
           <li class="bell"><a href="#">알림<iconify-icon icon="ph:bell-bold"></iconify-icon></a></li>
-          <li class="list"><a href="#">이용내역<iconify-icon icon="ci:shopping-bag-02"></iconify-icon></a></li>
+          <li class="list"><a href="/Frontend/views/order-status.html">이용내역<iconify-icon icon="ci:shopping-bag-02"></iconify-icon></a></li>
           <li class="help"><a href="#">고객지원<iconify-icon icon="material-symbols:help-outline"></iconify-icon></a></li>
         </ul>
       </nav>
