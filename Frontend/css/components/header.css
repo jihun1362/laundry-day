@@ -1,6 +1,6 @@
 @charset 'utf-8';
 /* 서체 */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
 
 /* reset */
 body {
@@ -183,6 +183,67 @@ header > .header_bottom > nav.util > ul > li > a {font-family: 'NanumSquareBold'
 header > .header_bottom > nav.util > ul > li.user, li.help {display: none;}
 header > .header_bottom > nav.util > ul > li > a > iconify-icon {font-size: 24px;}
 header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size: 22px;}
+
+/* Modal */
+.modal {
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1.5px solid #000;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 350px;
+  height: 500px;
+  margin-top: 60px;
+}
+.modal > .modal-content {
+  width: 300px;
+  margin: 45px auto 30px;
+}
+.modal > .modal-content > h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.modal > .modal-content > p {
+  font-size: 23px;
+  font-weight: 500;
+}
+.modal > .modal-content > p > span {
+  font-size: 26px;
+  font-weight: 700;
+}
+.modal > .example-img {
+  background: url('/Frontend/images/modal_img.svg') left / contain no-repeat;
+  height: 200px;
+}
+.modal > .close-wrap {
+  background-color: #000;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  line-height: 40px;
+}
+.modal > .close-wrap > .today-modal-close-btn {
+  color: #fff;
+  font-size: 13px;
+  text-decoration: underline;
+  padding-left: 10px;
+}
+.modal > .close-wrap > .modal-close-btn > span {
+  font-size: 0;
+  vertical-align: middle;
+}
+.modal > .close-wrap > .modal-close-btn > span > iconify-icon {
+  color: #fff;
+  font-size: 20px; 
+  position: absolute; 
+  top: 50%;
+  right: 10px;
+  transform: translate(0, -50%);
+}
 
 /* ~ 767 */
 @media screen and (max-width:767px) {
