@@ -26,7 +26,7 @@ public class UserPoint extends TimeStamped {
     private Long id;
 
     @Column(nullable = false)
-    private Long point;
+    private Double point;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -37,7 +37,7 @@ public class UserPoint extends TimeStamped {
     private User user;
 
     @Builder
-    public UserPoint(Long point, PointDivision division, User user) {
+    public UserPoint(Double point, PointDivision division, User user) {
         this.point = point;
         this.division = division;
         this.user = user;

@@ -50,6 +50,11 @@ public enum ResultCode {
     ORDER_PROGRESS_UPDATE_SUCCESS("주문 진행 상태를 변경하였습니다.", 200),
     ORDER_DELETE_SUCCESS("세탁 주문을 취소하였습니다.", 200),
 
+    //결제
+    PAYMENT_CREATE_SUCCESS("결제를 완료하였습니다.", 201),
+    PAYMENT_LIST_REQUEST_SUCCESS("결제 내역을 조회하였습니다.", 200),
+    POINT_LIST_REQUEST_SUCCESS("포인트 내역을 조회하였습니다.", 200),
+
     ;
     private final String msg;
     private final int statusCode;

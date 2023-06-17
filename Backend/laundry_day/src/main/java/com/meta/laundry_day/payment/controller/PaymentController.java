@@ -4,9 +4,12 @@ import com.meta.laundry_day.common.dto.ResponseDto;
 import com.meta.laundry_day.common.message.ResultCode;
 import com.meta.laundry_day.payment.dto.CardRequestDto;
 import com.meta.laundry_day.payment.dto.CardResponseDto;
+import com.meta.laundry_day.payment.dto.PaymentResponseDto;
+import com.meta.laundry_day.payment.dto.PointResponseDto;
 import com.meta.laundry_day.payment.service.PaymentService;
 import com.meta.laundry_day.security.util.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +27,9 @@ import java.util.List;
 import static com.meta.laundry_day.common.message.ResultCode.CARD_CREATE_SUCCESS;
 import static com.meta.laundry_day.common.message.ResultCode.CARD_DELETE_SUCCESS;
 import static com.meta.laundry_day.common.message.ResultCode.CARD_LIST_REQUEST_SUCCESS;
+import static com.meta.laundry_day.common.message.ResultCode.PAYMENT_CREATE_SUCCESS;
+import static com.meta.laundry_day.common.message.ResultCode.PAYMENT_LIST_REQUEST_SUCCESS;
+import static com.meta.laundry_day.common.message.ResultCode.POINT_LIST_REQUEST_SUCCESS;
 import static com.meta.laundry_day.common.message.ResultCode.REP_CARD_DESIGNATE_SUCCESS;
 
 @RestController
@@ -61,5 +67,24 @@ public class PaymentController {
         paymentService.designateCard(userDetails.getUser(), cardId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(REP_CARD_DESIGNATE_SUCCESS, null));
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<ResponseDto<ResultCode>> createPayment(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, InterruptedException, ParseException {
+        paymentService.createPayment(userDetails.getUser());
+        return ResponseEntity.status(201)
+                .body(new ResponseDto<>(PAYMENT_CREATE_SUCCESS, null));
+    }
+
+    @GetMapping("/payment")
+    public ResponseEntity<ResponseDto<List<PaymentResponseDto>>> paymentDtailsList(@AuthenticationPrincipal UserDetailsImpl userDetails) throws ParseException {
+        return ResponseEntity.status(200)
+                .body(new ResponseDto<>(PAYMENT_LIST_REQUEST_SUCCESS, paymentService.paymentDtailsList(userDetails.getUser())));
+    }
+
+    @GetMapping("/point")
+    public ResponseEntity<ResponseDto<List<PointResponseDto>>> pointList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.status(200)
+                .body(new ResponseDto<>(POINT_LIST_REQUEST_SUCCESS, paymentService. pointList(userDetails.getUser())));
     }
 }

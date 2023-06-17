@@ -13,7 +13,7 @@ import com.meta.laundry_day.order.entity.Order;
 import com.meta.laundry_day.order.entity.Progress;
 import com.meta.laundry_day.order.entity.ProgressStatus;
 import com.meta.laundry_day.payment.entity.Card;
-import com.meta.laundry_day.payment.service.PaymentService;
+import com.meta.laundry_day.payment.entity.Payment;
 import com.meta.laundry_day.stable_pricing.entity.StablePricing;
 import com.meta.laundry_day.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class OrderMapper {
-
-    private final PaymentService paymentService;
 
     public OrderReaponseDto toResponse(Order orders) {
         return OrderReaponseDto.builder()
@@ -52,32 +50,35 @@ public class OrderMapper {
                 .build();
     }
 
-    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList, User user) {
-        Long stablePrice = 0L;
-        Long surcharge = 0L;
-        Long usePoint = user.getPoint();
-        for (LaundryResponseDto l : laundryResponseDtoList) {
-            stablePrice += l.getStablePrice();
-            surcharge += l.getSurcharge();
-        }
-        if (user.getPoint() - (stablePrice + surcharge) >= 0){
-            usePoint = stablePrice + surcharge;
-        }
-
+    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList, Payment payment) {
         return ProgressResponeDto.builder()
                 .progressId(progress.getId())
                 .status(String.valueOf(progress.getStatus()))
-                .stablePrice(stablePrice)
-                .surcharge(surcharge)
-                .deliveryFee(paymentService.deliveryFeeCheck(stablePrice + surcharge))
-                .usePoint(usePoint)
+                .totalStablePrice(payment.getTotalStablePrice())
+                .totalSurcharge(payment.getTotalStablePriceSurcharge())
+                .deliveryFee(payment.getDeliveryFee())
+                .discountRate(payment.getDiscountRate())
+                .usePoint(payment.getUsePoint())
+                .laundryResponseDtoList(laundryResponseDtoList)
+                .createAt(String.valueOf(progress.getCreatedAt()))
+                .build();
+    }
+
+    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList) {
+        return ProgressResponeDto.builder()
+                .progressId(progress.getId())
+                .status(String.valueOf(progress.getStatus()))
+                .totalStablePrice(0L)
+                .totalSurcharge(0L)
+                .deliveryFee(0L)
+                .discountRate(0.0)
+                .usePoint(0.0)
                 .laundryResponseDtoList(laundryResponseDtoList)
                 .createAt(String.valueOf(progress.getCreatedAt()))
                 .build();
     }
 
     public Order toOrder(OrderRequestDto requestDto, User user, AddressDetails address, Card card) {
-
         return Order.builder()
                 .laundryType(LaundryType.valueOf(requestDto.getLaundryType()))
                 .washingMethod(requestDto.getWashingMethod())

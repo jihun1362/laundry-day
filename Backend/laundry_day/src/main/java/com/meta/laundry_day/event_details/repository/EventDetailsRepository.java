@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface EventDetailsRepository extends JpaRepository<EventDetails, Long> {
     List<EventDetails> findAllByOrderByCreatedAtDesc();
+    EventDetails findAllTopByOrderByDiscountRateDesc();
 }

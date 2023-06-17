@@ -13,7 +13,6 @@ public enum ErrorCode {
     INVALID_NICKNAME_PATTERN("닉네임은 영문(소문자), 숫자, 한글(자음, 모음 단위 x) 조합에 2~10자입니다.", 400),
     INVALID_PHONENUMBER_PATTERN("핸드폰번호의 형식은 '***-****-****' 이며 '-'를 생략하지 않습니다.", 400),
     DUPLICATE_EMAIL_ERROE("중복된 이메일이 존재합니다.", 400),
-    DUPLICATE_NICKNAME_ERROE("중복된 닉네임이 존재합니다.", 400),
     DUPLICATE_PHONENUMBER_ERROE("중복된 핸드폰번호가 존재합니다.", 400),
     MEMBER_NOT_FOUND_ERROR("존재하지 않는 이메일이거나 이메일이 올바르지 않습니다.", 404),
     INCORRECT_PASSWORD_ERROR("비밀번호가 일치하지 않습니다.", 404),
@@ -29,15 +28,17 @@ public enum ErrorCode {
     ORDER_ONLY_ONE_ERROR("중복으로 세탁 주문은 불가능합니다.", 400),
     LAUNDRY_RESIST_DONE_ERROR("세탁물 등록이 완료되어 더 등록 할수 없습니다.", 400),
     LAUNDRY_PICKUP_START_ERROR("세탁물 수거가 시작되어 주문을 취소할 수 없습니다.", 400),
+    LAUNDRY_PICKUP_NOT_DONE_ERROR("세탁물 수거가 완료되지 않았습니다.", 400),
+    LAUNDRY_REGIST_DONE_ERROR("세탁물 등록이 이미 완료되었습니다.", 400),
 
     //404 찾을 수 없음
     ADDRESS_NOT_FOUND("해당 주소를 찾을 수가 없습니다.", 404),
     EVENT_NOT_FOUND("해당 이벤트를 찾을 수가 없습니다.", 404),
     STABLEPRICING_NOT_FOUND("해당 안정가를 찾을 수가 없습니다.", 404),
-    CARD_NOT_FOUND("해당 안정가를 찾을 수가 없습니다.", 404),
+    CARD_NOT_FOUND("해당 카드를 찾을 수가 없습니다.", 404),
     ORDER_NOT_FOUND("해당 주문을 찾을 수가 없습니다.", 404),
     PROGRESS_NOT_FOUND("해당 진행 상태을 찾을 수가 없습니다.", 404),
-    LAUNDRY_NOT_FOUND("해당 주문을 찾을 수가 없습니다.", 404),
+    LAUNDRY_NOT_FOUND("해당 세탁물을 찾을 수가 없습니다.", 404),
 
     //401 잘못된 권한 접근
     AUTHORIZATION_DELETE_FAIL("삭제 권한이 없습니다.", 401),

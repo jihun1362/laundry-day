@@ -34,14 +34,14 @@ public class User extends TimeStamped {
     private String phoneNumber;
 
     @Column
-    private Long point;
+    private Double point;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
     @Builder
-    public User(String email, String password, String nickname, String phoneNumber, UserRoleEnum role, Long point) {
+    public User(String email, String password, String nickname, String phoneNumber, UserRoleEnum role, Double point) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -50,11 +50,11 @@ public class User extends TimeStamped {
         this.point = point;
     }
 
-    public void addPoint(Long point){
+    public void addPoint(Double point){
         this.point += point;
     }
 
-    public void usePoint(Long point){
+    public void usePoint(Double point){
         this.point -= point;
     }
 }
