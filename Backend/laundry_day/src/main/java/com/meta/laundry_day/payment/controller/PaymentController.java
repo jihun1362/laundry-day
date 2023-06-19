@@ -8,9 +8,11 @@ import com.meta.laundry_day.payment.dto.PaymentResponseDto;
 import com.meta.laundry_day.payment.dto.PointResponseDto;
 import com.meta.laundry_day.payment.service.PaymentService;
 import com.meta.laundry_day.security.util.UserDetailsImpl;
+import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/card")
+    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<ResultCode>> createCard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                               @RequestBody CardRequestDto requestDto) throws IOException, InterruptedException, org.json.simple.parser.ParseException {
         paymentService.createCard(userDetails.getUser(), requestDto);
@@ -48,12 +51,14 @@ public class PaymentController {
     }
 
     @GetMapping("/card")
+    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<List<CardResponseDto>>> cardList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(CARD_LIST_REQUEST_SUCCESS, paymentService.cardList(userDetails.getUser())));
     }
 
     @DeleteMapping("/card/{cardId}")
+    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<ResultCode>> deleteCard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                               @PathVariable Long cardId) {
         paymentService.deleteCard(userDetails.getUser(), cardId);
@@ -62,6 +67,7 @@ public class PaymentController {
     }
 
     @PatchMapping("/card/{cardId}")
+    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<ResultCode>> designateCard(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                  @PathVariable Long cardId) {
         paymentService.designateCard(userDetails.getUser(), cardId);
@@ -70,6 +76,7 @@ public class PaymentController {
     }
 
     @PostMapping("")
+    @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> createPayment(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, InterruptedException, ParseException {
         paymentService.createPayment(userDetails.getUser());
         return ResponseEntity.status(201)
@@ -77,12 +84,14 @@ public class PaymentController {
     }
 
     @GetMapping("")
+    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<List<PaymentResponseDto>>> paymentDtailsList(@AuthenticationPrincipal UserDetailsImpl userDetails) throws ParseException {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(PAYMENT_LIST_REQUEST_SUCCESS, paymentService.paymentDtailsList(userDetails.getUser())));
     }
 
     @GetMapping("/point")
+    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<List<PointResponseDto>>> pointList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(POINT_LIST_REQUEST_SUCCESS, paymentService. pointList(userDetails.getUser())));

@@ -6,9 +6,11 @@ import com.meta.laundry_day.event_details.dto.EventRequestDto;
 import com.meta.laundry_day.event_details.dto.EventResponseDto;
 import com.meta.laundry_day.event_details.service.EventService;
 import com.meta.laundry_day.security.util.UserDetailsImpl;
+import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,7 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> createEvent(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                @RequestPart EventRequestDto eventRequestDto,
                                                                @RequestPart MultipartFile image) throws IOException {
@@ -50,17 +53,17 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<ResponseDto<EventResponseDto>> eventList(@PathVariable Long eventId) {
+    public ResponseEntity<ResponseDto<EventResponseDto>> eventDetail(@PathVariable Long eventId) {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(EVENT_DETAIL_REQUEST_SUCCESS, eventService.eventDetail(eventId)));
     }
 
     @PutMapping(value = "/{eventId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ResponseDto<ResultCode>> createEvent(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                               @RequestPart EventRequestDto eventRequestDto,
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseEntity<ResponseDto<ResultCode>> createEvent(@RequestPart EventRequestDto eventRequestDto,
                                                                @RequestPart MultipartFile image,
                                                                @PathVariable Long eventId) throws IOException {
-        eventService.eventUpdate(userDetails.getUser(), eventId, eventRequestDto, image);
+        eventService.eventUpdate(eventId, eventRequestDto, image);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(EVENT_MODIFY_SUCCESS, null));
     }

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -28,6 +29,7 @@ import static com.meta.laundry_day.common.message.ErrorCode.FORBIDDEN_ERROR;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원설정 가능하게 함
+@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
 

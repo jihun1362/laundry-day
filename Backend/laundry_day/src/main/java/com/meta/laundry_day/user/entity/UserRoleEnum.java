@@ -14,6 +14,7 @@ public enum UserRoleEnum {
         return this.authority;
     }
 
+    //secured 사용을 위한 이너 클래스
     public static class Authority {
         public static final String USER = "ROLE_USER";
         public static final String ADMIN = "ROLE_ADMIN";

@@ -8,7 +8,6 @@ import com.meta.laundry_day.event_details.entity.EventDetails;
 import com.meta.laundry_day.event_details.mapper.EventMapper;
 import com.meta.laundry_day.event_details.repository.EventDetailsRepository;
 import com.meta.laundry_day.user.entity.User;
-import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.EVENT_NOT_FOUND;
 
 @Service
@@ -30,11 +28,6 @@ public class EventService {
 
     @Transactional
     public void createEvent(User user, EventRequestDto eventRequestDto, MultipartFile image) throws IOException {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
         String imageUri = null;
         if (!image.isEmpty()) {
             imageUri = s3Uploader.upload(image, "event-images");
@@ -62,12 +55,7 @@ public class EventService {
     }
 
     @Transactional
-    public void eventUpdate(User user, Long eventId, EventRequestDto eventRequestDto, MultipartFile image) throws IOException {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
+    public void eventUpdate(Long eventId, EventRequestDto eventRequestDto, MultipartFile image) throws IOException {
         EventDetails eventDetails = eventDetailsRepository.findById(eventId).orElseThrow(() -> new CustomException(EVENT_NOT_FOUND));
 
         String title = eventDetails.getTitle();

@@ -10,7 +10,6 @@ import com.meta.laundry_day.stable_pricing.mapper.StablePricingMapper;
 import com.meta.laundry_day.stable_pricing.repository.StablePricingRepository;
 import com.meta.laundry_day.stable_pricing.repository.WashingTypeRepository;
 import com.meta.laundry_day.user.entity.User;
-import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.STABLEPRICING_NOT_FOUND;
 
 @Service
@@ -30,35 +28,20 @@ public class StablePricingService {
 
     @Transactional
     public void createWashingType(User user, String typeName) {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
         WashingType washingType = stablePricingMapper.toWashingType(typeName, user);
 
         washingTypeRepository.save(washingType);
     }
 
     @Transactional
-    public void updateWashingType(User user, String typeName, Long washingtypeId) {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
+    public void updateWashingType(String typeName, Long washingtypeId) {
         WashingType washingType = washingTypeRepository.findById(washingtypeId).orElseThrow(() -> new CustomException(STABLEPRICING_NOT_FOUND));
 
         washingType.update(typeName);
     }
 
     @Transactional
-    public void deleteWashingType(User user, Long washingtypeId) {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
+    public void deleteWashingType(Long washingtypeId) {
         washingTypeRepository.findById(washingtypeId).orElseThrow(() -> new CustomException(STABLEPRICING_NOT_FOUND));
 
         List<StablePricing> stablePricingList = stablePricingRepository.findAllByWashingTypeId(washingtypeId);
@@ -69,11 +52,6 @@ public class StablePricingService {
 
     @Transactional
     public void createStablePricing(User user, StablePricingRequestDto responseDto, Long washingtypeId) {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
         WashingType washingType = washingTypeRepository.findById(washingtypeId).orElseThrow(() -> new CustomException(STABLEPRICING_NOT_FOUND));
 
         StablePricing stablePricing = stablePricingMapper.toStablePricing(responseDto, user, washingType);
@@ -97,12 +75,7 @@ public class StablePricingService {
     }
 
     @Transactional
-    public void updateStablePricing(User user, StablePricingRequestDto responseDto, Long stablepriceId) {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
+    public void updateStablePricing(StablePricingRequestDto responseDto, Long stablepriceId) {
         StablePricing stablePricing = stablePricingRepository.findById(stablepriceId).orElseThrow(() -> new CustomException(STABLEPRICING_NOT_FOUND));
 
         stablePricing.update(
@@ -112,12 +85,7 @@ public class StablePricingService {
     }
 
     @Transactional
-    public void deleteStablePricing(User user, Long stablepriceId) {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
+    public void deleteStablePricing(Long stablepriceId) {
         stablePricingRepository.findById(stablepriceId).orElseThrow(() -> new CustomException(STABLEPRICING_NOT_FOUND));
 
         stablePricingRepository.deleteById(stablepriceId);

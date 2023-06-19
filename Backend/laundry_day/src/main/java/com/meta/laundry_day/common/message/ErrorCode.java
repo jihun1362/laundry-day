@@ -17,9 +17,6 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND_ERROR("존재하지 않는 이메일이거나 이메일이 올바르지 않습니다.", 404),
     INCORRECT_PASSWORD_ERROR("비밀번호가 일치하지 않습니다.", 404),
 
-    //어드민
-    ADMIN_SERVICE_ACCESS_BLOCK("사용자로 로그인하세요.", 400),
-
     //카드
     REP_CARD_DESIGNATE_ERROR("대표카드 지정은 한 카드만 가능합니다.", 400),
     CARD_INFORM_NOT_FOUNT_ERROR("카드 정보를 찾을 수 없습니다.", 400),
@@ -53,6 +50,7 @@ public enum ErrorCode {
 
     //서버 에러
     INTERNAL_SERVER_ERROR("서버 에러입니다. 서버 팀에 연락주세요!", 500),
+    USER_AUTHORIZATION_FAIL_ERROR("사용자가 해당 API에 접근 권한이 없습니다.", 401),
 
     ;
     private final String msg;

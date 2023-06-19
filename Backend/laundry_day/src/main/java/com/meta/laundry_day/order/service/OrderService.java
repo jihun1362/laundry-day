@@ -33,7 +33,6 @@ import com.meta.laundry_day.payment.service.PaymentService;
 import com.meta.laundry_day.stable_pricing.entity.StablePricing;
 import com.meta.laundry_day.stable_pricing.repository.StablePricingRepository;
 import com.meta.laundry_day.user.entity.User;
-import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,11 +112,6 @@ public class OrderService {
 
     @Transactional
     public void createLaundry(User user, LaundryRequestDto requestDto, MultipartFile image, Long stablepriceId, Long orderId) throws IOException {
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
         Progress progress = progressRepository.findByOrder(order);
 
@@ -146,11 +140,6 @@ public class OrderService {
     @Transactional
     public void doneLaundry(User user, Long progressId) {
         Progress progress = progressRepository.findById(progressId).orElseThrow(() -> new CustomException(PROGRESS_NOT_FOUND));
-
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
 
         //세탁물 수거전 완료 불가
         if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
@@ -205,14 +194,8 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateLaundry(User user, String status, Long laundryId) {
+    public void updateLaundry(String status, Long laundryId) {
         Laundry laundry = laundryRepository.findById(laundryId).orElseThrow(() -> new CustomException(LAUNDRY_NOT_FOUND));
-
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
-
         laundry.update(LaundryStatus.valueOf(status));
     }
 
@@ -247,11 +230,6 @@ public class OrderService {
     @Transactional
     public void updateProgress(User user, String status, Long progressId) {
         Progress progress = progressRepository.findById(progressId).orElseThrow(() -> new CustomException(PROGRESS_NOT_FOUND));
-
-        //관리자권한 아니면 예외보내기
-        if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new CustomException(AUTHORIZATION_FAIL);
-        }
 
         if (String.valueOf(ProgressStatus.배송완료).equals(status)) {
             Order order = orderRepository.findByProgress(progress);
