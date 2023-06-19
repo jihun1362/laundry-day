@@ -30,7 +30,7 @@ public class WashingType extends TimeStamped {
     private String typeName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_Id", nullable = false)
+    @JoinColumn(name = "Admin_Id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "washingType", fetch = FetchType.LAZY)
