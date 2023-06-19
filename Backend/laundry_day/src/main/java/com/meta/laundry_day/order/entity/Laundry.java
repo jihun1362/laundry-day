@@ -46,7 +46,7 @@ public class Laundry extends TimeStamped {
     private LaundryStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_Id", nullable = false)
+    @JoinColumn(name = "Admin_Id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

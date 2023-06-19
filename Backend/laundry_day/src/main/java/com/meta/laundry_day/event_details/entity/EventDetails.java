@@ -48,7 +48,7 @@ public class EventDetails extends TimeStamped {
     private int status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_Id", nullable = false)
+    @JoinColumn(name = "Admin_Id", nullable = false)
     private User user;
 
     @Builder
