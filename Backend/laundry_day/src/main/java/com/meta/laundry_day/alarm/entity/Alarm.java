@@ -33,7 +33,7 @@ public class Alarm extends TimeStamped {
     private String content;
 
     @Column(nullable = false)
-    private int status = 1;
+    private int status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
@@ -45,5 +45,9 @@ public class Alarm extends TimeStamped {
         this.content = content;
         this.status = status;
         this.user = user;
+    }
+
+    public void check() {
+        this.status = 0;
     }
 }

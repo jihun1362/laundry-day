@@ -8,5 +8,6 @@ public enum ProgressStatus {
     세탁진행중,
     세탁완료,
     배송준비중,
+    배송진행중,
     배송완료
 }

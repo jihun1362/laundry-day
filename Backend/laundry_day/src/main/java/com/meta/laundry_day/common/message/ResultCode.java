@@ -55,6 +55,10 @@ public enum ResultCode {
     PAYMENT_LIST_REQUEST_SUCCESS("결제 내역을 조회하였습니다.", 200),
     POINT_LIST_REQUEST_SUCCESS("포인트 내역을 조회하였습니다.", 200),
 
+    //알람
+    ALARM_LIST_REQUEST_SUCCESS("알람 내역을 조회하였습니다.", 200),
+    ALARM_CHECK_SUCCESS("알람을 확인하였습니다.", 200),
+
     ;
     private final String msg;
     private final int statusCode;

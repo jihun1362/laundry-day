@@ -46,7 +46,10 @@ public class Order extends TimeStamped {
     private int status;
 
     @Column(nullable = false)
-    private int usePoint;
+    private int usePointCheck;
+
+    @Column(nullable = false)
+    private int paymentDone;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_Id", nullable = false)
@@ -60,19 +63,20 @@ public class Order extends TimeStamped {
     @JoinColumn(name = "Card_Id")
     private Card card;
 
-    @OneToOne(mappedBy = "order",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
     private PaymentDtails paymentDtails;
 
-    @OneToOne(mappedBy = "order",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
     private Progress progress;
 
     @Builder
-    public Order(LaundryType laundryType, String washingMethod, String address, String orderRequest, int status,int usePoint, User user, AddressDetails addressDetails, Card card) {
+    public Order(LaundryType laundryType, String washingMethod, String address, String orderRequest, int status, int usePointCheck, int paymentDone, User user, AddressDetails addressDetails, Card card) {
         this.laundryType = laundryType;
         this.washingMethod = washingMethod;
         this.address = address;
         this.status = status;
-        this.usePoint = usePoint;
+        this.usePointCheck = usePointCheck;
+        this.paymentDone = paymentDone;
         this.orderRequest = orderRequest;
         this.user = user;
         this.addressDetails = addressDetails;
@@ -89,5 +93,9 @@ public class Order extends TimeStamped {
 
     public void doneOrder() {
         this.status = 0;
+    }
+
+    public void setPaymentDone() {
+        this.paymentDone = 0;
     }
 }

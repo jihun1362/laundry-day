@@ -7,5 +7,5 @@ public class OrderRequestDto {
     private String laundryType;
     private String washingMethod;
     private String orderRequest;
-    private int usePoint;
+    private int usePointCheck;
 }
