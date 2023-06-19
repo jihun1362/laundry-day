@@ -65,10 +65,10 @@
         <div class="address-info">
           <h4>수거/배송 주소</h4>
           <div class="address-wrap">
-            <p class="user-address">경기도 성남시 분당구 동판교로 12, 345동 6789호</p>
-            <p>공동현관 비밀번호 : <span class="user-address-detail">123 열쇠 4567종</span></p>
+            <p class="user-address">경기도 성남시 동판교로 12 111동 2222호</p>
+            <p><span class="access-method">공동현관 비밀번호</span> : <span class="user-address-detail">1111호 열쇠 222 종</span></p>
           </div>
-          <a href="javascript:void(0)">수정</a>
+          <a href="javascript:void(0)" class="address-modify">수정</a>
         </div>
         <div class="service-selection">
           <h4>세탁서비스 선택하기</h4>
@@ -106,8 +106,9 @@
           <h4>결제수단</h4>
           <div class="payment-method-wrap">
             <div class="payment-card-container">
-              <div class="selected-payment-card">롯데카드</div>
-              <a href="javascript:void(0)">변경</a>
+              <div class="selected-payment-card"></div>
+              <span class="selected-payment-card-number"></span>
+              <a href="javascript:void(0)" class="payment-modify">변경</a>
             </div>
             <div class="payment-point-container">
               <span>포인트 우선 사용</span>
@@ -127,6 +128,85 @@
         </div>
         <button class="request-btn">수거 신청하기</button>
       </form>
+
+      <!-- Address Modal -->
+      <div class="address-modal-container">
+        <div class="address-modal">
+          <h3>배송지 설정</h3>
+          <form>
+            <div class="address-section">
+              <h4>배송지 주소</h4>
+              <label for="address-input">주소</label>
+              <input type="text" id="address-input" name="address" placeholder="주소 입력" required />
+              <label for="address-details-input">상세 주소</label>
+              <input type="text" id="address-details-input" name="address-details" placeholder="상세 주소 입력" required />
+              <a href="" class="address-search">주소 검색</a>
+            </div>
+            <div class="delivery-method-section">
+              <h4>출입방법</h4>
+              <p>새벽에도 출입 가능한 방법을 선택해주세요.</p>
+              <label>
+                <input type="radio" name="delivery-method" value="password" required />
+                공동현관 비밀번호
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="free-access" required />
+                자유출입 가능 (공동현관 없음)
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="security-call" required />
+                경비실 호출
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="unit-call" required />
+                세대 호출
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="other" required />
+                기타
+              </label>
+            </div>
+            <div class="additional-info-section">
+              <label for="detail-input">출입방법 상세설명</label>
+              <textarea id="detail-input" name="detail" maxlength="30" placeholder="30자 이내로 작성해 주세요."></textarea>
+            </div>       
+            <button type="submit" class="modal-actions">저장</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Payment Modal -->
+      <div class="payment-modal-container">
+        <div class="payment-modal">
+          <h3>결제수단 관리</h3>
+          <form>
+            <div class="payment-section">
+              <h4>등록된 카드 목록<span class="card-count">(2)</span></h4>
+              <p>대표카드로 결제 금액이 자동결제됩니다.</p>
+            </div>
+            <div class="card-list-section">
+              <ul class="card-list">
+                <li>
+                  <input type="radio" name="payment-method" id="card-1" value="card-1" checked>
+                  <label for="card-1">롯데카드</label>
+                  <span class="card-number">1234-5678-9012-3456</span>
+                </li>
+                <li>
+                  <input type="radio" name="payment-method" id="card-2" value="card-2">
+                  <label for="card-2">신한카드</label>
+                  <span class="card-number">9012-5678-1234-3456</span>
+                </li>
+              </ul>
+              <a href="javascript:void(0)" class="payment-add-card"><iconify-icon icon="ph:plus-circle-bold"></iconify-icon>결제수단 추가하기</a>
+            </div>
+            <div class="close-wrap">
+              <a href="javascript:void(0)" class="payment-modal-close-btn">
+                <span>Close<iconify-icon icon="heroicons:x-mark-solid"></iconify-icon></span>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
       
       <!-- FOOTER -->
       <app-footer></app-footer>
