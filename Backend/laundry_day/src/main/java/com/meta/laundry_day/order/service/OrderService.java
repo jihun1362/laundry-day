@@ -78,12 +78,15 @@ public class OrderService {
     private final AlarmRepository alarmRepository;
 
     @Transactional
-    public void createOrder(User user, OrderRequestDto requestDto, Long addressId, Long cardId) {
+    public void createOrder(User user, OrderRequestDto requestDto, Long cardId) {
         List<Order> orders = orderRepository.findAllByUser(user);
         for (Order o : orders) {
             if (o.getStatus() == 1) throw new CustomException(ORDER_ONLY_ONE_ERROR);
         }
-        AddressDetails address = addressDetailRepository.findById(addressId).orElseThrow(() -> new CustomException(ADDRESS_NOT_FOUND));
+
+        AddressDetails address = addressDetailRepository.findByUser(user);
+        if (address == null) throw new CustomException(ADDRESS_NOT_FOUND);
+
         Card card = cardRepository.findById(cardId).orElseThrow(() -> new CustomException(CARD_NOT_FOUND));
 
         Order order = orderMapper.toOrder(requestDto, user, address, card);
@@ -267,7 +270,8 @@ public class OrderService {
             case 배송완료:
                 createAlarm(user, AlarmType.DeliveryDone);
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 

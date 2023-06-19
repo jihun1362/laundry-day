@@ -15,9 +15,7 @@ public enum ResultCode {
 
     //주소
     ADDRESS_CREATE_SUCCESS("주소가 등록되었습니다.", 201),
-    ADDRESS_LIST_REQUEST_SUCCESS("주소 목록을 조회하였습니다.", 200),
-    ADDRESS_MODIFY_SUCCESS("주소를 수정하였습니다.", 200),
-    ADDRESS_DELETE_SUCCESS("주소를 삭제하였습니다.", 200),
+    ADDRESS_REQUEST_SUCCESS("주소를 조회하였습니다.", 200),
 
     //이벤트
     EVENT_CREATE_SUCCESS("이벤트가 등록되었습니다.", 201),
