@@ -47,11 +47,13 @@ submitBtn.addEventListener('click', function(e) {
     .then(res => res.json())
     .then(data => {
       if (data.data === 'DUPLICATE_EMAIL_ERROE' || data.data === 'DUPLICATE_PHONENUMBER_ERROE') {
-        // 중복된 이메일 오류 메시지 표시
         showAlert(`${data.msg}`);
-      } 
+      } else {
+        // 회원가입 성공 시, 회원가입 완료 페이지로 이동
+        window.location.href = 'signup-complete.html';
+      }
       console.log(data);  
-    })
+    })    
     .catch(error => {
       console.error('Signup API error:', error);
     });

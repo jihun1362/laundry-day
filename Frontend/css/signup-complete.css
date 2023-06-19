@@ -1,0 +1,87 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+#signup-complete {
+  background-color: #fff;
+}
+.icon-wrap {
+  width: 500px;
+  text-align: center;
+  margin: 140px auto 0;
+}
+.signup-complete-wrap {
+  width: 500px;
+  margin: 0 auto;
+}
+.signup-complete-wrap > .signup-complete-msg {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 30px;
+}
+.signup-complete-wrap > .welcome-msg {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin: 10px auto 30px;
+}
+
+.signup-complete-wrap > button {
+  position: relative;
+  left: 100px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  vertical-align: top;
+  border: none;
+  width: 300px;
+  height: 50px;
+  margin-bottom: 170px;
+  background-color: #000;
+  cursor: pointer;
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  .icon-wrap {
+    position: relative;
+    top: 120px;
+    margin: 102px auto 160px;
+  }
+  .signup-complete-wrap {
+    width: 500px;
+    margin: 0 auto;
+  }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  .icon-wrap {
+    position: relative;
+    top: 120px;
+    margin: 102px auto 160px;
+  }
+  .signup-complete-wrap {
+    width: 500px;
+    margin: 0 auto;
+  }
+}
