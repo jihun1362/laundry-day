@@ -6,8 +6,10 @@ import com.meta.laundry_day.security.util.UserDetailsImpl;
 import com.meta.laundry_day.stable_pricing.dto.StablePricingListResponseDto;
 import com.meta.laundry_day.stable_pricing.dto.StablePricingRequestDto;
 import com.meta.laundry_day.stable_pricing.service.StablePricingService;
+import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,7 @@ public class StablePricingController {
     private final StablePricingService stablePricingService;
 
     @PostMapping("/washingtype")
+    @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> createWashingType(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                      @RequestParam String typeName) {
         stablePricingService.createWashingType(userDetails.getUser(), typeName);
@@ -44,18 +47,18 @@ public class StablePricingController {
     }
 
     @PutMapping("/washingtype/{washingtypeId}")
-    public ResponseEntity<ResponseDto<ResultCode>> updateWashingType(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                     @RequestParam String typeName,
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseEntity<ResponseDto<ResultCode>> updateWashingType(@RequestParam String typeName,
                                                                      @PathVariable Long washingtypeId) {
-        stablePricingService.updateWashingType(userDetails.getUser(), typeName, washingtypeId);
+        stablePricingService.updateWashingType(typeName, washingtypeId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(WASHINFTYPE_MODIFY_SUCCESS, null));
     }
 
     @DeleteMapping("/washingtype/{washingtypeId}")
-    public ResponseEntity<ResponseDto<ResultCode>> deleteWashingType(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                     @PathVariable Long washingtypeId) {
-        stablePricingService.deleteWashingType(userDetails.getUser(), washingtypeId);
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseEntity<ResponseDto<ResultCode>> deleteWashingType(@PathVariable Long washingtypeId) {
+        stablePricingService.deleteWashingType(washingtypeId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(WASHINFTYPE_DELETE_SUCCESS, null));
     }
@@ -67,6 +70,7 @@ public class StablePricingController {
     }
 
     @PostMapping("/{washingtypeId}")
+    @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> createStablePricing(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                        @RequestBody StablePricingRequestDto responseDto,
                                                                        @PathVariable Long washingtypeId) {
@@ -76,18 +80,18 @@ public class StablePricingController {
     }
 
     @PutMapping("/{stablepriceId}")
-    public ResponseEntity<ResponseDto<ResultCode>> updateStablePricing(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                       @RequestBody StablePricingRequestDto responseDto,
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseEntity<ResponseDto<ResultCode>> updateStablePricing(@RequestBody StablePricingRequestDto responseDto,
                                                                        @PathVariable Long stablepriceId) {
-        stablePricingService.updateStablePricing(userDetails.getUser(), responseDto, stablepriceId);
+        stablePricingService.updateStablePricing(responseDto, stablepriceId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(STABLEPRICING_MODIFY_SUCCESS, null));
     }
 
     @DeleteMapping("/{stablepriceId}")
-    public ResponseEntity<ResponseDto<ResultCode>> deleteStablePricing(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                       @PathVariable Long stablepriceId) {
-        stablePricingService.deleteStablePricing(userDetails.getUser(), stablepriceId);
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseEntity<ResponseDto<ResultCode>> deleteStablePricing(@PathVariable Long stablepriceId) {
+        stablePricingService.deleteStablePricing(stablepriceId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(STABLEPRICING_DELETE_SUCCESS, null));
     }

@@ -4,6 +4,7 @@ import com.meta.laundry_day.common.dto.ResponseDto;
 import com.meta.laundry_day.common.message.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,17 +16,25 @@ import static com.meta.laundry_day.common.message.ErrorCode.INVALID_EMAIL_PATTER
 import static com.meta.laundry_day.common.message.ErrorCode.INVALID_NICKNAME_PATTERN;
 import static com.meta.laundry_day.common.message.ErrorCode.INVALID_PASSWORD_PATTERN_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.INVALID_PHONENUMBER_PATTERN;
+import static com.meta.laundry_day.common.message.ErrorCode.USER_AUTHORIZATION_FAIL_ERROR;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
 
     @ExceptionHandler({CustomException.class})
     public ResponseEntity<ResponseDto<ErrorCode>> handleCustomException(CustomException ex) {
         log.info(String.valueOf(ex.getErrorCode()));
         log.warn("CustomException occur: ", ex);
         return errorResponseEntity(ex.getErrorCode());
+    }
+
+    //접근 권한 예외처리
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ResponseDto<ErrorCode>> handleAccessDeniedException(AccessDeniedException ex) {
+        log.info(String.valueOf(USER_AUTHORIZATION_FAIL_ERROR));
+        log.warn("AccessDeniedException occur: ", ex);
+        return errorResponseEntity(USER_AUTHORIZATION_FAIL_ERROR);
     }
 
     //Validation 예외처리
