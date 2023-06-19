@@ -12,13 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.meta.laundry_day.common.message.ErrorCode.ADDRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ADMIN_SERVICE_ACCESS_BLOCK;
-import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_DELETE_FAIL;
-import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_UPDATE_FAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -27,53 +22,30 @@ public class AddressDetailsService {
     private final AddressMapper addressMapper;
 
     @Transactional
-    public void addressCreate(User user, AddressRequestDto addressRequestDto) {
+    public void updateAddress(User user, AddressRequestDto addressRequestDto) {
 
         //관리자는 관리만하게 접근 차단
         if (user.getRole().equals(UserRoleEnum.ADMIN)){
             throw new CustomException(ADMIN_SERVICE_ACCESS_BLOCK);
         }
 
-        AddressDetails addressDetails = addressMapper.toAddressDetails(addressRequestDto,user);
+        //주소 있는지 체크해서 없으면 생성 있으면 업뎃
+        AddressDetails address = addressDetailRepository.findByUser(user);
+        if (address != null){
+            address.update(addressRequestDto);
+            return;
+        }
 
+        AddressDetails addressDetails = addressMapper.toAddressDetails(addressRequestDto,user);
         addressDetailRepository.save(addressDetails);
     }
 
     @Transactional(readOnly = true)
-    public List<AddressResponseDto> addressList(User user) {
-        List<AddressDetails> addressDetailsList = addressDetailRepository.findAllByUser(user);
-        List<AddressResponseDto> addressResponseDtoList = new ArrayList<>();
-        for (AddressDetails p : addressDetailsList) {
-            addressResponseDtoList.add(addressMapper.toResponse(p));
+    public AddressResponseDto addressRequest(User user) {
+        AddressDetails address = addressDetailRepository.findByUser(user);
+        if (address == null){
+            throw new CustomException(ADDRESS_NOT_FOUND);
         }
-        return addressResponseDtoList;
-    }
-
-    @Transactional
-    public void updateAddress(User user, AddressRequestDto addressRequestDto, Long addressId) {
-        AddressDetails address = addressDetailRepository.findById(addressId).orElseThrow(()->new CustomException(ADDRESS_NOT_FOUND));
-
-        //권한체크
-        if (!address.getUser().getId().equals(user.getId())) {
-            throw new CustomException(AUTHORIZATION_UPDATE_FAIL);
-        }
-
-        address.update(
-                addressRequestDto.getAddress(),
-                addressRequestDto.getSignificant(),
-                addressRequestDto.getAccessMethod()
-        );
-    }
-
-    @Transactional
-    public void deleteAddress(User user, Long addressId) {
-        AddressDetails address = addressDetailRepository.findById(addressId).orElseThrow(()->new CustomException(ADDRESS_NOT_FOUND));
-
-        //권한체크
-        if (!address.getUser().getId().equals(user.getId())) {
-            throw new CustomException(AUTHORIZATION_DELETE_FAIL);
-        }
-
-        addressDetailRepository.deleteById(addressId);
+        return addressMapper.toResponse(address);
     }
 }

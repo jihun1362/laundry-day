@@ -42,12 +42,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/{addressId}/{cardId}")
+    @PostMapping("/{cardId}")
     public ResponseEntity<ResponseDto<ResultCode>> createOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                @RequestBody OrderRequestDto requestDto,
-                                                               @PathVariable Long addressId,
                                                                @PathVariable Long cardId) {
-        orderService.createOrder(userDetails.getUser(), requestDto, addressId, cardId);
+        orderService.createOrder(userDetails.getUser(), requestDto, cardId);
         return ResponseEntity.status(201)
                 .body(new ResponseDto<>(ORDER_CREATE_SUCCESS, null));
     }

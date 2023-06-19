@@ -1,5 +1,6 @@
 package com.meta.laundry_day.address_details.entity;
 
+import com.meta.laundry_day.address_details.dto.AddressRequestDto;
 import com.meta.laundry_day.common.TimeStamped;
 import com.meta.laundry_day.user.entity.User;
 import lombok.Builder;
@@ -44,9 +45,9 @@ public class AddressDetails extends TimeStamped {
         this.user = user;
     }
 
-    public void update(String address, String significant, String accessMethod) {
-        this.address = address;
-        this.significant = significant;
-        this.accessMethod = accessMethod;
+    public void update(AddressRequestDto addressRequestDto) {
+        this.address = addressRequestDto.getAddress();
+        this.significant = addressRequestDto.getSignificant();
+        this.accessMethod = addressRequestDto.getAccessMethod();
     }
 }

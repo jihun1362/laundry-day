@@ -41,7 +41,6 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.meta.laundry_day.common.message.ErrorCode.ADDRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_DELETE_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.CARD_INFORM_NOT_FOUNT_ERROR;
@@ -102,7 +101,7 @@ public class PaymentService {
 
     @Transactional
     public void deleteCard(User user, Long cardId) {
-        Card card = cardRepository.findById(cardId).orElseThrow(() -> new CustomException(ADDRESS_NOT_FOUND));
+        Card card = cardRepository.findById(cardId).orElseThrow(() -> new CustomException(CARD_NOT_FOUND));
 
         //권한체크
         if (!card.getUser().getId().equals(user.getId())) {
