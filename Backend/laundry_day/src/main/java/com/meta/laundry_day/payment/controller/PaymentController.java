@@ -69,14 +69,14 @@ public class PaymentController {
                 .body(new ResponseDto<>(REP_CARD_DESIGNATE_SUCCESS, null));
     }
 
-    @PostMapping("/payment")
+    @PostMapping("")
     public ResponseEntity<ResponseDto<ResultCode>> createPayment(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, InterruptedException, ParseException {
         paymentService.createPayment(userDetails.getUser());
         return ResponseEntity.status(201)
                 .body(new ResponseDto<>(PAYMENT_CREATE_SUCCESS, null));
     }
 
-    @GetMapping("/payment")
+    @GetMapping("")
     public ResponseEntity<ResponseDto<List<PaymentResponseDto>>> paymentDtailsList(@AuthenticationPrincipal UserDetailsImpl userDetails) throws ParseException {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(PAYMENT_LIST_REQUEST_SUCCESS, paymentService.paymentDtailsList(userDetails.getUser())));

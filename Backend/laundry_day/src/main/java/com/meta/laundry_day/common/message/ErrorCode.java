@@ -39,6 +39,7 @@ public enum ErrorCode {
     ORDER_NOT_FOUND("해당 주문을 찾을 수가 없습니다.", 404),
     PROGRESS_NOT_FOUND("해당 진행 상태을 찾을 수가 없습니다.", 404),
     LAUNDRY_NOT_FOUND("해당 세탁물을 찾을 수가 없습니다.", 404),
+    ALARM_NOT_FOUND("해당 알람을 찾을 수가 없습니다.", 404),
 
     //401 잘못된 권한 접근
     AUTHORIZATION_DELETE_FAIL("삭제 권한이 없습니다.", 401),

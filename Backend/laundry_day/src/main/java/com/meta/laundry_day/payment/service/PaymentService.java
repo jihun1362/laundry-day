@@ -1,5 +1,9 @@
 package com.meta.laundry_day.payment.service;
 
+import com.meta.laundry_day.alarm.entity.Alarm;
+import com.meta.laundry_day.alarm.entity.AlarmType;
+import com.meta.laundry_day.alarm.mapper.AlarmMapper;
+import com.meta.laundry_day.alarm.repository.AlarmRepository;
 import com.meta.laundry_day.common.exception.CustomException;
 import com.meta.laundry_day.order.dto.LaundryResponseDto;
 import com.meta.laundry_day.order.entity.Laundry;
@@ -59,6 +63,8 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final LaundryRepository laundryRepository;
     private final OrderMapper orderMapper;
+    private final AlarmMapper alarmMapper;
+    private final AlarmRepository alarmRepository;
 
     @Transactional
     public void createCard(User user, CardRequestDto requestDto) throws IOException, InterruptedException, ParseException {
@@ -137,21 +143,12 @@ public class PaymentService {
         }
     }
 
-    public Long deliveryFeeCheck(Long amount) {
-        if (amount >= 30000) {
-            return 0L;
-        } else if (amount >= 15000) {
-            return 3000L;
-        } else
-            return 5000L;
-    }
-
     @Transactional
     public void createPayment(User user) throws IOException, InterruptedException, ParseException {
         List<Order> orders = orderRepository.findAllByUser(user);
         Order order = null;
         for (Order o : orders) {
-            if (o.getStatus() == 1) order = o;
+            if (o.getPaymentDone() == 1) order = o;
         }
 
         if (order == null) {
@@ -166,7 +163,7 @@ public class PaymentService {
                 .uri(URI.create("https://api.tosspayments.com/v1/billing/" + card.getBillingKey()))
                 .header("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==")
                 .header("Content-Type", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString("{\"customerKey\":\"" + card.getCustomerKey() + "\",\"amount\":" + payment.getTotalAmount() + ",\"orderId\":\"" + "orderIdTestId1" + order.getId() + "\",\"orderName\":\"" + order.getWashingMethod() + " 세탁 주문" + "\",\"customerEmail\":\"" + user.getEmail() + "\",\"customerName\":\"" + user.getNickname() + "\",\"taxFreeAmount\":" + 0 + "}"))
+                .method("POST", HttpRequest.BodyPublishers.ofString("{\"customerKey\":\"" + card.getCustomerKey() + "\",\"amount\":" + payment.getTotalAmount() + ",\"orderId\":\"" + "orderIdT22" + order.getId() + "\",\"orderName\":\"" + order.getWashingMethod() + " 세탁 주문" + "\",\"customerEmail\":\"" + user.getEmail() + "\",\"customerName\":\"" + user.getNickname() + "\",\"taxFreeAmount\":" + 0 + "}"))
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -174,6 +171,7 @@ public class PaymentService {
 
         paymentDtailsRepository.save(paymentDtails);
         order.setPaymentDtails(paymentDtails);
+        order.setPaymentDone();
 
         User user1 = userRepository.findById(user.getId()).orElseThrow(() -> new CustomException(USER_NOT_FOUND_ERROR));
 
@@ -187,11 +185,14 @@ public class PaymentService {
         UserPoint saveAddPoint = paymentMapper.toAddPoint(user1, addPoint);
         pointRepository.save(saveAddPoint);
         user1.addPoint(addPoint);
+
+        Alarm alarm = alarmMapper.toAlarm(user, AlarmType.CompletePayment);
+        alarmRepository.save(alarm);
     }
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> paymentDtailsList(User user) throws ParseException {
-        List<Order> orders = orderRepository.findAllByUserAndStatus(user, 0);
+        List<Order> orders = orderRepository.findAllByUserAndPaymentDoneOrderByCreatedAtDesc(user, 0);
         List<PaymentResponseDto> paymentResponseDtos = new ArrayList<>();
         for (Order o : orders) {
             List<LaundryResponseDto> laundryResponseDtoList = new ArrayList<>();
@@ -212,5 +213,14 @@ public class PaymentService {
             pointResponseDtoList.add(paymentMapper.toResponse(p));
         }
         return pointResponseDtoList;
+    }
+
+    public Long deliveryFeeCheck(Long amount) {
+        if (amount >= 30000) {
+            return 0L;
+        } else if (amount >= 15000) {
+            return 3000L;
+        } else
+            return 5000L;
     }
 }

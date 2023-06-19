@@ -2,6 +2,10 @@ package com.meta.laundry_day.order.service;
 
 import com.meta.laundry_day.address_details.entity.AddressDetails;
 import com.meta.laundry_day.address_details.repository.AddressDetailRepository;
+import com.meta.laundry_day.alarm.entity.Alarm;
+import com.meta.laundry_day.alarm.entity.AlarmType;
+import com.meta.laundry_day.alarm.mapper.AlarmMapper;
+import com.meta.laundry_day.alarm.repository.AlarmRepository;
 import com.meta.laundry_day.common.config.S3Uploader;
 import com.meta.laundry_day.common.exception.CustomException;
 import com.meta.laundry_day.event_details.entity.EventDetails;
@@ -52,6 +56,7 @@ import static com.meta.laundry_day.common.message.ErrorCode.ORDER_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_ONLY_ONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.PROGRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.STABLEPRICING_NOT_FOUND;
+import static com.meta.laundry_day.order.entity.ProgressStatus.수거진행중;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +74,8 @@ public class OrderService {
     private final PaymentMapper paymentMapper;
     private final S3Uploader s3Uploader;
     private final PaymentService paymentService;
+    private final AlarmMapper alarmMapper;
+    private final AlarmRepository alarmRepository;
 
     @Transactional
     public void createOrder(User user, OrderRequestDto requestDto, Long addressId, Long cardId) {
@@ -85,6 +92,8 @@ public class OrderService {
         Progress progress = orderMapper.toProgress(order, user);
         progressRepository.save(progress);
         order.setProgress(progress);
+
+        createAlarm(user, AlarmType.OrderComplete);
     }
 
     @Transactional(readOnly = true)
@@ -110,7 +119,7 @@ public class OrderService {
         Progress progress = progressRepository.findByOrder(order);
 
         //세탁물 수거전 등록 불가
-        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)){
+        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
             throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
         }
 
@@ -141,7 +150,7 @@ public class OrderService {
         }
 
         //세탁물 수거전 완료 불가
-        if (!progress.getStatus().equals(ProgressStatus.수거완료)){
+        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
             throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
         }
 
@@ -151,6 +160,8 @@ public class OrderService {
         }
 
         progress.doneRegist();
+        progress.update(ProgressStatus.세탁진행중);
+        createAlarm(user, AlarmType.WashingStart);
 
         List<Laundry> laundrys = laundryRepository.findAllByProgress(progress);
 
@@ -171,17 +182,12 @@ public class OrderService {
 
         Double discountRate = 0.0;
 
-        if (event != null){
+        if (event != null) {
             discountRate = event.getDiscountRate();
         }
 
-        //0 나누기 예외 뜨는거 방지
-        if (discountRate == 0) {
-            discountRate = 1.0;
-        }
-
         Long pay = amount + deliveryFee;
-        Double discount = pay / discountRate;
+        Double discount = pay * discountRate * 0.01;
         double usePoint = 0;
 
         if (user.getPoint() - (pay - discount) >= 0) {
@@ -228,7 +234,7 @@ public class OrderService {
 
         Payment payment = paymentRepository.findByOrderId(order.getId());
 
-        if (progress.getStatus().equals(ProgressStatus.수거준비중)||progress.getStatus().equals(ProgressStatus.수거진행중)||progress.getStatus().equals(ProgressStatus.수거완료)) {
+        if (progress.getStatus().equals(ProgressStatus.수거준비중) || progress.getStatus().equals(수거진행중) || progress.getStatus().equals(ProgressStatus.수거완료) || progress.getStatus().equals(ProgressStatus.세탁준비중)) {
             return orderMapper.toResponse(progress, laundryResponseDtoList);
         }
 
@@ -250,6 +256,19 @@ public class OrderService {
         }
 
         progress.update(ProgressStatus.valueOf(status));
+
+        switch (ProgressStatus.valueOf(status)) {
+            case 수거진행중:
+                createAlarm(user, AlarmType.PickupStart);
+                break;
+            case 배송진행중:
+                createAlarm(user, AlarmType.DeliveryStart);
+                break;
+            case 배송완료:
+                createAlarm(user, AlarmType.DeliveryDone);
+                break;
+            default:break;
+        }
     }
 
     @Transactional
@@ -269,5 +288,10 @@ public class OrderService {
 
         progressRepository.delete(progress);
         orderRepository.delete(order);
+    }
+
+    private void createAlarm(User user, AlarmType alarmType) {
+        Alarm alarm = alarmMapper.toAlarm(user, alarmType);
+        alarmRepository.save(alarm);
     }
 }
