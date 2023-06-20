@@ -32,6 +32,8 @@ dependencies {
 	// 롬복
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	// 스프링 security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -56,11 +58,17 @@ dependencies {
 	//@Valid dependency 추가
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	//aws dependency 추가
+	//aws3 dependency 추가
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	//json파싱 dependency 추가
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+	//guava dependency 추가, 가독성 있는 코드를 작성하기 위한 많은 유틸 클래스를 제공
+	implementation 'com.google.guava:guava:31.1-jre'
+
+	//AOP dependency 추가
+	implementation 'org.springframework.boot:spring-boot-starter-aop:2.5.1'
 }
 
 tasks.named('test') {
