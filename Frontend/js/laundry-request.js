@@ -85,7 +85,7 @@ function saveAddressModal(e) {
 const deliveryMethodRadio = document.querySelectorAll('.delivery-method-section input[name="delivery-method"]');
 const accessMethod = document.querySelector('.access-method');
 const detailInput = document.getElementById('detail-input');
-const userAddressDetail = document.querySelector('.user-address-detail');
+const accessMethodDetail = document.querySelector('.access-method-detail'); 
 
 for (let i = 0; i < deliveryMethodRadio.length; i++) {
   deliveryMethodRadio[i].addEventListener('change', updateAccessMethod);
@@ -103,7 +103,7 @@ function updateAccessMethod() {
 detailInput.addEventListener('input', updateAddressDetail);
 
 function updateAddressDetail() {
-  userAddressDetail.textContent = detailInput.value;
+  accessMethodDetail.textContent = detailInput.value;
 }
 
 /**
