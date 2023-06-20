@@ -58,6 +58,16 @@ function setTokenCookie(token) {
   document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/`;
 }
 
+// 토큰 만료 시간을 확인하고 쿠키에서 토큰 삭제
+function removeTokenIfExpired() {
+  const token = getCookie('token');
+  const expirationDate = new Date(token);
+  
+  if (expirationDate && expirationDate < new Date()) {
+    document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+}
+
 // 경고 메시지 표시 함수
 function showAlert(message) {
   alert(message);
@@ -67,3 +77,6 @@ function showAlert(message) {
 function redirectToMainPage() {
   window.location.href = '/Frontend/index.html';
 }
+
+// 실행할 코드
+removeTokenIfExpired(); // 만료된 토큰이 있다면 쿠키에서 토큰 삭제
