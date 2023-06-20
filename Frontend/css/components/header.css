@@ -129,6 +129,11 @@ header > .header_bottom > nav.category > .menu_list.on > ul {
 header > .header_bottom > nav.category > .menu_list.on > ul > li {
   padding: 14px 0;
 }
+header > .header_bottom > nav.category > .menu_list.on > ul > li.util a.show-logout::before {
+  content: ' | ';
+  margin-left: 4px;
+  margin-right: 4px;
+}
 header > .header_bottom > nav.category > .menu_list.on > ul > :not(li.util) {
   position: relative;
 }
