@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0"/>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/login.css" />
+    <link rel="stylesheet" href="../css/signup-complete.css" />
     <link rel="stylesheet" href="../css/components/header.css" />
     <link rel="stylesheet" href="../css/components/footer.css" />
 
@@ -32,64 +32,52 @@
     <!-- lodash -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
+    <!-- Lord Icon -->
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+
     <!-- VUE -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
 
     <!-- JS -->
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
-    <script defer src="../js/login.js"></script>
-
   </head>
   <body>
-    <div id="login">
+    <div id="signup-complete">
       <!-- HEADER -->
       <app-header></app-header>
 
-      <form class="login-form">
-        <h3>LOGIN</h3>
-        <div class="id_input">
-          <label for="email">이메일 주소</label>
-          <input type="email" id="email" name="email" placeholder="이메일 주소" required>
-        </div>
-        <div class="pw_input">
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" name="password" placeholder="비밀번호" required>
-        </div>
-        <div class="login_check">
-          <span class="chkBoxId">
-            <input type="checkbox" id="chkSaveId" name="saveId">
-            <label for="chkSaveId">아이디 저장</label>
-          </span>
-          <ul>
-            <li><a href="">아이디 찾기</a></li>
-            <li><a href="">비밀번호 재설정</a></li>
-          </ul>
-        </div>
-        <div class="login_btn">
-          <button type="submit">로그인</button>
-          <a href="../views/signup.html" class="btn">회원가입</a>
-        </div>
-        <div class="login_sns">
-          <h3>SNS 계정으로 로그인</h3>
-          <div class="sns_wrap">
-            <a href="javascript:void(0)" class="naver">네이버 계정으로 로그인</a>
-            <a href="" class="kakao">카카오 계정으로 로그인</a>
-            <a href="javascript:void(0)" class="apple">애플 계정으로 로그인</a>
-          </div>  
-        </div>
-      </form>
-
+      <div class="icon-wrap">
+        <lord-icon
+          src="https://cdn.lordicon.com/xxdqfhbi.json"
+          trigger="loop"
+          delay="500"
+          colors="primary:#121331,secondary:#ffc738,tertiary:#4bb3fd"
+          style="width:200px;height:200px">
+        </lord-icon>
+      </div>
+      <div class="signup-complete-wrap">
+        <p class="signup-complete-msg">회원가입이 완료되었습니다.</p>
+        <p class="welcome-msg">WELCOME TO LAUNDRY DAY!</p>
+        <button>로그인</button>
+      </div>
+     
       <!-- FOOTER -->
       <app-footer></app-footer>
     </div>
     <script>
       new Vue({
-        el: '#login',
+        el: '#signup-complete',
         components: {
           'app-header': Vue.component('app-header'),
           'app-footer': Vue.component('app-footer')
         }
+      });
+
+      const loginButton = document.querySelector('button');
+
+      loginButton.addEventListener('click', function() {
+        window.location.href = './login.html';
       });
     </script>
   </body>

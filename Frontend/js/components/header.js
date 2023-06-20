@@ -1,3 +1,9 @@
+// 로그인 시 토큰을 쿠키에서 가져오는 함수
+function getCookie(name) {
+  const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return cookieValue ? cookieValue.pop() : '';
+}
+
 Vue.component('app-header', {
   template: `
   <header>
@@ -25,7 +31,12 @@ Vue.component('app-header', {
             <li class="util">
               <ul>
                 <li><iconify-icon icon="material-symbols:help-outline"></iconify-icon><a href="#">공지사항</a> | <a href="#">자주 찾는 질문</a></li>
-                <li><iconify-icon icon="mdi:account"></iconify-icon><a href="/Frontend/views/login.html">로그인</a></li>
+                <li>
+                  <iconify-icon icon="mdi:account"></iconify-icon>
+                  <a v-if="isLoggedIn" href="/Frontend/views/mypage.html">내 계정</a>
+                  <a v-else href="/Frontend/views/login.html">로그인</a>
+                  <a v-if="isLoggedIn" href="javascript:void(0)" class="show-logout" @click="logout">로그아웃</a>
+                </li>
               </ul>
             </li>
           </ul>
@@ -36,7 +47,10 @@ Vue.component('app-header', {
       </nav>
       <nav class="util">
         <ul>
-          <li class="user"><a href="/Frontend/views/login.html">계정<iconify-icon icon="mdi:account"></iconify-icon></a></li>
+          <li class="user">
+            <a v-if="isLoggedIn" href="/Frontend/views/mypage.html">마이페이지<iconify-icon icon="mdi:account"></iconify-icon></a>
+            <a v-else href="/Frontend/views/login.html">계정<iconify-icon icon="mdi:account"></iconify-icon></a>
+          </li>
           <li class="bell"><a href="#">알림<iconify-icon icon="ph:bell-bold"></iconify-icon></a></li>
           <li class="list"><a href="/Frontend/views/order-status.html">이용내역<iconify-icon icon="ci:shopping-bag-02"></iconify-icon></a></li>
           <li class="help"><a href="#">고객지원<iconify-icon icon="material-symbols:help-outline"></iconify-icon></a></li>
@@ -66,7 +80,8 @@ Vue.component('app-header', {
   data() {
     return {
       isMenuVisible: false,
-      isModalVisible: false
+      isModalVisible: false,
+      isLoggedIn: false
     };
   },
   methods: {
@@ -113,6 +128,12 @@ Vue.component('app-header', {
         }
       }
       return true; // 모달을 표시해야 함
+    },
+    logout() {
+      // 쿠키에서 토큰 제거
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      // 로그아웃 후 리다이렉트 또는 필요한 동작 수행
+      window.location.href = '/Frontend/views/login.html'; // 로그인 페이지로 리다이렉트
     }
   },
   mounted() {
@@ -120,6 +141,11 @@ Vue.component('app-header', {
     // URL에 "laundry-request.html"이 포함되어 있는 경우 모달을 표시
     if (window.location.href.includes('laundry-request.html') && this.shouldShowModal()) {
       this.isModalVisible = true;
+    }
+    // 쿠키에서 토큰 확인하여 로그인 상태 업데이트
+    const token = getCookie('token');
+    if (token) {
+      this.isLoggedIn = true;
     }
   },
   beforeUnmount() {

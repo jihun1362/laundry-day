@@ -11,7 +11,14 @@ const termsCheckbox = document.querySelector('#terms');
 submitBtn.addEventListener('click', function(e) {
   e.preventDefault();
 
-  if (!validateEmail() || !validatePassword() || !validatePwConfirmation() || !validateName() || !validatePhone() || !validateTerms()) {
+  const isValidEmail = validateEmail();
+  const isValidPassword = validatePassword();
+  const isValidPwConfirmation = validatePwConfirmation();
+  const isValidName = validateName();
+  const isValidPhone = validatePhone();
+  const isValidTerms = validateTerms();
+
+  if (!isValidEmail || !isValidPassword || !isValidPwConfirmation || !isValidName || !isValidPhone || !isValidTerms) {
     showAlert('입력값이 올바르지 않습니다.');
     return;
   }
@@ -21,13 +28,35 @@ submitBtn.addEventListener('click', function(e) {
   // 회원가입 처리 로직
   const formData = {
     email: emailInput.value,
-    password: hashPassword(pwInput.value), // 비밀번호 암호화하여 전송
-    name: nameInput.value,
-    phone: phoneInput.value
+    // password: hashPassword(pwInput.value), // 비밀번호 암호화하여 전송
+    password: pwInput.value,
+    nickname: nameInput.value,
+    phoneNumber: phoneInput.value
   };
 
-  // 폼 데이터 전송
-  sendFormData(formData);
+  // 폼 데이터 JSON으로 변환
+  const jsonData = JSON.stringify(formData);
+
+  fetch('http://3.35.18.15:8080/api/users/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: jsonData
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.data === 'DUPLICATE_EMAIL_ERROE' || data.data === 'DUPLICATE_PHONENUMBER_ERROE') {
+        showAlert(`${data.msg}`);
+      } else {
+        // 회원가입 성공 시, 회원가입 완료 페이지로 이동
+        window.location.href = 'signup-complete.html';
+      }
+      console.log(data);  
+    })    
+    .catch(error => {
+      console.error('Signup API error:', error);
+    });
 });
 
 function showAlert(message) {
@@ -156,15 +185,6 @@ function validatePhone() {
 }
 
 /**
- * 비밀번호 해시화 함수
- */
-function hashPassword(password) {
-  // CryptoJS 라이브러리를 사용하여 SHA-256 단방향 해시 함수를 적용
-  const hashedPassword = CryptoJS.SHA256(password).toString();
-  return hashedPassword;
-}
-
-/**
  * 약관 동의
  */
 function validateTerms() {
@@ -181,3 +201,39 @@ function validateTerms() {
   termValidationMsg.classList.remove('show');
   return true;
 }
+
+// 입력 필드 값이 변경될 때 에러 메시지 제거
+emailInput.addEventListener('input', () => {
+  emailInput.classList.remove('on');
+  document.querySelector('.email-validation').classList.remove('show');
+});
+
+pwInput.addEventListener('input', () => {
+  pwInput.classList.remove('on');
+  document.querySelector('.pw-validation').classList.remove('show');
+  document.querySelector('.pw-validation.error-pw-msg').classList.remove('show');
+});
+
+pwConfirm.addEventListener('input', () => {
+  pwConfirm.classList.remove('on');
+  document.querySelector('.pw-match').classList.remove('show');
+});
+
+nameInput.addEventListener('input', () => {
+  nameInput.classList.remove('on');
+  document.querySelector('.name-validation').classList.remove('show');
+});
+
+phoneInput.addEventListener('input', () => {
+  phoneInput.classList.remove('on');
+  document.querySelector('.phone_input .error-msg').classList.remove('show');
+  document.querySelector('.phone_input .error-phone-msg').classList.remove('show');
+});
+
+termCheckbox.addEventListener('input', () => {
+  document.querySelector('.term-validation').classList.remove('show');
+});
+
+termsCheckbox.addEventListener('input', () => {
+  document.querySelector('.term-validation').classList.remove('show');
+});
