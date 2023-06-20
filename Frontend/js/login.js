@@ -4,7 +4,7 @@ loginBtn.addEventListener('click', login);
 
 function login(e) {
   e.preventDefault();
-  
+
   // 사용자 입력 데이터 가져오기
   const email = document.querySelector('#email').value;
   const pw = document.querySelector('#password').value;
@@ -29,24 +29,25 @@ function login(e) {
     },
     body: JSON.stringify(formData)
   })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => {
+      const authorizationHeader = res.headers.get('Authorization');
+      const token = authorizationHeader.split(' ')[1]; // 'Bearer {토큰값}'에서 토큰값만 추출
+      return res.json().then(data => ({ token, data }));
+    })
+    .then(({ token, data }) => {
       if (data.statusCode === 200) {
-        const token = data.Authorization;
-
         // 로그인 성공
         showAlert('로그인되었습니다.');
         setTokenCookie(token); // 토큰을 쿠키에 저장
         redirectToMainPage(); // 메인 페이지로 이동
-
       } else {
         showAlert(data.msg);
       }
-      console.log(data);  
     })
     .catch(error => {
       console.error('로그인 API 오류:', error);
     });
+
 }
 
 // 로그인 시 토큰을 쿠키에 저장
