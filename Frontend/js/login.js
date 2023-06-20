@@ -53,7 +53,7 @@ function login(e) {
 // 로그인 시 토큰을 쿠키에 저장
 function setTokenCookie(token) {
   const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 7);
+  expirationDate.setTime(expirationDate.getTime() + (1 * 60 * 60 * 1000)); // 1시간(60분 * 60초 * 1000밀리초)
 
   document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/`;
 }
