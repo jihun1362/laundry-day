@@ -13,6 +13,7 @@ public class AddressMapper {
                 .addressDtailsId(addressDetails.getId())
                 .userId(addressDetails.getUser().getId())
                 .address(addressDetails.getAddress())
+                .addressDetail(addressDetails.getAddressDetail())
                 .accessMethod(addressDetails.getAccessMethod())
                 .significant(addressDetails.getSignificant())
                 .createAt(String.valueOf(addressDetails.getCreatedAt()))
@@ -22,6 +23,7 @@ public class AddressMapper {
     public AddressDetails toAddressDetails(AddressRequestDto addressRequestDto, User user) {
         return AddressDetails.builder()
                 .address(addressRequestDto.getAddress())
+                .addressDetail(addressRequestDto.getAddressDetail())
                 .accessMethod(addressRequestDto.getAccessMethod())
                 .significant(addressRequestDto.getSignificant())
                 .user(user)

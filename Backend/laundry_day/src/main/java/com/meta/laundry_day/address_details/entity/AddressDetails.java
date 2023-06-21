@@ -27,6 +27,9 @@ public class AddressDetails extends TimeStamped {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    private String addressDetail;
+
     @Column
     private String significant;
 
@@ -38,8 +41,9 @@ public class AddressDetails extends TimeStamped {
     private User user;
 
     @Builder
-    public AddressDetails(String address, String significant, String accessMethod, User user) {
+    public AddressDetails(String address, String addressDetail, String significant, String accessMethod, User user) {
         this.address = address;
+        this.addressDetail = addressDetail;
         this.significant = significant;
         this.accessMethod = accessMethod;
         this.user = user;
@@ -47,6 +51,7 @@ public class AddressDetails extends TimeStamped {
 
     public void update(AddressRequestDto addressRequestDto) {
         this.address = addressRequestDto.getAddress();
+        this.addressDetail = addressRequestDto.getAddressDetail();
         this.significant = addressRequestDto.getSignificant();
         this.accessMethod = addressRequestDto.getAccessMethod();
     }

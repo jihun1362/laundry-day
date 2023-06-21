@@ -91,18 +91,18 @@ public class LogControllerAndService {
 
         String param = "";
 
-        try {
-            logelk.setParameter(mapper.writeValueAsString(argNames));
-        } catch (Exception e1) {
-            for (Object a : argNames) {
-                try {
-                    param += mapper.writeValueAsString(a);
-                } catch (Exception e2) {
-                    param += mapper.writeValueAsString(String.valueOf(a));
-                }
-            }
-            logelk.setParameter(mapper.writeValueAsString(param));
-        }
+//        try {
+//            logelk.setParameter(mapper.writeValueAsString(argNames));
+//        } catch (Exception e1) {
+//            for (Object a : argNames) {
+//                try {
+//                    param += mapper.writeValueAsString(a);
+//                } catch (Exception e2) {
+//                    param += mapper.writeValueAsString(String.valueOf(a));
+//                }
+//            }
+//            logelk.setParameter(mapper.writeValueAsString(param));
+//        }
         log.info("{}", mapper.writeValueAsString(logelk));
     }
 
@@ -119,7 +119,7 @@ public class LogControllerAndService {
         logelk.setClientUrl(clientUrl);
         logelk.setCallFunction(callFunction);
         logelk.setType("SERVICE_RES");
-        logelk.setParameter(mapper.writeValueAsString(String.valueOf(retVal)));
+        logelk.setParameter(mapper.writeValueAsString(retVal));
         log.info("{}", mapper.writeValueAsString(logelk));
     }
 
