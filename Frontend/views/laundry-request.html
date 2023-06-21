@@ -38,7 +38,7 @@
     <!-- JS -->
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
-    <script defer src="../js/laundry-request.js"></script>
+    <script defer type="module" src="../js/laundry-request.js"></script>
   </head>
   <body>
     <div id="laundry-request">
@@ -65,8 +65,9 @@
         <div class="address-info">
           <h4>수거/배송 주소</h4>
           <div class="address-wrap">
-            <p class="user-address">경기도 성남시 동판교로 12 111동 2222호</p>
-            <p><span class="access-method">공동현관 비밀번호</span> : <span class="user-address-detail">1111호 열쇠 222 종</span></p>
+            <p class="user-address"></p>
+            <span class="user-address-detail"></span>
+            <p><span class="access-method"></span><span class="access-method-detail"></span></p>
           </div>
           <a href="javascript:void(0)" class="address-modify">수정</a>
         </div>
@@ -140,7 +141,6 @@
               <input type="text" id="address-input" name="address" placeholder="주소 입력" required />
               <label for="address-details-input">상세 주소</label>
               <input type="text" id="address-details-input" name="address-details" placeholder="상세 주소 입력" required />
-              <a href="" class="address-search">주소 검색</a>
             </div>
             <div class="delivery-method-section">
               <h4>출입방법</h4>

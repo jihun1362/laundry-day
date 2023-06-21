@@ -1,3 +1,120 @@
+import { getAddress, saveAddress } from './api/laundry-request-api.js';
+
+/**
+ * 페이지 로드 시 주소 조회
+ */
+window.addEventListener('load', async () => {
+  try {
+    const addressData = await getAddress();
+    if (addressData && addressData.data) {
+      userAddress.textContent = addressData.data.address;
+      userAddressDetail.textContent = addressData.data.addressDetail;
+      accessMethod.textContent = addressData.data.accessMethod;
+      accessMethodDetail.textContent = addressData.data.significant;
+    } else {
+      // 가져온 주소 데이터가 없을 때
+      userAddress.textContent = '등록된 주소가 없음';
+    }
+  } catch (error) {
+    console.error('주소 조회에 실패했습니다:', error);
+    userAddress.textContent = '등록된 주소가 없음';
+  }
+});
+
+
+/**
+ * 주소 등록 (모달)
+ */
+const addressBtn = document.querySelector('.address-modify'); // 수정 버튼
+const addressModalContainer = document.querySelector('.address-modal-container'); // 주소 모달
+const addressModalSaveBtn = document.querySelector('.modal-actions'); // 주소 저장 버튼
+
+const userAddress = document.querySelector('.user-address'); // 주소 조회
+const addressInput = document.getElementById('address-input'); // 주소 입력
+const userAddressDetail = document.querySelector('.user-address-detail'); // 상세주소 조회
+const addressDetailsInput = document.getElementById('address-details-input'); // 상세주소 입력
+
+const deliveryMethodRadio = document.querySelectorAll('.delivery-method-section input[name="delivery-method"]'); // 출입방법
+const accessMethod = document.querySelector('.access-method'); // 출입방법 조회
+const detailInput = document.getElementById('detail-input');  // 출입방법 상세설명 입력
+const accessMethodDetail = document.querySelector('.access-method-detail'); // 출입방법 상세설명 조회
+
+addressBtn.addEventListener('click', openAddressModal);
+addressModalSaveBtn.addEventListener('click', saveAddressModal);
+
+// 수정 버튼 클릭하면 주소 모달 open
+function openAddressModal() {
+  // 이전에 입력한 값으로 필드 설정
+  const previousAddress = userAddress.textContent;
+  const previousAddressDetail = userAddressDetail.textContent;
+  
+  // 이전에 저장한 주소가 '등록된 주소가 없음'이라면 필드를 비워준다
+  if (previousAddress === '등록된 주소가 없음') {
+    addressInput.value = '';
+    addressDetailsInput.value = '';
+  } else {
+    addressInput.value = previousAddress;
+    addressDetailsInput.value = previousAddressDetail;
+  }
+  
+  // 이전에 선택한 출입 방법 체크
+  const previousAccessMethod = accessMethod.textContent;
+  for (let i = 0; i < deliveryMethodRadio.length; i++) {
+    if (deliveryMethodRadio[i].nextSibling.textContent === previousAccessMethod) {
+      deliveryMethodRadio[i].checked = true;
+      break;
+    }
+  }
+
+  detailInput.value = accessMethodDetail.textContent; // 이전에 입력한 상세설명
+
+  addressModalContainer.style.display = 'block';
+}
+
+// 출입방법 선택
+for (let i = 0; i < deliveryMethodRadio.length; i++) {
+  deliveryMethodRadio[i].addEventListener('change', function() {
+    accessMethod.textContent = this.nextSibling.textContent;
+  });
+}
+
+// 출입방법 상세설명 입력
+detailInput.addEventListener('input', function() {
+  accessMethodDetail.textContent = this.value;
+});
+
+// 주소 저장
+async function saveAddressModal(e) {
+  e.preventDefault();
+
+  // 주소 및 출입 방법, 상세설명 업데이트
+  const address = addressInput.value;
+  const addressDetail = addressDetailsInput.value;
+  const selectedAccessMethod = accessMethod.textContent;
+  const detailDescription = detailInput.value;
+
+  userAddress.textContent = address;
+  userAddressDetail.textContent = addressDetail
+
+  const addressData = {
+    address: address,
+    addressDetail: addressDetail,
+    accessMethod: selectedAccessMethod,
+    significant: detailDescription
+  };
+
+  try {
+    // 주소 저장 API 호출
+    const responseData = await saveAddress(addressData);
+    console.log('주소가 성공적으로 저장되었습니다.', responseData);
+  } catch (error) {
+    console.error('주소 저장에 실패했습니다:', error);
+  }
+
+  // 모달 닫기
+  addressModalContainer.style.display = 'none';
+}
+
 // 아코디언 메뉴
 const accordionHeaders = document.querySelectorAll('.accordion-header');
 accordionHeaders.forEach((header, i) => {
@@ -56,55 +173,6 @@ toggleBnts.forEach(button => {
 // 예시로 1000점을 가정
 pointAmount.textContent = '1000';
 
-/**
- * 주소 등록 (모달)
- */
-const addressBtn = document.querySelector('.address-modify');
-const addressModalContainer = document.querySelector('.address-modal-container');
-const addressModalSaveBtn = document.querySelector('.modal-actions');
-const userAddress = document.querySelector('.user-address');
-
-addressBtn.addEventListener('click', openAddressModal);
-addressModalSaveBtn.addEventListener('click', saveAddressModal);
-
-function openAddressModal() {
-  addressModalContainer.style.display = 'block';
-}
-
-function saveAddressModal(e) {
-  e.preventDefault();
-
-  const addressInput = document.getElementById('address-input');
-  const addressDetailsInput = document.getElementById('address-details-input');
-
-  userAddress.textContent = `${addressInput.value} ${addressDetailsInput.value}`;
-
-  addressModalContainer.style.display = 'none';
-}
-
-const deliveryMethodRadio = document.querySelectorAll('.delivery-method-section input[name="delivery-method"]');
-const accessMethod = document.querySelector('.access-method');
-const detailInput = document.getElementById('detail-input');
-const userAddressDetail = document.querySelector('.user-address-detail');
-
-for (let i = 0; i < deliveryMethodRadio.length; i++) {
-  deliveryMethodRadio[i].addEventListener('change', updateAccessMethod);
-}
-
-function updateAccessMethod() {
-  for (let i = 0; i < deliveryMethodRadio.length; i++) {
-    if (deliveryMethodRadio[i].checked) {
-      accessMethod.textContent = deliveryMethodRadio[i].nextSibling.textContent;
-      break;
-    }
-  }
-}
-
-detailInput.addEventListener('input', updateAddressDetail);
-
-function updateAddressDetail() {
-  userAddressDetail.textContent = detailInput.value;
-}
 
 /**
  * 결제수단 (모달)

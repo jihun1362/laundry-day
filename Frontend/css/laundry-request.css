@@ -89,6 +89,11 @@ a {text-decoration: none;}
   padding: 20px;
 }
 .request-form > .address-info > .address-wrap > .user-address {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+}
+.request-form > .address-info > .address-wrap > .user-address-detail {
   font-size: 16px;
   font-weight: 500;
 }
@@ -147,14 +152,6 @@ a {text-decoration: none;}
 }
 .address-section > #address-details-input {
   top: 75px;
-}
-.address-section > .address-search {
-  text-decoration: underline;
-  font-size: 13px;
-  color: #0d6bbd;
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 .delivery-method-section {
   position: relative;
