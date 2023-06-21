@@ -9,6 +9,7 @@ public class AddressResponseDto {
     private Long addressDtailsId;
     private Long userId;
     private String address;
+    private String addressDetail;
     private String accessMethod;
     private String significant;
     private String createAt;

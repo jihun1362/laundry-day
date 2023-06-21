@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class AddressRequestDto {
     private String address;
+    private String addressDetail;
     private String accessMethod;
     private String significant;
 }
