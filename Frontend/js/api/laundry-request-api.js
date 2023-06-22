@@ -12,7 +12,6 @@ for (let i = 0; i < cookies.length; i++) {
   }
 }
 
-
 /**
  * 주소 조회
  */
@@ -70,3 +69,59 @@ export async function saveAddress(addressData) {
   }
 }
 
+/**
+ * 카드 등록
+ */
+export async function registerCard(cardData) {
+  try {
+    // POST 요청
+    const res = await fetch('http://3.35.18.15:8080/api/payment/card', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`,
+      },
+      body: JSON.stringify(cardData)
+    });
+
+    // 응답이 정상적이지 않을 경우
+    if (!res.ok) {
+      throw new Error('네트워크 응답이 정상적이지 않습니다.');
+    }
+
+    // 응답 데이터를 JSON 형식으로 파싱
+    const responseData = await res.json();
+    return responseData;
+  } catch (error) {
+    console.error('카드 등록에 실패했습니다:', error);
+    throw error;
+  }
+}
+
+/**
+ * 카드 조회
+ */
+export async function getCard() {
+  try {
+    // GET 요청
+    const res = await fetch('http://3.35.18.15:8080/api/payment/card', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    // 응답이 정상적이지 않을 경우
+    if (!res.ok) {
+      throw new Error('네트워크 응답이 정상적이지 않습니다.');
+    }
+
+    // 응답 데이터를 JSON 형식으로 파싱
+    const cardData = await res.json();
+    return cardData;
+  } catch (error) {
+    console.error('Fetch 작업에 문제가 발생했습니다:', error);
+    throw error;
+  }
+}

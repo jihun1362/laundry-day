@@ -1,4 +1,4 @@
-import { getAddress, saveAddress } from './api/laundry-request-api.js';
+import { getAddress, saveAddress, registerCard, getCard } from './api/laundry-request-api.js';
 
 /**
  * 페이지 로드 시 주소 조회
@@ -18,6 +18,33 @@ window.addEventListener('load', async () => {
   } catch (error) {
     console.error('주소 조회에 실패했습니다:', error);
     userAddress.textContent = '등록된 주소가 없음';
+  }
+
+  /**
+   * 페이지 로드 시 주소 등록
+   */
+  try {
+    // 세션 스토리지에서 customerKey와 authKey 값을 가져오기
+    var customerKey = sessionStorage.getItem('customerKey');
+    var authKey = sessionStorage.getItem('authKey');
+
+    // customerKey와 authKey 값이 존재하는 경우, 카드 등록을 실행
+    if (customerKey && authKey) {
+      const cardData = {
+        customerKey: customerKey,
+        authKey: authKey,
+      };
+
+      // 카드 등록 API 호출
+      const registerResponse = await registerCard(cardData);
+      console.log('카드 등록이 성공적으로 저장되었습니다.', registerResponse);
+
+      // 성공적으로 카드를 등록했으면 세션 스토리지에서 customerKey, authKey 제거
+      sessionStorage.removeItem('customerKey');
+      sessionStorage.removeItem('authKey');
+    }
+  } catch (error) {
+    console.error('카드 등록 중 오류가 발생했습니다.:', error);
   }
 });
 
@@ -94,7 +121,7 @@ async function saveAddressModal(e) {
   const detailDescription = detailInput.value;
 
   userAddress.textContent = address;
-  userAddressDetail.textContent = addressDetail
+  userAddressDetail.textContent = addressDetail;
 
   const addressData = {
     address: address,
@@ -149,7 +176,6 @@ function textCounter() {
   counterSpan.textContent = inputText.value.length;
 }
 
-// 결제수단
 const toggleBnts = document.querySelectorAll('.point-toggle-button');
 const pointAmount = document.querySelector('.point-amount');
 
@@ -175,55 +201,133 @@ pointAmount.textContent = '1000';
 
 
 /**
- * 결제수단 (모달)
+ * 결제수단
  */
-const paymentBtn = document.querySelector('.payment-modify');
-const paymentModalContainer = document.querySelector('.payment-modal-container');
-const paymentModalCloseBtn = document.querySelector('.payment-modal-close-btn');
+
+// 자동결제할 카드등록
+var clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
+var tossPayments = TossPayments(clientKey)
+
+// 결제수단 모달에서 결제수단 추가하기 버튼 누르면
+const paymentAddCardBtn = document.querySelector('.payment-add-card');
+paymentAddCardBtn.addEventListener('click', openTossPayments);
+
+// 카드 빌링키 발급 요청
+async function openTossPayments() {
+  tossPayments.requestBillingAuth('카드', { // 결제수단 파라미터
+    // 빌링키 발급 요청을 위한 파라미터
+    customerKey: 'YPGHfJkq0OE4gitafS83',
+    successUrl: 'http://localhost:5500/Frontend/views/payment-success.html', // 결제 성공 페이지 URL
+    failUrl: 'http://localhost:5500/Frontend/views/payment-failure.html', // 결제 실패 페이지 URL
+  })
+  .catch(function (error) {
+    if (error.code === 'USER_CANCEL') {
+      // 결제 고객이 결제창을 닫았을 때 에러 처리
+    } else if (error.code === 'INVALID_CARD_COMPANY') {
+      // 유효하지 않은 카드 코드에 대한 에러 처리
+    }
+  });
+}
+
+// 결제수단 (모달)
+const paymentBtn = document.querySelector('.payment-modify'); // 결제수단 변경 버튼
+const paymentModalContainer = document.querySelector('.payment-modal-container'); // 결제수단 모달
+const paymentModalCloseBtn = document.querySelector('.payment-modal-close-btn'); // 결제수단 모달 닫기 버튼
 
 paymentBtn.addEventListener('click', openPaymentModal);
 paymentModalCloseBtn.addEventListener('click', hidePaymentModal);
 
-function openPaymentModal() {
-  paymentModalContainer.style.display = 'block';
+async function openPaymentModal() {
+  paymentModalContainer.style.display = 'block'; // 결제수단 모달 열기
+
+  try {
+    // 카드 조회 API 호출
+    const cardInfoData = await getCard();
+    console.log('카드 정보를 불러왔습니다:', cardInfoData);
+
+    if (cardInfoData && cardInfoData.data) {
+      renderCardList(cardInfoData.data);
+    }
+  } catch (error) {
+    console.error('카드 조회 중 오류가 발생했습니다:', error);
+  }
 }
 
 function hidePaymentModal() {
-  paymentModalContainer.style.display = 'none';
-  updateSelectedPaymentCard(); // 모달 닫을 때 라벨 업데이트
+  paymentModalContainer.style.display = 'none'; // 결제수단 모달 닫기
+  updateSelectedPaymentCard(); // 결제수단 모달 닫을 때 선택된 카드를 업데이트
 }
 
-// 모달에서 선택된 radio 버튼에 배경색 스타일 적용
-const radioButtons = document.querySelectorAll('.card-list-section > .card-list > li > input[type="radio"]');
-const allLiElements = document.querySelectorAll('.card-list-section > .card-list > li');
+// 등록된 카드 조회 목록 렌더링
+function renderCardList(cards) {
+  const myCards = cards;
+  const countCard = document.querySelector('.payment-section h4');
+  const cardList = document.querySelector('.card-list');
 
-radioButtons.forEach(function(radioButton) {
-  radioButton.addEventListener('change', function() {
-    allLiElements.forEach(function(liElement) {
-      const liRadioButton = liElement.querySelector('input[type="radio"]');
-      if (liRadioButton !== radioButton) {
-        liElement.style.backgroundColor = '#fff';
-        liRadioButton.checked = false;
-      }
+  // 기존에 렌더링된 카드 정보 삭제
+  while (cardList.firstChild) {
+    cardList.firstChild.remove();
+  }
+  let cardListNumber = countCardList(myCards);
+  countCard.textContent = `등록된 카드 목록 (${cardListNumber})`;
+
+  for (let card of myCards) {
+    let cardNumber = formatCardNumber(card.cardNumber);
+    cardList.insertAdjacentHTML('beforeend', 
+    `
+      <li>
+        <input type="radio" name="payment-method" id="card" value="card">
+        <label for="card" class="card-name">${card.cardCompany}카드</label>
+        <span class="card-number">${cardNumber}</span>
+      </li>
+    `);
+  }
+
+  // 모달에서 선택된 radio 버튼에 배경색 스타일 적용
+  const allLiElements = document.querySelectorAll('.card-list-section > .card-list > li'); 
+
+  allLiElements.forEach(li => {
+    const radioButton = li.querySelector('input[type="radio"]'); 
+
+    li.addEventListener('click', () => {
+      allLiElements.forEach(card => card.classList.remove('selected'));
+      li.classList.add('selected');
+      radioButton.checked = true;
     });
-
-    const selectedLi = this.parentNode;
-    if (this.checked) {
-      selectedLi.style.backgroundColor = '#01c1f61d';
-      this.checked = true;
-    }
   });
-});
+}
+
+function countCardList(cardList) {
+  let counttedCardList = 0;
+  for(let i = 0; i < cardList.length; i++) {
+    counttedCardList++;
+  }
+  return counttedCardList;
+}
+
+function formatCardNumber(cardNumber) {
+  let formattedCardNumber = "";
+  for(let i = 0; i < cardNumber.length; i += 4) {
+    formattedCardNumber += cardNumber.substr(i, 4) + "-";
+  }
+  return formattedCardNumber.slice(0, -1); // 마지막 "-" 제거
+}
 
 // 모달에서 선택된 카드를 업데이트하는 함수
 function updateSelectedPaymentCard() {
-  const selectedRadioButton = document.querySelector('input[name="payment-method"]:checked');
-  const selectedCardName = selectedRadioButton.nextElementSibling.textContent;
-  const selectedCardNumber = selectedRadioButton.nextElementSibling.nextElementSibling.textContent;
-  const selectedPaymentCard = document.querySelector('.selected-payment-card');
-  const selectedPaymentCardNumber = document.querySelector('.selected-payment-card-number');
-  selectedPaymentCard.textContent = selectedCardName;
-  selectedPaymentCardNumber.textContent = selectedCardNumber;
+  const selectedRadioButton = document.querySelector('input[name="payment-method"]:checked'); // 모달에서 선택된 라디오 버튼
+  const selectedPaymentCard = document.querySelector('.selected-payment-card'); // 선택된 카드 이름을 표시할 요소
+  const selectedPaymentCardNumber = document.querySelector('.selected-payment-card-number'); // 선택된 카드 번호를 표시할 요소
+  
+  if (selectedRadioButton) {
+    const selectedCardName = selectedRadioButton.nextElementSibling.textContent;
+    const selectedCardNumber = selectedRadioButton.nextElementSibling.nextElementSibling.textContent;
+    selectedPaymentCard.textContent = selectedCardName;
+    selectedPaymentCardNumber.textContent = selectedCardNumber;
+  } else {
+    selectedPaymentCard.textContent = '등록한 카드가 없음';
+    selectedPaymentCardNumber.textContent = '';
+  }
 }
 
 // 변경 버튼 클릭 시 선택된 카드를 업데이트
@@ -231,16 +335,10 @@ const paymentModifyBtn = document.querySelector('.payment-modify');
 paymentModifyBtn.addEventListener('click', updateSelectedPaymentCard);
 
 // 모달 닫기 버튼 클릭 시 선택된 카드를 업데이트
-paymentModalCloseBtn.addEventListener('click', hidePaymentModal);
+paymentModalCloseBtn.addEventListener('click', () => {
+  updateSelectedPaymentCard();
+  hidePaymentModal();
+});
 
 // 페이지 로드 시 초기 선택된 카드를 업데이트
 window.addEventListener('load', updateSelectedPaymentCard);
-
-// 초기 로드 시 checked 속성이 있는 라디오 버튼에 대해서 배경색 적용
-radioButtons.forEach(function(radioButton) {
-  if (radioButton.checked) {
-    const selectedLi = radioButton.parentNode;
-    selectedLi.style.backgroundColor = '#01c1f61d';
-  }
-});
-

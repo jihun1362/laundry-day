@@ -386,8 +386,18 @@ a {text-decoration: none;}
 .card-list-section > .card-list > li + li {
   margin-top: 10px;
 }
+
+
+
+
 .card-list-section > .card-list > li > input[type="radio"] {
   visibility: hidden;
+}
+.card-list-section > .card-list > li {
+  background-color: #fff;
+}
+.card-list-section > .card-list > li.selected {
+  background-color: #01c1f61d;
 }
 .card-list-section > .card-list > li > label {
   font-size: 14px;
@@ -403,6 +413,11 @@ a {text-decoration: none;}
   position: relative;
   left: -3px;
 }
+
+
+
+
+
 .card-list-section > .payment-add-card {
   position: absolute;
   text-align: center;
