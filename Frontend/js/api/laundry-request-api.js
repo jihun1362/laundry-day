@@ -125,3 +125,36 @@ export async function getCard() {
     throw error;
   }
 }
+// 카드 ID 값
+let cardId = '';
+
+export function setCardId(selectedCardId) {
+  cardId = selectedCardId;
+}
+
+/**
+ * 세탁 신청
+ */
+export async function submitLaundryRequest(Requestdata) {
+  try {
+    const res = await fetch(`http://3.35.18.15:8080/api/order/${cardId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`,
+      },
+      body: JSON.stringify(Requestdata)
+    });
+
+    if (!res.ok) {
+      throw new Error('네트워크 응답이 정상적이지 않습니다.');
+    }
+
+    const responseData = await res.json();
+    return responseData;
+  } catch (error) {
+    console.error('세탁 주문 요청에 실패했습니다:', error);
+    throw error;
+  }
+}
+

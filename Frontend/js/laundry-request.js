@@ -1,4 +1,4 @@
-import { getAddress, saveAddress, registerCard, getCard } from './api/laundry-request-api.js';
+import { getAddress, saveAddress, registerCard, getCard, submitLaundryRequest, setCardId } from './api/laundry-request-api.js';
 
 /**
  * 페이지 로드 시 주소 조회
@@ -142,64 +142,6 @@ async function saveAddressModal(e) {
   addressModalContainer.style.display = 'none';
 }
 
-// 아코디언 메뉴
-const accordionHeaders = document.querySelectorAll('.accordion-header');
-accordionHeaders.forEach((header, i) => {
-  header.addEventListener('click', () => {
-    const contentEl = document.getElementById(`accordion-content-${i}`);
-    const arrowBtn = header.querySelector('.material-symbols-outlined');
-
-    if (contentEl.style.display === 'none') {
-      contentEl.style.display = 'block';
-      header.style.backgroundColor = '#eff7fd';
-      header.style.color = '#0d6bbd';
-      arrowBtn.classList.add('on');
-    } else {
-      contentEl.style.display = 'none';
-      header.style.backgroundColor = '#fff';
-      header.style.color = '#000';
-      arrowBtn.classList.remove('on');
-    }
-  });
-});
-
-// textarea
-const inputText = document.querySelector('textarea');
-const counterSpan = document.querySelector('.counter > span');
-const counterStrong = document.querySelector('.counter > strong');
-
-counterStrong.textContent = ` / ${inputText.maxLength}`;
-
-inputText.addEventListener('keyup', textCounter);
-
-function textCounter() {
-  counterSpan.textContent = inputText.value.length;
-}
-
-const toggleBnts = document.querySelectorAll('.point-toggle-button');
-const pointAmount = document.querySelector('.point-amount');
-
-toggleBnts.forEach(button => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('active');
-    const toggleBtn = button.querySelector('.material-symbols-outlined');
-    const isChecked = button.classList.contains('active');
-
-    if (isChecked) {
-      toggleBtn.style.color = '#8ac4f7'; // 색상 변경
-      toggleBtn.textContent = 'toggle_on';
-    } else {
-      toggleBtn.style.color = '#d5d3d3'; // 색상 변경
-      toggleBtn.textContent = 'toggle_off';
-    }
-  });
-});
-
-// 보유 포인트 업데이트
-// 예시로 1000점을 가정
-pointAmount.textContent = '1000';
-
-
 /**
  * 결제수단
  */
@@ -276,7 +218,7 @@ function renderCardList(cards) {
     cardList.insertAdjacentHTML('beforeend', 
     `
       <li>
-        <input type="radio" name="payment-method" id="card" value="card">
+        <input type="radio" name="payment-method" id="card" value="${card.cardId}">
         <label for="card" class="card-name">${card.cardCompany}카드</label>
         <span class="card-number">${cardNumber}</span>
       </li>
@@ -288,11 +230,15 @@ function renderCardList(cards) {
 
   allLiElements.forEach(li => {
     const radioButton = li.querySelector('input[type="radio"]'); 
+    const cardId = radioButton.value;
 
     li.addEventListener('click', () => {
       allLiElements.forEach(card => card.classList.remove('selected'));
       li.classList.add('selected');
       radioButton.checked = true;
+
+      // cardId 값을 laundry-request-api.js 파일의 함수로 전달
+      setCardId(cardId);
     });
   });
 }
@@ -342,3 +288,142 @@ paymentModalCloseBtn.addEventListener('click', () => {
 
 // 페이지 로드 시 초기 선택된 카드를 업데이트
 window.addEventListener('load', updateSelectedPaymentCard);
+
+/**
+ * 세탁 고지사항 동의
+ */ 
+
+function validateTerms() {
+  const termsCheckbox = document.querySelector('#terms-checkbox');
+  const termValidationMsg = document.querySelector('.term-validation');
+
+  if (!termsCheckbox.checked) {
+    termValidationMsg.classList.add('show');
+    return false;
+  }
+
+  termValidationMsg.classList.remove('show');
+  return true;
+}
+
+
+/**
+ * 세탁신청
+ */
+
+// 세탁 유형 저장할 변수
+let selectedLaundryType = '';
+
+// 아코디언 메뉴
+const accordionHeaders = document.querySelectorAll('.accordion-header'); // 세탁 서비스 유형
+accordionHeaders.forEach((header, i) => {
+  header.addEventListener('click', () => {
+    const contentEl = document.getElementById(`accordion-content-${i}`);
+    const arrowBtn = header.querySelector('.material-symbols-outlined');
+
+    if (contentEl.style.display === 'none') {
+      contentEl.style.display = 'block';
+      header.style.backgroundColor = '#eff7fd';
+      header.style.color = '#0d6bbd';
+      arrowBtn.classList.add('on');
+
+      // 세탁 유형 설정
+      selectedLaundryType = header.textContent.trim().replace('keyboard_arrow_down', '');
+    } else {
+      contentEl.style.display = 'none';
+      header.style.backgroundColor = '#fff';
+      header.style.color = '#000';
+      arrowBtn.classList.remove('on');
+    }
+  });
+});
+
+// 체크박스에서 선택된 세탁물 종류 가져오기
+function getWashingMethods() {
+  const checkboxes = document.querySelectorAll('.accordion-content input[type=checkbox]');
+  const selectedMethods = [];
+  
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedMethods.push(checkbox.parentNode.textContent.trim());  // 체크박스의 textContent 값이 세탁 방법의 이름이라고 가정
+    }
+  });
+
+  return selectedMethods.join('/');  // 선택된 세탁물 종류를 "/"로 연결
+}
+
+// textarea
+const inputText = document.querySelector('textarea'); // 요청사항
+const counterSpan = document.querySelector('.counter > span');
+const counterStrong = document.querySelector('.counter > strong');
+
+counterStrong.textContent = ` / ${inputText.maxLength}`;
+
+inputText.addEventListener('keyup', textCounter);
+
+function textCounter() {
+  counterSpan.textContent = inputText.value.length;
+}
+
+// 포인트 사용 여부를 추적하는 변수, 초기 값은 0으로 설정
+let pointCheck = 0;
+
+const toggleBnts = document.querySelectorAll('.point-toggle-button');
+
+toggleBnts.forEach(button => {
+  button.addEventListener('click', () => {
+    button.classList.toggle('active');
+    const toggleBtn = button.querySelector('.material-symbols-outlined');
+    const isChecked = button.classList.contains('active');
+
+    if (isChecked) {
+      toggleBtn.style.color = '#8ac4f7'; // 색상 변경
+      toggleBtn.textContent = 'toggle_on';
+      pointCheck = 1; // 사용자가 포인트를 사용하기로 결정했으므로 1로 설정
+    } else {
+      toggleBtn.style.color = '#d5d3d3'; // 색상 변경
+      toggleBtn.textContent = 'toggle_off';
+      pointCheck = 0; // 사용자가 포인트 사용을 취소했으므로 0으로 설정
+    }
+    console.log(pointCheck);
+  });
+});
+
+
+const submitRequestBtn = document.querySelector('.request-btn');
+
+// 수거 신청하기 버튼 누른 후,
+submitRequestBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  // 약관 동의 체크
+  const termsValidated = validateTerms();
+
+  if (termsValidated) {
+    // 약관 동의가 완료된 경우에만 수거 신청 처리
+    const laundryType = selectedLaundryType; // 세탁 서비스 유형
+    const washingMethod = getWashingMethods(); // 세탁물 종류
+    const orderRequest = inputText.value; // 사용자가 입력한 요청사항
+    const usePointCheck = pointCheck; // 포인트 사용 여부
+
+    const formRequestData = {
+      laundryType: laundryType,
+      washingMethod: washingMethod,
+      orderRequest: orderRequest,
+      usePointCheck: usePointCheck
+    }
+
+    // 세탁 신청 API 호출
+    const sendLaundryRequest = async () => {
+      try {
+        const responseData = await submitLaundryRequest(formRequestData);
+        console.log('세탁 신청이 완료되었습니다.', responseData);
+      } catch (error) {
+        console.error('세탁 신청이 실패했습니다:', error);
+      }
+    }
+
+    sendLaundryRequest();
+  }
+
+});

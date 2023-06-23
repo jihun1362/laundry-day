@@ -53,7 +53,7 @@ a {text-decoration: none;}
 }
 .error-msg, .error-pw-msg, .error-phone-msg {
   display: none;
-  color: #df0c0c;;
+  color: #df0c0c;
   font-size: 14px;
   margin-top: 10px;
 }
