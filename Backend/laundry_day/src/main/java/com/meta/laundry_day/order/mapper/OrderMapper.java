@@ -28,11 +28,14 @@ public class OrderMapper {
     public OrderReaponseDto toResponse(Order orders) {
         return OrderReaponseDto.builder()
                 .orderId(orders.getId())
+                .userId(orders.getUser().getId())
+                .username(orders.getUser().getNickname())
                 .laundryType(String.valueOf(orders.getLaundryType()))
                 .washingMethod(orders.getWashingMethod())
                 .orderRequest(orders.getOrderRequest())
                 .address(orders.getAddress())
                 .status(orders.getStatus())
+                .paymentDone(orders.getPaymentDone())
                 .createAt(String.valueOf(orders.getCreatedAt()))
                 .build();
     }
@@ -82,7 +85,7 @@ public class OrderMapper {
         return Order.builder()
                 .laundryType(LaundryType.valueOf(requestDto.getLaundryType()))
                 .washingMethod(requestDto.getWashingMethod())
-                .address(address.getAddress())
+                .address(address.getAddress()+"/"+address.getAddressDetail())
                 .orderRequest(requestDto.getOrderRequest())
                 .status(1)
                 .usePointCheck(requestDto.getUsePointCheck())
