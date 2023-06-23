@@ -33,6 +33,7 @@ import com.meta.laundry_day.payment.service.PaymentService;
 import com.meta.laundry_day.stable_pricing.entity.StablePricing;
 import com.meta.laundry_day.stable_pricing.repository.StablePricingRepository;
 import com.meta.laundry_day.user.entity.User;
+import com.meta.laundry_day.user.entity.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,6 @@ import java.util.List;
 
 import static com.meta.laundry_day.common.message.ErrorCode.ADDRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_DELETE_FAIL;
-import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.CARD_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_PICKUP_NOT_DONE_ERROR;
@@ -99,15 +99,13 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderReaponseDto orderDetail(User user, Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
-
-        //권한체크
-        if (!order.getUser().getId().equals(user.getId())) {
-            throw new CustomException(AUTHORIZATION_FAIL);
+    public List<OrderReaponseDto> orderDetail() {
+        List<Order> orders = orderRepository.findAll();
+        List<OrderReaponseDto> orderReaponseDtoList = new ArrayList<>();
+        for (Order o : orders) {
+            orderReaponseDtoList.add(orderMapper.toResponse(o));
         }
-
-        return orderMapper.toResponse(order);
+        return orderReaponseDtoList;
     }
 
     @Transactional
@@ -115,14 +113,14 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
         Progress progress = progressRepository.findByOrder(order);
 
-        //세탁물 수거전 등록 불가
-        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
-            throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
-        }
-
         //세탁물 등록 완료전만 등록가능
         if (progress.getLaundryRegist() == 0) {
             throw new CustomException(LAUNDRY_RESIST_DONE_ERROR);
+        }
+
+        //세탁물 수거전 등록 불가
+        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
+            throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
         }
 
         StablePricing stablePricing = stablePricingRepository.findById(stablepriceId).orElseThrow(() -> new CustomException(STABLEPRICING_NOT_FOUND));
@@ -170,20 +168,28 @@ public class OrderService {
 
         Long deliveryFee = paymentService.deliveryFeeCheck(amount);
 
-        EventDetails event = eventDetailsRepository.findAllTopByOrderByDiscountRateDesc();
+        List<EventDetails> events = eventDetailsRepository.findAllTopByOrderByDiscountRateDesc();
 
         Double discountRate = 0.0;
 
-        if (event != null) {
-            discountRate = event.getDiscountRate();
+        if (events != null) {
+            discountRate = events.get(0).getDiscountRate();
         }
 
         Long pay = amount + deliveryFee;
+
         Double discount = pay * discountRate * 0.01;
+
         double usePoint = 0;
 
-        if (user.getPoint() - (pay - discount) >= 0) {
-            usePoint = pay - discount;
+        Order order = orderRepository.findById(progress.getOrder().getId()).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
+
+        if (order.getUsePointCheck() == 1) {
+            if (user.getPoint() - (pay - discount) >= 0) {
+                usePoint = pay - discount;
+            } else {
+                usePoint = user.getPoint();
+            }
         }
 
         Double totalAmount = pay - discount - usePoint;
@@ -200,11 +206,15 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public ProgressResponeDto progressCheck(User user) {
-        List<Order> orders = orderRepository.findAllByUser(user);
+    public ProgressResponeDto progressCheck(User user, Long orderId) {
         Order order = null;
-        for (Order o : orders) {
-            if (o.getStatus() == 1) order = o;
+        if (user.getRole().equals(UserRoleEnum.USER)) {
+            List<Order> orders = orderRepository.findAllByUser(user);
+            for (Order o : orders) {
+                if (o.getStatus() == 1) order = o;
+            }
+        } else {
+            order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
         }
 
         Progress progress = progressRepository.findByOrder(order);

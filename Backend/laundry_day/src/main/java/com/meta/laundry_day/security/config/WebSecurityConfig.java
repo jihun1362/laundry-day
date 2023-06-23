@@ -91,6 +91,8 @@ public class WebSecurityConfig {
         //config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("http://localhost:5500"); //요거 변경하시면 됩니다.
         config.addAllowedOrigin("http://127.0.0.1:5500");
+        config.addAllowedOrigin("http://127.0.0.1:8080");
+        config.addAllowedOrigin("http://localhost:8080");
 
         // 특정 헤더를 클라이언트 측에서 꺼내어 사용할 수 있게 지정
         // 만약 지정하지 않는다면, Authorization 헤더 내의 토큰 값을 사용할 수 없음

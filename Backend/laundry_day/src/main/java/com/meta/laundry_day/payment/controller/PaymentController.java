@@ -75,10 +75,10 @@ public class PaymentController {
                 .body(new ResponseDto<>(REP_CARD_DESIGNATE_SUCCESS, null));
     }
 
-    @PostMapping("")
+    @PostMapping("/{orderId}")
     @Secured(UserRoleEnum.Authority.ADMIN)
-    public ResponseEntity<ResponseDto<ResultCode>> createPayment(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, InterruptedException, ParseException {
-        paymentService.createPayment(userDetails.getUser());
+    public ResponseEntity<ResponseDto<ResultCode>> createPayment(@PathVariable Long orderId) throws IOException, InterruptedException, ParseException {
+        paymentService.createPayment(orderId);
         return ResponseEntity.status(201)
                 .body(new ResponseDto<>(PAYMENT_CREATE_SUCCESS, null));
     }

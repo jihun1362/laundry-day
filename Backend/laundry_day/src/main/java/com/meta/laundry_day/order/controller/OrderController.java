@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.meta.laundry_day.common.message.ResultCode.LAUNDRY_CREATE_SUCCESS;
 import static com.meta.laundry_day.common.message.ResultCode.LAUNDRY_REGIST_SUCCESS;
@@ -54,21 +55,20 @@ public class OrderController {
                 .body(new ResponseDto<>(ORDER_CREATE_SUCCESS, null));
     }
 
-    @GetMapping("/details/{orderId}")
-    @Secured(UserRoleEnum.Authority.USER)
-    public ResponseEntity<ResponseDto<OrderReaponseDto>> orderDetail(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                     @PathVariable Long orderId) {
+    @GetMapping("/all")
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseEntity<ResponseDto<List<OrderReaponseDto>>> orderAll() {
         return ResponseEntity.status(200)
-                .body(new ResponseDto<>(ORDER_REQUEST_SUCCESS, orderService.orderDetail(userDetails.getUser(), orderId)));
+                .body(new ResponseDto<>(ORDER_REQUEST_SUCCESS, orderService.orderDetail()));
     }
 
     @PostMapping(value = "/laundry/{stablepriceId}/{orderId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> createLaundry(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                           @RequestPart LaundryRequestDto requestDto,
-                                                                           @RequestPart MultipartFile image,
-                                                                           @PathVariable Long stablepriceId,
-                                                                           @PathVariable Long orderId) throws IOException {
+                                                                 @RequestPart LaundryRequestDto requestDto,
+                                                                 @RequestPart MultipartFile image,
+                                                                 @PathVariable Long stablepriceId,
+                                                                 @PathVariable Long orderId) throws IOException {
         orderService.createLaundry(userDetails.getUser(), requestDto, image, stablepriceId, orderId);
         return ResponseEntity.status(201)
                 .body(new ResponseDto<>(LAUNDRY_CREATE_SUCCESS, null));
@@ -77,7 +77,7 @@ public class OrderController {
     @PatchMapping("/laundry/done/{progressId}")
     @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> doneLaundry(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                 @PathVariable Long progressId) {
+                                                               @PathVariable Long progressId) {
         orderService.doneLaundry(userDetails.getUser(), progressId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(LAUNDRY_REGIST_SUCCESS, null));
@@ -92,18 +92,18 @@ public class OrderController {
                 .body(new ResponseDto<>(LAUNDRY_UPDATE_SUCCESS, null));
     }
 
-    @GetMapping("/progress")
-    @Secured(UserRoleEnum.Authority.ADMIN)
-    public ResponseEntity<ResponseDto<ProgressResponeDto>> progressCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @GetMapping("/progress/{orderId}")
+    public ResponseEntity<ResponseDto<ProgressResponeDto>> progressCheck(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                         @PathVariable Long orderId) {
         return ResponseEntity.status(200)
-                .body(new ResponseDto<>(ORDER_PROGRESS_CHECK_SUCCESS, orderService.progressCheck(userDetails.getUser())));
+                .body(new ResponseDto<>(ORDER_PROGRESS_CHECK_SUCCESS, orderService.progressCheck(userDetails.getUser(), orderId)));
     }
 
     @PatchMapping("/progress/{progressId}")
     @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseEntity<ResponseDto<ResultCode>> updateProgress(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                 @RequestParam String status,
-                                                                 @PathVariable Long progressId) {
+                                                                  @RequestParam String status,
+                                                                  @PathVariable Long progressId) {
         orderService.updateProgress(userDetails.getUser(), status, progressId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(ORDER_PROGRESS_UPDATE_SUCCESS, null));
@@ -112,7 +112,7 @@ public class OrderController {
     @DeleteMapping("/{orderId}")
     @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<ResultCode>> deleteOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                  @PathVariable Long orderId) {
+                                                               @PathVariable Long orderId) {
         orderService.deleteOrder(userDetails.getUser(), orderId);
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(ORDER_DELETE_SUCCESS, null));

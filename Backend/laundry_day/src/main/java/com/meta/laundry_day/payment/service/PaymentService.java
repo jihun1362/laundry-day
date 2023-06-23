@@ -143,16 +143,10 @@ public class PaymentService {
     }
 
     @Transactional
-    public void createPayment(User user) throws IOException, InterruptedException, ParseException {
-        List<Order> orders = orderRepository.findAllByUser(user);
-        Order order = null;
-        for (Order o : orders) {
-            if (o.getPaymentDone() == 1) order = o;
-        }
+    public void createPayment(Long orderId) throws IOException, InterruptedException, ParseException {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
 
-        if (order == null) {
-            throw new CustomException(ORDER_NOT_FOUND);
-        }
+        User user = order.getUser();
 
         Card card = cardRepository.findByUserAndMainCard(user, 1);
 
