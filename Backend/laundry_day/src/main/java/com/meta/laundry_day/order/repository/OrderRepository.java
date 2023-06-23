@@ -11,4 +11,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByUser(User user);
     Order findByProgress(Progress progress);
     List<Order> findAllByUserAndPaymentDoneOrderByCreatedAtDesc(User user, int i);
+    List<Order> findAllByPaymentDoneOrderByCreatedAtDesc(int i);
+    List<Order> findAllByOrderByCreatedAtDesc();
 }

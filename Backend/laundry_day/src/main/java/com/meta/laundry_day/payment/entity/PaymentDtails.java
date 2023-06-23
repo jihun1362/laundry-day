@@ -40,6 +40,9 @@ public class PaymentDtails extends TimeStamped {
     private Long deliveryFee;
 
     @Column(nullable = false)
+    private Double dayDeliveryFee;
+
+    @Column(nullable = false)
     private Double totalAmount;
 
     @Column(nullable = false)
@@ -63,12 +66,13 @@ public class PaymentDtails extends TimeStamped {
     private Order order;
 
     @Builder
-    public PaymentDtails(Long userId, Long basicAmount, Double usePoint, Double discountRate, Long deliveryFee, Double totalAmount, String customerKey, String cardNumber, String cardCompany, String receipt, Card card, Order order) {
+    public PaymentDtails(Long userId, Long basicAmount, Double usePoint, Double discountRate, Double dayDeliveryFee, Long deliveryFee, Double totalAmount, String customerKey, String cardNumber, String cardCompany, String receipt, Card card, Order order) {
         this.userId = userId;
         this.basicAmount = basicAmount;
         this.usePoint = usePoint;
         this.discountRate = discountRate;
         this.deliveryFee = deliveryFee;
+        this.dayDeliveryFee = dayDeliveryFee;
         this.totalAmount = totalAmount;
         this.customerKey = customerKey;
         this.cardNumber = cardNumber;

@@ -1,6 +1,13 @@
 package com.meta.laundry_day.order.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum LaundryType {
-    일반세탁,
-    당일세탁
+    common("일반 세탁 서비스"),
+    day("당일 세탁 서비스");
+
+    private String type;
 }

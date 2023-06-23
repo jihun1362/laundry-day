@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Builder
 public class PaymentResponseDto {
+    private Long orderId;
     private String laundryType;
     private String washingMethod;
     private String address;
@@ -19,6 +20,7 @@ public class PaymentResponseDto {
     private String progressStatus;
     private Long baiscAmount;
     private Long deliveryFee;
+    private Double dayDeliveryFee;
     private Double discountRate;
     private Double usePoint;
     private Double totalAmount;

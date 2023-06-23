@@ -84,7 +84,6 @@ public class PaymentController {
     }
 
     @GetMapping("")
-    @Secured(UserRoleEnum.Authority.USER)
     public ResponseEntity<ResponseDto<List<PaymentResponseDto>>> paymentDtailsList(@AuthenticationPrincipal UserDetailsImpl userDetails) throws ParseException {
         return ResponseEntity.status(200)
                 .body(new ResponseDto<>(PAYMENT_LIST_REQUEST_SUCCESS, paymentService.paymentDtailsList(userDetails.getUser())));

@@ -25,6 +25,7 @@ import com.meta.laundry_day.payment.repository.PaymentDtailsRepository;
 import com.meta.laundry_day.payment.repository.PaymentRepository;
 import com.meta.laundry_day.payment.repository.UserPointRepository;
 import com.meta.laundry_day.user.entity.User;
+import com.meta.laundry_day.user.entity.UserRoleEnum;
 import com.meta.laundry_day.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -185,7 +186,10 @@ public class PaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentResponseDto> paymentDtailsList(User user) throws ParseException {
-        List<Order> orders = orderRepository.findAllByUserAndPaymentDoneOrderByCreatedAtDesc(user, 0);
+        List<Order> orders = orderRepository.findAllByPaymentDoneOrderByCreatedAtDesc(0);
+        if (user.getRole().equals(UserRoleEnum.USER)) {
+            orders = orderRepository.findAllByUserAndPaymentDoneOrderByCreatedAtDesc(user, 0);
+        }
         List<PaymentResponseDto> paymentResponseDtos = new ArrayList<>();
         for (Order o : orders) {
             List<LaundryResponseDto> laundryResponseDtoList = new ArrayList<>();
@@ -208,7 +212,7 @@ public class PaymentService {
         return pointResponseDtoList;
     }
 
-    public Long deliveryFeeCheck(Long amount) {
+    public Long deliveryFeeCheck(Double amount) {
         if (amount >= 30000) {
             return 0L;
         } else if (amount >= 15000) {

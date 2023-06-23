@@ -17,6 +17,7 @@ import com.meta.laundry_day.order.dto.OrderRequestDto;
 import com.meta.laundry_day.order.dto.ProgressResponeDto;
 import com.meta.laundry_day.order.entity.Laundry;
 import com.meta.laundry_day.order.entity.LaundryStatus;
+import com.meta.laundry_day.order.entity.LaundryType;
 import com.meta.laundry_day.order.entity.Order;
 import com.meta.laundry_day.order.entity.Progress;
 import com.meta.laundry_day.order.entity.ProgressStatus;
@@ -55,6 +56,16 @@ import static com.meta.laundry_day.common.message.ErrorCode.ORDER_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_ONLY_ONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.PROGRESS_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.STABLEPRICING_NOT_FOUND;
+import static com.meta.laundry_day.common.message.ErrorCode.WRONG_REGIST_DONE_ERROR;
+import static com.meta.laundry_day.common.message.ErrorCode.WRONG_STATUS_CHANGE_ERROR;
+import static com.meta.laundry_day.order.entity.ProgressStatus.배송완료;
+import static com.meta.laundry_day.order.entity.ProgressStatus.배송준비중;
+import static com.meta.laundry_day.order.entity.ProgressStatus.배송진행중;
+import static com.meta.laundry_day.order.entity.ProgressStatus.세탁완료;
+import static com.meta.laundry_day.order.entity.ProgressStatus.세탁준비중;
+import static com.meta.laundry_day.order.entity.ProgressStatus.세탁진행중;
+import static com.meta.laundry_day.order.entity.ProgressStatus.수거완료;
+import static com.meta.laundry_day.order.entity.ProgressStatus.수거준비중;
 import static com.meta.laundry_day.order.entity.ProgressStatus.수거진행중;
 
 @Service
@@ -79,6 +90,7 @@ public class OrderService {
     @Transactional
     public void createOrder(User user, OrderRequestDto requestDto, Long cardId) {
         List<Order> orders = orderRepository.findAllByUser(user);
+
         for (Order o : orders) {
             if (o.getStatus() == 1) throw new CustomException(ORDER_ONLY_ONE_ERROR);
         }
@@ -100,7 +112,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderReaponseDto> orderDetail() {
-        List<Order> orders = orderRepository.findAll();
+        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
         List<OrderReaponseDto> orderReaponseDtoList = new ArrayList<>();
         for (Order o : orders) {
             orderReaponseDtoList.add(orderMapper.toResponse(o));
@@ -139,14 +151,16 @@ public class OrderService {
     public void doneLaundry(User user, Long progressId) {
         Progress progress = progressRepository.findById(progressId).orElseThrow(() -> new CustomException(PROGRESS_NOT_FOUND));
 
-        //세탁물 수거전 완료 불가
-        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
-            throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
-        }
+        Order order = orderRepository.findById(progress.getOrder().getId()).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
 
         //페이먼트 중복으로 안생기게 제한
         if (progress.getLaundryRegist() == 0) {
             throw new CustomException(LAUNDRY_REGIST_DONE_ERROR);
+        }
+
+        //세탁물 수거전 완료 불가
+        if (!progress.getStatus().equals(ProgressStatus.세탁준비중)) {
+            throw new CustomException(LAUNDRY_PICKUP_NOT_DONE_ERROR);
         }
 
         progress.doneRegist();
@@ -166,7 +180,12 @@ public class OrderService {
 
         Long amount = totalStablePrice + totalSurcharge;
 
-        Long deliveryFee = paymentService.deliveryFeeCheck(amount);
+        //세탁물 총 금액의 30%
+        Double dayDeliveryFee = 0.0;
+
+        if (order.getLaundryType().equals(LaundryType.day)){
+            dayDeliveryFee = amount * 0.3;
+        }
 
         List<EventDetails> events = eventDetailsRepository.findAllTopByOrderByDiscountRateDesc();
 
@@ -176,25 +195,25 @@ public class OrderService {
             discountRate = events.get(0).getDiscountRate();
         }
 
-        Long pay = amount + deliveryFee;
+        Double discount = amount * discountRate * 0.01;
 
-        Double discount = pay * discountRate * 0.01;
+        Long deliveryFee = paymentService.deliveryFeeCheck(amount + dayDeliveryFee);
+
+        Double pay = amount + deliveryFee + dayDeliveryFee - discount;
 
         double usePoint = 0;
 
-        Order order = orderRepository.findById(progress.getOrder().getId()).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
-
         if (order.getUsePointCheck() == 1) {
-            if (user.getPoint() - (pay - discount) >= 0) {
-                usePoint = pay - discount;
+            if (user.getPoint() - (pay) >= 0) {
+                usePoint = pay;
             } else {
                 usePoint = user.getPoint();
             }
         }
 
-        Double totalAmount = pay - discount - usePoint;
+        Double totalAmount = pay - usePoint;
 
-        Payment payment = paymentMapper.toPayment(progress.getOrder().getId(), amount, usePoint, discountRate, totalStablePrice, totalSurcharge, deliveryFee, totalAmount);
+        Payment payment = paymentMapper.toPayment(progress.getOrder().getId(), amount, usePoint, discountRate, totalStablePrice, totalSurcharge, deliveryFee, dayDeliveryFee, totalAmount);
 
         paymentRepository.save(payment);
     }
@@ -202,6 +221,23 @@ public class OrderService {
     @Transactional
     public void updateLaundry(String status, Long laundryId) {
         Laundry laundry = laundryRepository.findById(laundryId).orElseThrow(() -> new CustomException(LAUNDRY_NOT_FOUND));
+
+        //잘못된 접근 차단
+        if (laundry.getStatus().equals(LaundryStatus.세탁준비중)) {
+            if (!status.equals(String.valueOf(LaundryStatus.세탁진행중))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (laundry.getStatus().equals(LaundryStatus.세탁진행중)) {
+            if (!status.equals(String.valueOf(LaundryStatus.세탁완료))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (laundry.getStatus().equals(LaundryStatus.세탁완료)) {
+            throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+        }
+
+
         laundry.update(LaundryStatus.valueOf(status));
     }
 
@@ -230,7 +266,7 @@ public class OrderService {
 
         Payment payment = paymentRepository.findByOrderId(order.getId());
 
-        if (progress.getStatus().equals(ProgressStatus.수거준비중) || progress.getStatus().equals(수거진행중) || progress.getStatus().equals(ProgressStatus.수거완료) || progress.getStatus().equals(ProgressStatus.세탁준비중)) {
+        if (progress.getStatus().equals(수거준비중) || progress.getStatus().equals(수거진행중) || progress.getStatus().equals(수거완료) || progress.getStatus().equals(ProgressStatus.세탁준비중)) {
             return orderMapper.toResponse(progress, laundryResponseDtoList);
         }
 
@@ -240,6 +276,49 @@ public class OrderService {
     @Transactional
     public void updateProgress(User user, String status, Long progressId) {
         Progress progress = progressRepository.findById(progressId).orElseThrow(() -> new CustomException(PROGRESS_NOT_FOUND));
+
+        //잘못된 접근 차단
+        if (progress.getStatus().equals(수거준비중)) {
+            if (!status.equals(String.valueOf(수거진행중))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(수거진행중)) {
+            if (!status.equals(String.valueOf(수거완료))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(수거완료)) {
+            if (!status.equals(String.valueOf(세탁준비중))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(세탁준비중)) {
+            throw new CustomException(WRONG_REGIST_DONE_ERROR);
+        }
+        if (progress.getStatus().equals(세탁진행중)) {
+            if (!status.equals(String.valueOf(세탁완료))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(세탁완료)) {
+            if (!status.equals(String.valueOf(배송준비중))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(배송준비중)) {
+            if (!status.equals(String.valueOf(배송진행중))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(배송진행중)) {
+            if (!status.equals(String.valueOf(배송완료))) {
+                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+            }
+        }
+        if (progress.getStatus().equals(배송완료)) {
+            throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
+        }
 
         if (String.valueOf(ProgressStatus.배송완료).equals(status)) {
             Order order = orderRepository.findByProgress(progress);
@@ -274,7 +353,7 @@ public class OrderService {
 
         Progress progress = progressRepository.findByOrder(order);
 
-        if (!progress.getStatus().equals(ProgressStatus.수거준비중)) {
+        if (!progress.getStatus().equals(수거준비중)) {
             throw new CustomException(LAUNDRY_PICKUP_START_ERROR);
         }
 

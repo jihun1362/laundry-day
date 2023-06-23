@@ -41,10 +41,13 @@ public class Payment extends TimeStamped {
     private Long deliveryFee;
 
     @Column(nullable = false)
+    private Double dayDeliveryFee;
+
+    @Column(nullable = false)
     private Double totalAmount;
 
     @Builder
-    public Payment(Long totalStablePrice, Long totalStablePriceSurcharge, Long amount, Double usePoint, Double discountRate, Long orderId, Long deliveryFee, Double totalAmount) {
+    public Payment(Long totalStablePrice, Long totalStablePriceSurcharge, Long amount, Double usePoint, Double discountRate, Long orderId, Long deliveryFee, Double dayDeliveryFee, Double totalAmount) {
         this.totalStablePrice = totalStablePrice;
         this.totalStablePriceSurcharge = totalStablePriceSurcharge;
         this.amount = amount;
@@ -52,6 +55,7 @@ public class Payment extends TimeStamped {
         this.discountRate = discountRate;
         this.orderId = orderId;
         this.deliveryFee = deliveryFee;
+        this.dayDeliveryFee = dayDeliveryFee;
         this.totalAmount = totalAmount;
     }
 }

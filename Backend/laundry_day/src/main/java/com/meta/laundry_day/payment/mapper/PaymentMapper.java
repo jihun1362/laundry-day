@@ -36,7 +36,8 @@ public class PaymentMapper {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(paymentDtails.getReceipt());
         return PaymentResponseDto.builder()
-                .laundryType(String.valueOf(o.getLaundryType()))
+                .orderId(o.getId())
+                .laundryType(o.getLaundryType().getType())
                 .washingMethod(o.getWashingMethod())
                 .address(o.getAddress())
                 .orderRequest(o.getOrderRequest())
@@ -45,6 +46,7 @@ public class PaymentMapper {
                 .progressStatus(String.valueOf(progress.getStatus()))
                 .baiscAmount(paymentDtails.getBasicAmount())
                 .deliveryFee(paymentDtails.getDeliveryFee())
+                .dayDeliveryFee(paymentDtails.getDayDeliveryFee())
                 .discountRate(paymentDtails.getDiscountRate())
                 .usePoint(paymentDtails.getUsePoint())
                 .totalAmount(paymentDtails.getTotalAmount())
@@ -77,7 +79,7 @@ public class PaymentMapper {
                 .build();
     }
 
-    public Payment toPayment(Long id, Long amount, Double usePoint, Double discountRate, Long totalStablePrice, Long totalSurcharge, Long deliveryFee, Double totalAmount) {
+    public Payment toPayment(Long id, Long amount, Double usePoint, Double discountRate, Long totalStablePrice, Long totalSurcharge, Long deliveryFee, Double dayDeliveryFee, Double totalAmount) {
         return Payment.builder()
                 .orderId(id)
                 .usePoint(usePoint)
@@ -86,6 +88,7 @@ public class PaymentMapper {
                 .totalStablePriceSurcharge(totalSurcharge)
                 .discountRate(discountRate)
                 .deliveryFee(deliveryFee)
+                .dayDeliveryFee(dayDeliveryFee)
                 .totalAmount(totalAmount)
                 .build();
     }
@@ -97,6 +100,7 @@ public class PaymentMapper {
                 .usePoint(payment.getUsePoint())
                 .discountRate(payment.getDiscountRate())
                 .deliveryFee(payment.getDeliveryFee())
+                .dayDeliveryFee(payment.getDayDeliveryFee())
                 .totalAmount(payment.getTotalAmount())
                 .customerKey(card.getCustomerKey())
                 .cardNumber(card.getCardNumber())
