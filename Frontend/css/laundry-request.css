@@ -465,6 +465,22 @@ a {text-decoration: none;}
   position: absolute;
   right: 0;
 }
+.term-validation {
+  display: none;
+  position: relative;
+  top: -25px;
+  left: 5px;
+  color: #df0c0c;
+  font-size: 14px;
+  margin-top: 22px;
+}
+.term-validation.show {
+  display: block;
+}
+.term-validation > iconify-icon {
+  vertical-align: -1.5px;
+  margin-right: 2px;
+}
 .request-form > .request-btn {
   color: #fff;
   font-size: 15px;
