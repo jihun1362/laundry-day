@@ -27,6 +27,8 @@ public enum ErrorCode {
     LAUNDRY_PICKUP_START_ERROR("세탁물 수거가 시작되어 주문을 취소할 수 없습니다.", 400),
     LAUNDRY_PICKUP_NOT_DONE_ERROR("세탁물 수거가 완료되지 않았습니다.", 400),
     LAUNDRY_REGIST_DONE_ERROR("세탁물 등록이 이미 완료되었습니다.", 400),
+    WRONG_STATUS_CHANGE_ERROR("잘못된 단계의 상태 변경입니다.", 400),
+    WRONG_REGIST_DONE_ERROR("세탁물 등록이 완료되지 않앗습니다.", 400),
 
     //404 찾을 수 없음
     ADDRESS_NOT_FOUND("해당 주소를 찾을 수가 없습니다.", 404),

@@ -30,7 +30,7 @@ public class OrderMapper {
                 .orderId(orders.getId())
                 .userId(orders.getUser().getId())
                 .username(orders.getUser().getNickname())
-                .laundryType(String.valueOf(orders.getLaundryType()))
+                .laundryType(orders.getLaundryType().getType())
                 .washingMethod(orders.getWashingMethod())
                 .orderRequest(orders.getOrderRequest())
                 .address(orders.getAddress())
@@ -82,10 +82,14 @@ public class OrderMapper {
     }
 
     public Order toOrder(OrderRequestDto requestDto, User user, AddressDetails address, Card card) {
+        LaundryType laundryType = LaundryType.common;
+        if (requestDto.getLaundryType().equals("당일 세탁 서비스")) {
+            laundryType = LaundryType.day;
+        }
         return Order.builder()
-                .laundryType(LaundryType.valueOf(requestDto.getLaundryType()))
+                .laundryType(laundryType)
                 .washingMethod(requestDto.getWashingMethod())
-                .address(address.getAddress()+"/"+address.getAddressDetail())
+                .address(address.getAddress() + "/" + address.getAddressDetail())
                 .orderRequest(requestDto.getOrderRequest())
                 .status(1)
                 .usePointCheck(requestDto.getUsePointCheck())
