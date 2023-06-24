@@ -38,7 +38,7 @@
     <!-- JS -->
     <script src="../js/components/header.js"></script>
     <script src="../js/components/footer.js"></script>
-    <script defer src="../js/order-status.js"></script>
+    <script defer type="module" src="../js/order-status.js"></script>
   </head>
   <body>
     <div id="order-status">
@@ -56,8 +56,8 @@
       <div class="laundry-receipt">
         <div class="overall-status">
           <span id="date"></span>
-          <span class="status-summary">세탁 진행중</span>
-          <span class="status-message">스마트팩토리에서 세탁이 진행중입니다.</span>
+          <span class="status-summary"></span>
+          <span class="status-message">스마트팩토리에서 세탁을 진행합니다.</span>
         </div>
         <div class="order-details">
           <ul class="tab-menu">
@@ -67,52 +67,14 @@
           <div class="tab-content">
             <div class="c_status">
               <h3>세탁인수증</h3>
-              <div class="laundry-wrap">
-                <div class="laundry-info">
-                  <img src="../images/sample_img1.jpg" alt="세탁물 사진">
-                  <div class="laundry-info-detail">
-                    <p class="laundry-type">와이셔츠</p>
-                    <p class="laundry-num">014523</p>
-                  </div>
-                </div>
-                <div class="laundry-status">세탁중</div>
-              </div>
-              <div class="laundry-wrap">
-                <div class="laundry-info">
-                  <img src="../images/sample_img2.png" alt="세탁물 사진">
-                  <div class="laundry-info-detail">
-                    <p class="laundry-type">바지</p>
-                    <p class="laundry-num">014524</p>
-                  </div>
-                </div>
-                <div class="laundry-status">세탁완료</div>
-              </div>
-              <div class="laundry-count"><span class="laundry-count-num">2</span>개 품목</div>
+              <div class="laundry-container"></div>
+              <div class="laundry-count"><span class="laundry-count-num"></span>개 품목</div>
             </div>
 
             <div class="c_payment">
               <h3>세탁인수증</h3>
-              <div class="laundry-wrap">
-                <div class="laundry-info">
-                  <img src="../images/sample_img1.jpg" alt="세탁물 사진">
-                  <div class="laundry-info-detail">
-                    <p class="laundry-type">와이셔츠</p>
-                    <p class="laundry-num">014523</p>
-                  </div>
-                </div>
-                <div class="laundry-price"><span>20,000</span>원</div>
-              </div>
-              <div class="laundry-wrap">
-                <div class="laundry-info">
-                  <img src="../images/sample_img2.png" alt="세탁물 사진">
-                  <div class="laundry-info-detail">
-                    <p class="laundry-type">바지</p>
-                    <p class="laundry-num">014524</p>
-                  </div>
-                </div>
-                <div class="laundry-price"><span>8,000</span>원</div>
-              </div>
-              <div class="laundry-count"><span class="laundry-count-num">2</span>개 품목</div>
+              <div class="laundry-container"></div>
+              <div class="laundry-count"><span class="laundry-count-num"></span>개 품목</div>
             </div>
           </div>
           <div class="payment-details">
@@ -120,28 +82,28 @@
             <ul class="calc-list">
               <li>
                 <strong>안심정찰가격</strong>
-                <p><em class="total-order-price">20,000</em>원</p>
+                <p><em class="total-order-price"></em>원</p>
               </li>
               <li>
                 <strong>수거배송</strong>
-                <p><em class="delivery-price">3,800</em>원</p>
+                <p><em class="delivery-price"></em>원</p>
               </li>
               <li>
                 <strong>추가요금</strong>
-                <p><em class="extra-fee">0</em>원</p>
+                <p><em class="extra-fee"></em>원</p>
               </li>
               <li>
                 <strong>포인트할인</strong>
-                <p>-<em class="point-discount-price">200</em>원</p>
+                <p>-<em class="point-discount-price"></em>원</p>
               </li>
             </ul>
             <div class="price-sum">
               <strong class="price-sum-title">결제금액</strong>
-              <p><em class="price-sum-detail">23,600</em>원</p>
+              <p><em class="price-sum-detail"></em>원</p>
             </div>
             <div class="notice">
               <p>· 배송 완료 이후, 자동결제됩니다.</p>
-              <p>· 수거배송비는 16,500원 미만일 경우 왕복 비용 7,600원이 부과되며, 16,500원 이상일 경우 3,800원으로 할인됩니다.</p>
+              <p>· 수거배송비는 16,500원 미만일 경우 왕복 비용 5,000원이 부과되며, 16,500원 이상일 경우 3,000원으로 할인됩니다.</p>
             </div>
           </div>
           <div class="request-field">

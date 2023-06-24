@@ -93,6 +93,7 @@ a {text-decoration: none;}
 }
 .order-details > .tab-content .laundry-wrap {
   border-top: 1px solid #000;
+  border-bottom: 1px solid #ddd;
   display: flex;
   padding: 10px 0;
   position: relative;
@@ -101,7 +102,7 @@ a {text-decoration: none;}
   position: relative;
 }
 .order-details > .tab-content .laundry-wrap + .laundry-wrap {
-  border-top: 1px solid #ddd;
+  border-top: none;
   border-bottom: 1px solid #ddd;
 }
 .order-details > .tab-content .laundry-wrap > .laundry-info {
