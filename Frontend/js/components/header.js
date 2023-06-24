@@ -11,26 +11,26 @@ Vue.component('app-header', {
     <div class="header_bottom">
       <h1 class="logo"><a href="/Frontend/index.html">○LAUNDRY○DAY○</a></h1>
       <nav class="category">
-        <a href="#" class="menu_btn" @click="showMenu">
+        <a href="javascript:void(0)" class="menu_btn" @click="showMenu">
           <!-- ::before -->
           <span>Menu</span>
           <!-- ::after -->
         </a>
         <ul>
           <li><a href="#" class="text">OUR SERVICES</a></li>
-          <li><a href="#">이용방법</a></li>
-          <li><a href="#">가격표</a></li>
+          <li><a href="javascript:void(0)">이용방법</a></li>
+          <li><a href="javascript:void(0)">가격표</a></li>
           <li><a href="javascript:void(0)" @click="openModal">세탁신청</a></li>
         </ul>
         <div class="menu_list" :class="{ on: isMenuVisible }">
           <ul>
             <li><a href="#" class="text">OUR SERVICES<span class="material-symbols-outlined">navigate_next</span></a></li>
-            <li><a href="#">이용방법<span class="material-symbols-outlined">navigate_next</span></a></li>
-            <li><a href="#">가격표<span class="material-symbols-outlined">navigate_next</span></a></li>
+            <li><a href="javascript:void(0)">이용방법<span class="material-symbols-outlined">navigate_next</span></a></li>
+            <li><a href="javascript:void(0)">가격표<span class="material-symbols-outlined">navigate_next</span></a></li>
             <li><a href="javascript:void(0)" @click="openModal">세탁신청<span class="material-symbols-outlined">navigate_next</span></a></li>
             <li class="util">
               <ul>
-                <li><iconify-icon icon="material-symbols:help-outline"></iconify-icon><a href="#">공지사항</a> | <a href="#">자주 찾는 질문</a></li>
+                <li><iconify-icon icon="material-symbols:help-outline"></iconify-icon><a href="javascript:void(0)">공지사항</a> | <a href="javascript:void(0)">자주 찾는 질문</a></li>
                 <li>
                   <iconify-icon icon="mdi:account"></iconify-icon>
                   <a v-if="isLoggedIn" href="/Frontend/views/mypage.html">내 계정</a>
@@ -40,7 +40,7 @@ Vue.component('app-header', {
               </ul>
             </li>
           </ul>
-          <a href="#" class="close_btn" @click="hideMenu">
+          <a href="javascript:void(0)" class="close_btn" @click="hideMenu">
             <span>Close<iconify-icon icon="heroicons:x-mark-solid" style="color: #626262;"></iconify-icon></span>
           </a>
         </div>
@@ -51,10 +51,38 @@ Vue.component('app-header', {
             <a v-if="isLoggedIn" href="/Frontend/views/mypage.html">마이페이지<iconify-icon icon="mdi:account"></iconify-icon></a>
             <a v-else href="/Frontend/views/login.html">계정<iconify-icon icon="mdi:account"></iconify-icon></a>
           </li>
-          <li class="bell"><a href="#">알림<iconify-icon icon="ph:bell-bold"></iconify-icon></a></li>
+          <li class="bell"><a href="javascript:void(0)" @click="toggleBell">알림<iconify-icon icon="ph:bell-bold"></iconify-icon></a></li>
           <li class="list"><a href="/Frontend/views/order-status.html">이용내역<iconify-icon icon="ci:shopping-bag-02"></iconify-icon></a></li>
-          <li class="help"><a href="#">고객지원<iconify-icon icon="material-symbols:help-outline"></iconify-icon></a></li>
+          <li class="help"><a href="javascript:void(0)">고객지원<iconify-icon icon="material-symbols:help-outline"></iconify-icon></a></li>
         </ul>
+        <!-- 알림 -->
+        <div class="bell_list" v-if="isBellVisible">
+          <div class="bell-title">
+            <h3>알림 목록</h3>
+            <span class="bell-count">(2)</span>
+          </div>
+          <div class="scroll-container">
+            <ul>
+              <li class="bell-container">
+                <div class="bell-wrap">
+                  <h4 class="bell-status">수거시작</h4>
+                  <p class="bell-date">2023-06-18</p>
+                  <a href="javascript:void(0)" class="bell-link">
+                    <p class="bell-status-detail">수거가 시작됩니다. 원활한 세탁물을 수거를 위해 문앞에 세탁물을 놔주시기 바랍니다.</p>
+                  </a>
+                </div>
+                <div class="bell-img-wrap">
+                  <div class="bell-img"></div>
+                </div>
+                <span class="material-symbols-outlined">navigate_next</span>
+              </li>
+            </ul>
+            <a href="javascript:void(0)" class="close_btn" @click="hideBell">
+              <span>Close<iconify-icon icon="icon-park:close-small"></iconify-icon></span>
+            </a>
+          </div>
+        </div>
+        
       </nav>
     </div>
     <!-- 모달 -->
@@ -80,6 +108,7 @@ Vue.component('app-header', {
   data() {
     return {
       isMenuVisible: false,
+      isBellVisible: false,
       isModalVisible: false,
       isLoggedIn: false
     };
@@ -99,6 +128,24 @@ Vue.component('app-header', {
       const scrollPosition = parseInt(document.body.style.top.replace('-', ''));
       document.body.style.overflow = 'visible';
       window.scrollTo(0, scrollPosition);
+    },
+    toggleBell() {
+      this.isBellVisible = !this.isBellVisible;
+      if (this.isBellVisible) {
+        // 스크롤 제거
+        document.body.style.overflow = 'hidden';
+        // 현재 페이지에서 스크롤을 내린 만큼 값을 저장
+        const scrollPosition = window.pageYOffset;
+        document.body.style.top = `-${scrollPosition}px`;
+      } else {
+        // 스크롤 복원
+        const scrollPosition = parseInt(document.body.style.top.replace('-', ''));
+        document.body.style.overflow = 'visible';
+        window.scrollTo(0, scrollPosition);
+      }
+    },
+    hideBell() {
+      this.isBellVisible = false;
     },
     checkSize() {
       const size = window.innerWidth;
