@@ -63,12 +63,12 @@ Vue.component('app-header', {
           </div>
           <div class="scroll-container">
             <ul>
-              <li class="bell-container">
+              <li class="bell-container" v-for="notification in notifications" :key="notification.alarmId">
                 <div class="bell-wrap">
-                  <h4 class="bell-status">수거시작</h4>
-                  <p class="bell-date">2023-06-18</p>
+                  <h4 class="bell-status">{{ notification.type }}</h4>
+                  <p class="bell-date">{{ formatDate(notification.createdAt) }}</p>
                   <a href="javascript:void(0)" class="bell-link">
-                    <p class="bell-status-detail">수거가 시작됩니다. 원활한 세탁물을 수거를 위해 문앞에 세탁물을 놔주시기 바랍니다.</p>
+                    <p class="bell-status-detail">{{ notification.content }}</p>
                   </a>
                 </div>
                 <div class="bell-img-wrap">
@@ -110,7 +110,8 @@ Vue.component('app-header', {
       isMenuVisible: false,
       isBellVisible: false,
       isModalVisible: false,
-      isLoggedIn: false
+      isLoggedIn: false,
+      notifications: []
     };
   },
   methods: {
@@ -181,7 +182,44 @@ Vue.component('app-header', {
       document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       // 로그아웃 후 리다이렉트 또는 필요한 동작 수행
       window.location.href = '/Frontend/views/login.html'; // 로그인 페이지로 리다이렉트
-    }
+    },
+    async getNotifications() {
+      try {
+        const token = getCookie('token');
+        // 알림 API 호출
+        const res = await fetch('http://3.35.18.15:8080/api/alram', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error('네트워크 응답이 정상적이지 않습니다.');
+        }
+
+        const responseData = await res.json();
+        this.notifications = responseData.data;
+      } catch (error) {
+        console.error('알림 목록 조회에 실패했습니다:', error);
+      }
+    },
+    formatDate(value) {
+      const date = new Date(value);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      let hours = String(date.getHours());
+      if (hours === '00') {
+        hours = '0';
+      } else if (hours.startsWith('0')) {
+        hours = hours.substring(1);
+      }
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+      return `${year}-${month}-${day} ${hours}시 ${minutes}분`;
+    }    
   },
   mounted() {
     window.addEventListener('resize', this.checkSize);
@@ -194,6 +232,9 @@ Vue.component('app-header', {
     if (token) {
       this.isLoggedIn = true;
     }
+    // 알림 목록 호출
+    this.getNotifications();
+
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.checkSize);

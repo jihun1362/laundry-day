@@ -189,6 +189,21 @@ header > .header_bottom > nav.util > ul > li.user, li.help {display: none;}
 header > .header_bottom > nav.util > ul > li > a > iconify-icon {font-size: 24px;}
 header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size: 22px;}
 
+.notification-badge {
+  position: relative;
+}
+
+.notification-badge::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: blue;
+}
+
 .bell_list {
   z-index: 100;
   border: 1.5px solid #000;
