@@ -57,10 +57,10 @@ Vue.component('app-header', {
         </ul>
         <!-- 알림 -->
         <div class="bell_list" v-if="isBellVisible">
-          <div class="bell-title">
-            <h3>알림 목록</h3>
-            <span class="bell-count">(2)</span>
-          </div>
+        <div class="bell-title">
+          <h3>알림 목록</h3>
+          <span class="bell-count">{{ notificationCount }}</span>
+        </div>
           <div class="scroll-container">
             <ul>
               <li class="bell-container" v-for="notification in notifications" :key="notification.alarmId">
@@ -77,12 +77,11 @@ Vue.component('app-header', {
                 <span class="material-symbols-outlined">navigate_next</span>
               </li>
             </ul>
-            <a href="javascript:void(0)" class="close_btn" @click="hideBell">
+            <a href="javascript:void(0)" class="close_btn" @click="hideBellAndRestoreScroll">
               <span>Close<iconify-icon icon="icon-park:close-small"></iconify-icon></span>
             </a>
           </div>
         </div>
-        
       </nav>
     </div>
     <!-- 모달 -->
@@ -111,42 +110,44 @@ Vue.component('app-header', {
       isBellVisible: false,
       isModalVisible: false,
       isLoggedIn: false,
-      notifications: []
+      savedScrollPosition: 0,
+      notifications: [],
+      notificationCount: 0
     };
   },
   methods: {
     showMenu() {
       this.isMenuVisible = true;
-      // 스크롤 제거
-      document.body.style.overflow = 'hidden';
-      // 현재 페이지에서 스크롤을 내린 만큼 값을 저장
-      const scrollPosition = window.pageYOffset;
-      document.body.style.top = `-${scrollPosition}px`;
+      this.disableScroll(); // 스크롤 제거
     },
     hideMenu() {
       this.isMenuVisible = false;
-      // 스크롤 복원
-      const scrollPosition = parseInt(document.body.style.top.replace('-', ''));
-      document.body.style.overflow = 'visible';
-      window.scrollTo(0, scrollPosition);
+      this.enableScroll(); // 스크롤 복원
     },
     toggleBell() {
-      this.isBellVisible = !this.isBellVisible;
       if (this.isBellVisible) {
-        // 스크롤 제거
-        document.body.style.overflow = 'hidden';
-        // 현재 페이지에서 스크롤을 내린 만큼 값을 저장
-        const scrollPosition = window.pageYOffset;
-        document.body.style.top = `-${scrollPosition}px`;
+        this.hideBellAndRestoreScroll();
       } else {
-        // 스크롤 복원
-        const scrollPosition = parseInt(document.body.style.top.replace('-', ''));
-        document.body.style.overflow = 'visible';
-        window.scrollTo(0, scrollPosition);
+        this.showBellAndDisableScroll();
       }
     },
-    hideBell() {
+    showBellAndDisableScroll() {
+      this.isBellVisible = true;
+      this.disableScroll(); // 스크롤 제거
+    },
+    hideBellAndRestoreScroll() {
       this.isBellVisible = false;
+      this.enableScroll(); // 스크롤 복원
+    },
+    disableScroll() {
+      // 현재 페이지에서 스크롤을 내린 만큼 값을 저장
+      this.savedScrollPosition = window.pageYOffset;
+      document.body.style.overflow = 'hidden';
+      document.body.style.top = `-${this.savedScrollPosition}px`;
+    },
+    enableScroll() {
+      document.body.style.overflow = 'visible';
+      window.scrollTo(0, this.savedScrollPosition);
     },
     checkSize() {
       const size = window.innerWidth;
@@ -201,6 +202,9 @@ Vue.component('app-header', {
 
         const responseData = await res.json();
         this.notifications = responseData.data;
+
+        // 알림 개수
+        this.notificationCount = this.notifications.length;
       } catch (error) {
         console.error('알림 목록 조회에 실패했습니다:', error);
       }
