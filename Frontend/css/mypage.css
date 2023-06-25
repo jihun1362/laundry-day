@@ -1,0 +1,313 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+#mypage {
+  background-color: #fff;
+}
+.mypage-wrap {
+  width: 400px;
+  margin: 100px auto 110px;
+}
+.side-menu {
+  position: relative;
+}
+.side-menu > .user-info {
+  margin-bottom: 32px;
+}
+.side-menu > .user-info > p {
+  font-size: 24px;
+  font-weight: 600;
+}
+.side-menu > .user-info > .user-email {
+  color: #898989;
+  font-size: 14px;
+  font-weight: 400;
+}
+.side-menu > .tab-menu {
+  display: flex;
+}
+.side-menu > .tab-menu > li {
+  padding: 0 5px;
+}
+.side-menu > .tab-menu > li + li {
+  margin-left: 15px;
+}
+.side-menu > .tab-menu > li.on {
+  border-bottom: 2px solid #000;
+  padding-bottom: 3px;
+}
+.side-menu > .tab-menu > li a {
+  color: #898989;
+  font-size: 15px;
+  font-weight: 500;
+}
+.side-menu > .tab-menu > li.on a {
+  color: #000;
+  font-weight: 700;
+}
+.side-menu > .tab-menu > li a > .material-symbols-outlined {
+  display: none;
+}
+.side-menu .mypage-logout {
+  color: #6c6c6c;
+  font-size: 13px;
+  position: absolute;
+  top: 0px;
+  right: 0;
+}
+.tab-content {
+  margin-top: 40px;
+}
+.tab-content > div {
+  display: none;
+}
+.tab-content > div.on {
+  display: block;
+}
+.tab-content h4 {
+  font-size: 20px;
+  margin-bottom: 32px;
+}
+.tab-content h3 {
+  margin-bottom: 24px;
+}
+.tab-content dt {
+  color: #6c6c6c;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.tab-content dd {
+  margin-bottom: 30px;
+}
+.tab-content > .c_user-modify > .user-modify-bottom {
+  position: relative;
+  height: 40px;
+  margin-top: 80px;
+}
+.tab-content > .c_user-modify > .user-modify-bottom > button {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  vertical-align: top;
+  border: none;
+  width: 80px;
+  height: 40px;
+  padding: 0;
+  background-color: #000;
+  cursor: pointer;
+}
+.tab-content > .c_user-modify > .user-modify-bottom > a {
+  border-bottom: 1px solid #000;
+  position: absolute;
+  bottom: 0;
+  display: inline-block;
+  color: #000;
+  font-size: 13px;
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  .mypage-wrap {
+    display: flex;
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin: 102px auto 0;
+  }
+  .side-menu {
+    border-right: 1px solid #eeeeee94;
+    padding: 72px 50px 8px 32px ;
+  }
+  .side-menu > .user-info {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 40px;
+  }
+  .side-menu > .user-info > .user-email {
+    margin-bottom: 40px;
+  }
+  .side-menu > .tab-menu {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    padding-bottom: 40px;
+  }
+  .side-menu > .tab-menu > li {
+    position: relative;
+    padding: 0;
+  }
+  .side-menu > .tab-menu > li + li {
+    margin-top: 24px;
+    margin-left: 0;
+  }
+  .side-menu > .tab-menu > li.on {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .side-menu > .tab-menu > li a {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .side-menu > .tab-menu > li a > .material-symbols-outlined {
+    display: block;
+    font-size: 17px;
+    font-weight: 500;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+  }
+  .side-menu .mypage-logout {
+    position: relative;
+    top: 30px;
+  }
+  .tab-content {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 60px;
+    padding: 72px 32px 16px 60px;
+   }
+   .tab-content h4 {
+     font-size: 24px;
+     margin-bottom: 48px;
+   }
+   .tab-content > .c_user-modify > .user-modify-bottom {
+     position: relative;
+     height: 40px;
+     margin-top: 80px;
+   }
+   .tab-content > .c_user-modify > .user-modify-bottom > button {
+     position: absolute;
+     right: 0;
+     color: #fff;
+     font-size: 15px;
+     font-weight: 600;
+     vertical-align: top;
+     border: none;
+     width: 80px;
+     height: 40px;
+     padding: 0;
+     background-color: #000;
+     cursor: pointer;
+   }
+   .tab-content > .c_user-modify > .user-modify-bottom > a {
+     border-bottom: 1px solid #000;
+     position: absolute;
+     bottom: 0;
+     display: inline-block;
+     color: #000;
+     font-size: 13px;
+   }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  .mypage-wrap {
+    display: flex;
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin: 102px auto 0;
+  }
+  .side-menu {
+    border-right: 1px solid #eeeeee94;
+    padding: 72px 50px 8px 32px ;
+  }
+  .side-menu > .user-info {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 40px;
+  }
+  .side-menu > .user-info > .user-email {
+    margin-bottom: 40px;
+  }
+  .side-menu > .tab-menu {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    padding-bottom: 40px;
+  }
+  .side-menu > .tab-menu > li {
+    position: relative;
+    padding: 0;
+  }
+  .side-menu > .tab-menu > li + li {
+    margin-top: 24px;
+    margin-left: 0;
+  }
+  .side-menu > .tab-menu > li.on {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .side-menu > .tab-menu > li a {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .side-menu > .tab-menu > li a > .material-symbols-outlined {
+    display: block;
+    font-size: 17px;
+    font-weight: 500;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+  }
+  .side-menu .mypage-logout {
+    position: relative;
+    top: 30px;
+  }
+  .tab-content {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 60px;
+    padding: 72px 32px 16px 60px;
+   }
+   .tab-content h4 {
+     font-size: 24px;
+     margin-bottom: 48px;
+   }
+   .tab-content > .c_user-modify > .user-modify-bottom {
+     position: relative;
+     height: 40px;
+     margin-top: 80px;
+   }
+   .tab-content > .c_user-modify > .user-modify-bottom > button {
+     position: absolute;
+     right: 0;
+     color: #fff;
+     font-size: 15px;
+     font-weight: 600;
+     vertical-align: top;
+     border: none;
+     width: 80px;
+     height: 40px;
+     padding: 0;
+     background-color: #000;
+     cursor: pointer;
+   }
+   .tab-content > .c_user-modify > .user-modify-bottom > a {
+    border-bottom: 1px solid #000;
+    position: absolute;
+    bottom: 0;
+    display: inline-block;
+    color: #000;
+    font-size: 13px;
+  }
+}
