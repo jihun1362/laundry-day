@@ -189,6 +189,89 @@ header > .header_bottom > nav.util > ul > li.user, li.help {display: none;}
 header > .header_bottom > nav.util > ul > li > a > iconify-icon {font-size: 24px;}
 header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size: 22px;}
 
+.bell_list {
+  z-index: 100;
+  border: 1.5px solid #000;
+  position: fixed;
+  top: 92px;
+  right: 17px;
+  bottom: 0;
+  width: 400px;
+  height: 480px;
+  background-color: #fff;
+}
+.bell_list > .bell-title {
+  border-bottom: 1.5px solid #000;
+  padding: 20px;
+}
+.bell_list > .bell-title > h3 {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+}
+.bell_list > .bell-title > .bell-count {
+  font-size: 14px;
+  font-weight: 600;
+}
+.bell_list > .scroll-container {
+  overflow: scroll;
+  height: 400px;
+}
+.bell_list .scroll-container .close_btn {
+  font-size: 0;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.bell_list .scroll-container .close_btn iconify-icon {
+  color: #000;
+  font-size: 23px;
+}
+.bell_list .bell-container {
+  display: flex;
+  padding: 20px 20px 20px 30px;
+}
+.bell_list .bell-container .bell-wrap {
+  box-sizing: border-box;
+  width: 400px;
+  padding-left: 20px;
+  order: 2;
+}
+.bell_list .bell-container .bell-wrap .bell-status {
+  font-size: 14px;
+  font-weight: 600;
+}
+.bell_list .bell-container .bell-wrap .bell-date {
+  color: #6c6c6c;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.bell_list .bell-container .bell-wrap .bell-link {
+  color: #000;
+  font-size: 14px;
+}
+.bell_list .bell-container .bell-img-wrap {
+  box-sizing: border-box;
+  position: relative;
+  width: 60px;
+  order: 1;
+}
+.bell_list .bell-container .bell-img-wrap .bell-img {
+  background: url('/Frontend/images/favicon.png') center / 35px no-repeat;
+  border: 1.5px solid #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+}
+.bell_list .bell-container .material-symbols-outlined {
+  top: 40px;
+  right: 0;
+  order: 3;
+}
+
 /* Modal */
 .modal {
   overflow: hidden;
