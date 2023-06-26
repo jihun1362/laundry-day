@@ -55,6 +55,7 @@ import static com.meta.laundry_day.common.message.ErrorCode.LAUNDRY_RESIST_DONE_
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_ONLY_ONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.PROGRESS_NOT_FOUND;
+import static com.meta.laundry_day.common.message.ErrorCode.PROGRESS_PAMENT_COMPLETE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.STABLEPRICING_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.WRONG_REGIST_DONE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.WRONG_STATUS_CHANGE_ERROR;
@@ -165,7 +166,8 @@ public class OrderService {
 
         progress.doneRegist();
         progress.update(ProgressStatus.세탁진행중);
-        createAlarm(user, AlarmType.WashingStart);
+        Alarm alarm = alarmMapper.toAlarm(order.getUser(), AlarmType.WashingStart);
+        alarmRepository.save(alarm);
 
         List<Laundry> laundrys = laundryRepository.findAllByProgress(progress);
 
@@ -183,7 +185,7 @@ public class OrderService {
         //세탁물 총 금액의 30%
         Double dayDeliveryFee = 0.0;
 
-        if (order.getLaundryType().equals(LaundryType.day)){
+        if (order.getLaundryType().equals(LaundryType.day)) {
             dayDeliveryFee = amount * 0.3;
         }
 
@@ -267,22 +269,19 @@ public class OrderService {
         Payment payment = paymentRepository.findByOrderId(order.getId());
 
         if (progress.getStatus().equals(수거준비중) || progress.getStatus().equals(수거진행중) || progress.getStatus().equals(수거완료) || progress.getStatus().equals(ProgressStatus.세탁준비중)) {
-            return orderMapper.toResponse(progress, laundryResponseDtoList);
+            return orderMapper.toResponse(progress, laundryResponseDtoList, order);
         }
 
-        return orderMapper.toResponse(progress, laundryResponseDtoList, payment);
+        return orderMapper.toResponse(progress, laundryResponseDtoList, payment, order);
     }
 
     @Transactional
     public void updateProgress(User user, String status, Long progressId) {
         Progress progress = progressRepository.findById(progressId).orElseThrow(() -> new CustomException(PROGRESS_NOT_FOUND));
 
+
+
         //잘못된 접근 차단
-        if (progress.getStatus().equals(수거준비중)) {
-            if (!status.equals(String.valueOf(수거진행중))) {
-                throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
-            }
-        }
         if (progress.getStatus().equals(수거진행중)) {
             if (!status.equals(String.valueOf(수거완료))) {
                 throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
@@ -302,6 +301,9 @@ public class OrderService {
             }
         }
         if (progress.getStatus().equals(세탁완료)) {
+            if (progress.getOrder().getPaymentDone() == 1) {
+                throw new CustomException(PROGRESS_PAMENT_COMPLETE_ERROR);
+            }
             if (!status.equals(String.valueOf(배송준비중))) {
                 throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
             }
@@ -310,6 +312,8 @@ public class OrderService {
             if (!status.equals(String.valueOf(배송진행중))) {
                 throw new CustomException(WRONG_STATUS_CHANGE_ERROR);
             }
+            Alarm alarm = alarmMapper.toAlarm(progress.getOrder().getUser(), AlarmType.DeliveryStart);
+            alarmRepository.save(alarm);
         }
         if (progress.getStatus().equals(배송진행중)) {
             if (!status.equals(String.valueOf(배송완료))) {
@@ -323,23 +327,11 @@ public class OrderService {
         if (String.valueOf(ProgressStatus.배송완료).equals(status)) {
             Order order = orderRepository.findByProgress(progress);
             order.doneOrder();
+            Alarm alarm = alarmMapper.toAlarm(progress.getOrder().getUser(), AlarmType.DeliveryDone);
+            alarmRepository.save(alarm);
         }
 
         progress.update(ProgressStatus.valueOf(status));
-
-        switch (ProgressStatus.valueOf(status)) {
-            case 수거진행중:
-                createAlarm(user, AlarmType.PickupStart);
-                break;
-            case 배송진행중:
-                createAlarm(user, AlarmType.DeliveryStart);
-                break;
-            case 배송완료:
-                createAlarm(user, AlarmType.DeliveryDone);
-                break;
-            default:
-                break;
-        }
     }
 
     @Transactional

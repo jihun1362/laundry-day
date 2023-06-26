@@ -53,29 +53,35 @@ public class OrderMapper {
                 .build();
     }
 
-    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList, Payment payment) {
+    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList, Payment payment, Order order) {
         return ProgressResponeDto.builder()
                 .progressId(progress.getId())
                 .status(String.valueOf(progress.getStatus()))
                 .totalStablePrice(payment.getTotalStablePrice())
-                .totalSurcharge(payment.getTotalStablePriceSurcharge())
+                .totalSurcharge(payment.getDayDeliveryFee())
                 .deliveryFee(payment.getDeliveryFee())
+                .dayDeliveryFee(payment.getDayDeliveryFee())
                 .discountRate(payment.getDiscountRate())
                 .usePoint(payment.getUsePoint())
+                .totalAmont(payment.getTotalAmount())
+                .orderRequest(order.getOrderRequest())
                 .laundryResponseDtoList(laundryResponseDtoList)
                 .createAt(String.valueOf(progress.getCreatedAt()))
                 .build();
     }
 
-    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList) {
+    public ProgressResponeDto toResponse(Progress progress, List<LaundryResponseDto> laundryResponseDtoList, Order order) {
         return ProgressResponeDto.builder()
                 .progressId(progress.getId())
                 .status(String.valueOf(progress.getStatus()))
                 .totalStablePrice(0L)
-                .totalSurcharge(0L)
+                .totalSurcharge(0.0)
                 .deliveryFee(0L)
+                .dayDeliveryFee(0.0)
                 .discountRate(0.0)
                 .usePoint(0.0)
+                .totalAmont(0.0)
+                .orderRequest(order.getOrderRequest())
                 .laundryResponseDtoList(laundryResponseDtoList)
                 .createAt(String.valueOf(progress.getCreatedAt()))
                 .build();

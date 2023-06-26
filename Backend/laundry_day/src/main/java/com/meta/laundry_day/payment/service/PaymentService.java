@@ -8,9 +8,12 @@ import com.meta.laundry_day.common.exception.CustomException;
 import com.meta.laundry_day.order.dto.LaundryResponseDto;
 import com.meta.laundry_day.order.entity.Laundry;
 import com.meta.laundry_day.order.entity.Order;
+import com.meta.laundry_day.order.entity.Progress;
+import com.meta.laundry_day.order.entity.ProgressStatus;
 import com.meta.laundry_day.order.mapper.OrderMapper;
 import com.meta.laundry_day.order.repository.LaundryRepository;
 import com.meta.laundry_day.order.repository.OrderRepository;
+import com.meta.laundry_day.order.repository.ProgressRepository;
 import com.meta.laundry_day.payment.dto.CardRequestDto;
 import com.meta.laundry_day.payment.dto.CardResponseDto;
 import com.meta.laundry_day.payment.dto.PaymentResponseDto;
@@ -47,6 +50,8 @@ import static com.meta.laundry_day.common.message.ErrorCode.AUTHORIZATION_FAIL;
 import static com.meta.laundry_day.common.message.ErrorCode.CARD_INFORM_NOT_FOUNT_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.CARD_NOT_FOUND;
 import static com.meta.laundry_day.common.message.ErrorCode.ORDER_NOT_FOUND;
+import static com.meta.laundry_day.common.message.ErrorCode.PAYMENT_COMPLETE_ERROR;
+import static com.meta.laundry_day.common.message.ErrorCode.PROGRESS_STATUS_LAUNDRY_COMPLETE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.REP_CARD_DESIGNATE_ERROR;
 import static com.meta.laundry_day.common.message.ErrorCode.USER_NOT_FOUND_ERROR;
 
@@ -65,6 +70,7 @@ public class PaymentService {
     private final OrderMapper orderMapper;
     private final AlarmMapper alarmMapper;
     private final AlarmRepository alarmRepository;
+    private final ProgressRepository progressRepository;
 
     @Transactional
     public void createCard(User user, CardRequestDto requestDto) throws IOException, InterruptedException, ParseException {
@@ -147,9 +153,19 @@ public class PaymentService {
     public void createPayment(Long orderId) throws IOException, InterruptedException, ParseException {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
 
+        if (paymentDtailsRepository.findByOrder(order) != null){
+            throw new CustomException(PAYMENT_COMPLETE_ERROR);
+        }
+
+        Progress progress = progressRepository.findByOrder(order);
+
+        if (!progress.getStatus().equals(ProgressStatus.세탁완료)){
+            throw new CustomException(PROGRESS_STATUS_LAUNDRY_COMPLETE_ERROR);
+        }
+
         User user = order.getUser();
 
-        Card card = cardRepository.findByUserAndMainCard(user, 1);
+        Card card = order.getCard();
 
         Payment payment = paymentRepository.findByOrderId(order.getId());
 
@@ -164,6 +180,8 @@ public class PaymentService {
         PaymentDtails paymentDtails = paymentMapper.toPaymentDetails(user, order, card, payment, response.body());
 
         paymentDtailsRepository.save(paymentDtails);
+
+
         order.setPaymentDtails(paymentDtails);
         order.setPaymentDone();
 
@@ -182,6 +200,8 @@ public class PaymentService {
 
         Alarm alarm = alarmMapper.toAlarm(user, AlarmType.CompletePayment);
         alarmRepository.save(alarm);
+
+        progress.update(ProgressStatus.배송준비중);
     }
 
     @Transactional(readOnly = true)

@@ -29,6 +29,9 @@ public enum ErrorCode {
     LAUNDRY_REGIST_DONE_ERROR("세탁물 등록이 이미 완료되었습니다.", 400),
     WRONG_STATUS_CHANGE_ERROR("잘못된 단계의 상태 변경입니다.", 400),
     WRONG_REGIST_DONE_ERROR("세탁물 등록이 완료되지 않앗습니다.", 400),
+    PAYMENT_COMPLETE_ERROR("이미 결제 처리가 완료된 주문입니다.", 400),
+    PROGRESS_STATUS_LAUNDRY_COMPLETE_ERROR("세탁 완료 상태에서만 결제가 가능합니다.", 400),
+    PROGRESS_PAMENT_COMPLETE_ERROR("결제를 해야만 다음 단계를 진행할 수 있습니다.", 400),
 
     //404 찾을 수 없음
     ADDRESS_NOT_FOUND("해당 주소를 찾을 수가 없습니다.", 404),

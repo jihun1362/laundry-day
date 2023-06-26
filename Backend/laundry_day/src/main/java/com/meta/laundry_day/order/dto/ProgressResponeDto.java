@@ -11,10 +11,13 @@ public class ProgressResponeDto {
     private Long progressId;
     private String status;
     private Long totalStablePrice;
-    private Long totalSurcharge;
+    private Double totalSurcharge;
     private Long deliveryFee;
+    private Double dayDeliveryFee;
     private Double discountRate;
     private Double usePoint;
+    private Double totalAmont;
+    private String orderRequest;
     private List<LaundryResponseDto> laundryResponseDtoList;
     private String createAt;
 }
