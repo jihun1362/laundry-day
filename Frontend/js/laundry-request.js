@@ -159,8 +159,8 @@ async function openTossPayments() {
   tossPayments.requestBillingAuth('카드', { // 결제수단 파라미터
     // 빌링키 발급 요청을 위한 파라미터
     customerKey: 'YPGHfJkq0OE4gitafS83',
-    successUrl: 'http://http://laundry-day.site/views/payment-success.html', // 결제 성공 페이지 URL
-    failUrl: 'http://http://laundry-day.site/views/payment-failure.html', // 결제 실패 페이지 URL
+    successUrl: 'http://laundry-day.site/views/payment-success.html', // 결제 성공 페이지 URL
+    failUrl: 'http://laundry-day.site/views/payment-failure.html', // 결제 실패 페이지 URL
   })
   .catch(function (error) {
     if (error.code === 'USER_CANCEL') {
