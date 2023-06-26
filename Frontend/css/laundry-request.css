@@ -474,6 +474,11 @@ a {text-decoration: none;}
   position: absolute;
   right: 0;
 }
+.request-form > .terms-agreement > .terms-agreement-notice > p {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 25px;
+}
 .term-validation {
   display: none;
   position: relative;
