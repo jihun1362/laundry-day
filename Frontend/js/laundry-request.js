@@ -418,8 +418,11 @@ submitRequestBtn.addEventListener('click', function(e) {
       try {
         const responseData = await submitLaundryRequest(formRequestData);
         console.log('세탁 신청이 완료되었습니다.', responseData);
+        alert('수거 신청이 완료되었습니다.');
+        window.location.href = '/Frontend/index.html';
       } catch (error) {
         console.error('세탁 신청이 실패했습니다:', error);
+        alert('세탁 신청에 실패했습니다. 다시 시도해주세요.');
       }
     }
 

@@ -373,6 +373,8 @@ a {text-decoration: none;}
   font-size: 12px;
 }
 .card-list-section > .card-list {
+  overflow: hidden;
+  height: 275px;
   margin-bottom: 20px;
 }
 .card-list-section > .card-list > li {
@@ -458,6 +460,13 @@ a {text-decoration: none;}
 }
 .request-form > .terms-agreement > label {
   font-weight: 600;
+}
+.request-form > .terms-agreement > label > span {
+  color: #828C94;
+  font-size: 14px;
+  font-weight: 600;
+  vertical-align: 1px;
+  margin-left: 5px;
 }
 .request-form > .terms-agreement > a {
   color: #0d6bbd;
