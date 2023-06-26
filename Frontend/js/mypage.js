@@ -40,5 +40,5 @@ function logout(e) {
   // 쿠키에서 토큰 제거
   document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   // 로그아웃 후 리다이렉트 또는 필요한 동작 수행
-  window.location.href = '/Frontend/views/login.html'; // 로그인 페이지로 리다이렉트
+  window.location.href = 'http://laundry-day.site/views/login.html'; // 로그인 페이지로 리다이렉트
 }

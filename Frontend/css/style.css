@@ -68,10 +68,10 @@ a {text-decoration: none;}
 }
 .visual > ul.social_bar > li {margin: 0 35px;}
 .visual > ul.social_bar > li > a {display: block; font-size: 0; width:34px; height:31px;}
-.visual > ul.social_bar > li > a.facebook { background: url('../images/icon_facebook.png') center / 30px no-repeat;} 
-.visual > ul.social_bar > li > a.google {background: url('../images/icon_google.png') center / 30px no-repeat;} 
-.visual > ul.social_bar > li > a.youtube {background: url('../images/icon_youtube.png') center / 30px no-repeat;} 
-.visual > ul.social_bar > li > a.instagram {background: url('../images/icon_instagram.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.facebook { background: url('http://laundry-day.site/images/icon_facebook.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.google {background: url('http://laundry-day.site/images/icon_google.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.youtube {background: url('http://laundry-day.site/images/icon_youtube.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.instagram {background: url('http://laundry-day.site/images/icon_instagram.png') center / 30px no-repeat;} 
 
 .intro_btn {position: absolute; left: 50%; bottom: 20px; transform: translate(-50%, 0);}
 .intro_btn >.material-symbols-outlined {font-size: 60px; vertical-align: top; cursor: pointer;}
@@ -120,15 +120,15 @@ a {text-decoration: none;}
   margin: 0 auto;
 }
 .service_about > .about_container > .about_title > .about_deco {
-  background: url('../images/main_deco1.svg') center / contain no-repeat;
+  background: url('http://laundry-day.site/images/main_deco1.svg') center / contain no-repeat;
   width: 70px;
   height: 70px;
 }
 .service_about > .about_container:nth-child(2) > .about_title > .about_deco {
-  background: url('../images/main_deco2.svg') center / contain no-repeat;
+  background: url('http://laundry-day.site/images/main_deco2.svg') center / contain no-repeat;
 }
 .service_about > .about_container:nth-child(3) > .about_title > .about_deco {
-  background: url('../images/main_deco3.svg') center / contain no-repeat;
+  background: url('http://laundry-day.site/images/main_deco3.svg') center / contain no-repeat;
 }
 .service_about > .about_container > .about_title > h4 {
   position: absolute;
@@ -180,16 +180,16 @@ a {text-decoration: none;}
   margin: 50px auto 30px;
 }
 .service_content > .content_container:nth-child(1) > .content_wrap > .content_img {
-  background: url('../images/main_img1.png') center / cover no-repeat;
+  background: url('http://laundry-day.site/images/main_img1.png') center / cover no-repeat;
 }
 .service_content > .content_container:nth-child(2) > .content_wrap > .content_img {
-  background: url('../images/main_img2.png') center / cover no-repeat;
+  background: url('http://laundry-day.site/images/main_img2.png') center / cover no-repeat;
 }
 .service_content > .content_container:nth-child(3) > .content_wrap > .content_img {
-  background: url('../images/main_img3.png') center / cover no-repeat;
+  background: url('http://laundry-day.site/images/main_img3.png') center / cover no-repeat;
 }
 .service_content > .content_container:nth-child(4) > .content_wrap > .content_img {
-  background: url('../images/main_img4.png') center / cover no-repeat;
+  background: url('http://laundry-day.site/images/main_img4.png') center / cover no-repeat;
 }
 .service_content > .content_container > .content_wrap > .content_detail {
   margin: 0 auto 30px;
