@@ -75,8 +75,7 @@ function showAlert(message) {
 
 // 메인 페이지로 이동 함수
 function redirectToMainPage() {
-  window.location.href = '/Frontend/index.html';
+  window.location.href = 'http://laundry-day.site/index.html';
 }
-
 // 실행할 코드
 removeTokenIfExpired(); // 만료된 토큰이 있다면 쿠키에서 토큰 삭제

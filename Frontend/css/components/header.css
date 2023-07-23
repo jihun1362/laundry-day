@@ -257,7 +257,7 @@ header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size:
   order: 1;
 }
 .bell_list .bell-container .bell-img-wrap .bell-img {
-  background: url('/Frontend/images/favicon.png') center / 35px no-repeat;
+  background: url('http://laundry-day.site/images/favicon.png') center / 35px no-repeat;
   border: 1.5px solid #000;
   border-radius: 50%;
   position: absolute;
@@ -304,7 +304,7 @@ header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size:
   font-weight: 700;
 }
 .modal > .example-img {
-  background: url('/Frontend/images/modal_img.svg') left / contain no-repeat;
+  background: url('http://laundry-day.site/images/modal_img.svg') left / contain no-repeat;
   height: 200px;
 }
 .modal > .close-wrap {

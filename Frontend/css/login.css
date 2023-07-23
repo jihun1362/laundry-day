@@ -157,14 +157,14 @@ a {text-decoration: none;}
   height: 45px;
 }
 .login-form > .login_sns > .sns_wrap > a.naver {
-  background: url(../images/sns_naver.svg) center / contain no-repeat;
+  background: url(http://laundry-day.site/images/sns_naver.svg) center / contain no-repeat;
 }
 .login-form > .login_sns > .sns_wrap > a.kakao {
   margin: 0 30px;
-  background: url(../images/sns_kakao.svg) center / contain no-repeat;
+  background: url(http://laundry-day.site/images/sns_kakao.svg) center / contain no-repeat;
 }
 .login-form > .login_sns > .sns_wrap > a.apple {
-  background: url(../images/sns_apple.svg) center / contain no-repeat;
+  background: url(http://laundry-day.site/images/sns_apple.svg) center / contain no-repeat;
 }
 
 /* ~ 767 */

@@ -9,7 +9,7 @@ Vue.component('app-header', {
   <header>
     <div class="header_top">15, JONG-RO 33-GIL, JONGNO-GU, SEOUL | TEL- 02-3704-5000</div>
     <div class="header_bottom">
-      <h1 class="logo"><a href="/Frontend/index.html">○LAUNDRY○DAY○</a></h1>
+      <h1 class="logo"><a href="http://laundry-day.site/index.html">○LAUNDRY○DAY○</a></h1>
       <nav class="category">
         <a href="javascript:void(0)" class="menu_btn" @click="showMenu">
           <!-- ::before -->
@@ -33,8 +33,8 @@ Vue.component('app-header', {
                 <li><iconify-icon icon="material-symbols:help-outline"></iconify-icon><a href="javascript:void(0)">공지사항</a> | <a href="javascript:void(0)">자주 찾는 질문</a></li>
                 <li>
                   <iconify-icon icon="mdi:account"></iconify-icon>
-                  <a v-if="isLoggedIn" href="/Frontend/views/mypage.html">내 계정</a>
-                  <a v-else href="/Frontend/views/login.html">로그인</a>
+                  <a v-if="isLoggedIn" href="http://laundry-day.site/views/mypage.html">내 계정</a>
+                  <a v-else href="http://laundry-day.site/views/login.html">로그인</a>
                   <a v-if="isLoggedIn" href="javascript:void(0)" class="show-logout" @click="logout">로그아웃</a>
                 </li>
               </ul>
@@ -48,11 +48,11 @@ Vue.component('app-header', {
       <nav class="util">
         <ul>
           <li class="user">
-            <a v-if="isLoggedIn" href="/Frontend/views/mypage.html">마이페이지<iconify-icon icon="mdi:account"></iconify-icon></a>
-            <a v-else href="/Frontend/views/login.html">계정<iconify-icon icon="mdi:account"></iconify-icon></a>
+            <a v-if="isLoggedIn" href="http://laundry-day.site/views/mypage.html">마이페이지<iconify-icon icon="mdi:account"></iconify-icon></a>
+            <a v-else href="http://laundry-day.site/views/login.html">계정<iconify-icon icon="mdi:account"></iconify-icon></a>
           </li>
           <li class="bell"><a href="javascript:void(0)" @click="toggleBell">알림<iconify-icon icon="ph:bell-bold"></iconify-icon></a></li>
-          <li class="list"><a href="/Frontend/views/order-status.html">이용내역<iconify-icon icon="ci:shopping-bag-02"></iconify-icon></a></li>
+          <li class="list"><a href="http://laundry-day.site/views/order-status.html">이용내역<iconify-icon icon="ci:shopping-bag-02"></iconify-icon></a></li>
           <li class="help"><a href="javascript:void(0)">고객지원<iconify-icon icon="material-symbols:help-outline"></iconify-icon></a></li>
         </ul>
         <!-- 알림 -->
@@ -157,14 +157,15 @@ Vue.component('app-header', {
     },
     openModal() {
       // 세탁신청 페이지로 이동
-      window.location.href = '/Frontend/views/laundry-request.html';
+      window.location.href = 'http://laundry-day.site/views/laundry-request.html';
     },
     hideModal() {
       // 오늘 하루 보지 않음을 선택한 경우 쿠키를 생성하여 상태 저장
       const expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 1); // 다음 날로 설정
-      document.cookie = `hideModal=true; expires=${expirationDate.toUTCString()}; path=/`;
+      expirationDate.setTime(expirationDate.getTime() + (2 * 60 * 1000)); // 현재 시간으로부터 2분 후로 설정
       
+      document.cookie = `hideModal=true; expires=${expirationDate.toUTCString()}; path=/`;
+    
       this.isModalVisible = false;
     },
     shouldShowModal() {
@@ -182,7 +183,7 @@ Vue.component('app-header', {
       // 쿠키에서 토큰 제거
       document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       // 로그아웃 후 리다이렉트 또는 필요한 동작 수행
-      window.location.href = '/Frontend/views/login.html'; // 로그인 페이지로 리다이렉트
+      window.location.href = 'http://laundry-day.site/views/login.html'; // 로그인 페이지로 리다이렉트
     },
     async getNotifications() {
       try {
