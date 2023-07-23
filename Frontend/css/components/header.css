@@ -1,0 +1,392 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+header {
+  position: relative; 
+  left: 0; 
+  right: 0; 
+  height: 92px;  
+  background-color: #E6F3FF;
+}
+header > .header_top {
+  font-family: 'Nunito Sans', sans-serif;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 200;
+  background-color: #000;
+  text-align: center;
+  line-height: 32px;
+  letter-spacing: 1px;
+}
+header > .header_bottom {
+  position: relative;
+  left: 0; 
+  right: 0;
+  height: 60px;  
+}
+header > .header_bottom > h1.logo {
+  position: absolute; 
+  left: 40px; 
+  top: 50%; 
+  transform: translate(0, -50%);
+}
+header > .header_bottom > h1.logo > a {
+  font-size: 18px; 
+  color: #000; 
+  letter-spacing: 4px;
+}
+header > .header_bottom > nav.category {
+  position: absolute; 
+  top: 22px; 
+  right: 40px;
+}
+header > .header_bottom > nav.category > ul {
+  display: none;
+}
+header > .header_bottom > nav.category > .menu_btn {
+  box-sizing: border-box;
+  margin-left: 15px;
+  display: block;
+  width: 20px;
+  height: 18px;
+}
+header > .header_bottom > nav.category > .menu_btn > span {
+  font-size: 0;
+  background-color: #000;
+  display: block;
+  width: 18px;
+  height: 2px;
+  margin-bottom: 5px;
+}
+header > .header_bottom > nav.category > .menu_btn::before {
+  content: '';
+  background-color: #000;
+  display: block;
+  width: 18px;
+  height: 2px;
+  margin-bottom: 5px;
+}
+header > .header_bottom > nav.category > .menu_btn::after {
+  content: '';
+  background-color: #000;
+  display: block;
+  width: 18px;
+  height: 2px;
+}
+header > .header_bottom > nav.category > .menu_list {
+  display: none; 
+  background-color: #fff; 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  z-index: 1000;
+}
+header > .header_bottom > nav.category > .menu_list {
+  padding-top: 47px;
+}
+header > .header_bottom > nav.category > .menu_list > .close_btn > span {
+  font-size: 0;
+}
+header > .header_bottom > nav.category > .menu_list > .close_btn > span > iconify-icon {
+  font-size: 30px; 
+  position: absolute; 
+  right: 40px;
+}
+header > .header_bottom > nav.category > .menu_list.on {
+  display: block;
+}
+header > .header_bottom > nav.category > .menu_list.on > .close_btn iconify-icon {
+  transition: all ease .3s;
+}
+header > .header_bottom > nav.category > .menu_list.on > .close_btn iconify-icon:hover {
+  transform: rotate(90deg);
+}
+header > .header_bottom > nav.category > .menu_list.on > ul {
+  position: absolute; 
+  top: 77px; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  padding: 30px;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul > li {
+  padding: 14px 0;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul > li.util a.show-logout::before {
+  content: ' | ';
+  margin-left: 4px;
+  margin-right: 4px;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul > :not(li.util) {
+  position: relative;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul > :not(li.util) > a > span {
+  position: absolute; 
+  top: 50%; 
+  right: 0; 
+  transform: translate(0, -50%); 
+  font-size: 20px;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul > li > a {
+  font-family: 'NanumSquareExtraBold'; 
+  color: #000; 
+  font-size: 16px;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul a.text {
+  font-family: 'Montserrat', sans-serif; 
+  font-size: 17px; 
+  font-weight: 700;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul a span {
+  vertical-align: middle;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul li.util {
+  position: absolute; 
+  top: 238px; 
+  left: 30px; 
+  right: 30px; 
+  bottom: 30px;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul li.util > ul {
+  position: absolute; 
+  bottom: 0;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul li.util > ul > li {
+  padding: 14px 0;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul li.util > ul > li > iconify-icon {
+  font-size: 22px; 
+  vertical-align: -6px; 
+  margin-right: 15px;
+}
+header > .header_bottom > nav.category > .menu_list.on > ul li.util > ul > li > a {
+  color: #000; 
+  font-size: 14px; 
+  font-weight: 400;
+}
+header > .header_bottom > nav.util {position: absolute; top: 18px; right: 73px;}
+header > .header_bottom > nav.util > ul {display: flex;}
+header > .header_bottom > nav.util > ul > li {margin: 0 15px;}
+header > .header_bottom > nav.util > ul > li > a {font-family: 'NanumSquareBold'; font-size: 0; color: #000;}
+header > .header_bottom > nav.util > ul > li.user, li.help {display: none;}
+header > .header_bottom > nav.util > ul > li > a > iconify-icon {font-size: 24px;}
+header > .header_bottom > nav.util > ul > li.bell > a > iconify-icon {font-size: 22px;}
+
+.bell_list {
+  z-index: 100;
+  border: 1.5px solid #000;
+  position: fixed;
+  top: 92px;
+  right: 17px;
+  bottom: 0;
+  width: 400px;
+  height: 480px;
+  background-color: #fff;
+}
+.bell_list > .bell-title {
+  border-bottom: 1.5px solid #000;
+  padding: 20px;
+}
+.bell_list > .bell-title > h3 {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+}
+.bell_list > .bell-title > .bell-count {
+  font-size: 14px;
+  font-weight: 600;
+}
+.bell_list > .scroll-container {
+  overflow: scroll;
+  height: 400px;
+}
+.bell_list .scroll-container .close_btn {
+  font-size: 0;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.bell_list .scroll-container .close_btn iconify-icon {
+  color: #000;
+  font-size: 23px;
+}
+.bell_list .bell-container {
+  display: flex;
+  padding: 20px 20px 20px 30px;
+}
+.bell_list .bell-container .bell-wrap {
+  box-sizing: border-box;
+  width: 400px;
+  padding-left: 20px;
+  order: 2;
+}
+.bell_list .bell-container .bell-wrap .bell-status {
+  font-size: 14px;
+  font-weight: 600;
+}
+.bell_list .bell-container .bell-wrap .bell-date {
+  color: #6c6c6c;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.bell_list .bell-container .bell-wrap .bell-link {
+  color: #000;
+  font-size: 14px;
+}
+.bell_list .bell-container .bell-img-wrap {
+  box-sizing: border-box;
+  position: relative;
+  width: 60px;
+  order: 1;
+}
+.bell_list .bell-container .bell-img-wrap .bell-img {
+  background: url('http://laundry-day.site/images/favicon.png') center / 35px no-repeat;
+  border: 1.5px solid #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+}
+.bell_list .bell-container .material-symbols-outlined {
+  top: 40px;
+  right: 0;
+  order: 3;
+}
+
+/* Modal */
+.modal {
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1.5px solid #000;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 350px;
+  height: 500px;
+  margin-top: 60px;
+}
+.modal > .modal-content {
+  width: 300px;
+  margin: 45px auto 30px;
+}
+.modal > .modal-content > h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.modal > .modal-content > p {
+  font-size: 23px;
+  font-weight: 500;
+}
+.modal > .modal-content > p > span {
+  font-size: 26px;
+  font-weight: 700;
+}
+.modal > .example-img {
+  background: url('http://laundry-day.site/images/modal_img.svg') left / contain no-repeat;
+  height: 200px;
+}
+.modal > .close-wrap {
+  background-color: #000;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  line-height: 40px;
+}
+.modal > .close-wrap > .today-modal-close-btn {
+  color: #fff;
+  font-size: 13px;
+  text-decoration: underline;
+  padding-left: 10px;
+}
+.modal > .close-wrap > .modal-close-btn > span {
+  font-size: 0;
+  vertical-align: middle;
+}
+.modal > .close-wrap > .modal-close-btn > span > iconify-icon {
+  color: #fff;
+  font-size: 20px; 
+  position: absolute; 
+  top: 50%;
+  right: 10px;
+  transform: translate(0, -50%);
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  header {
+    z-index: 100; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    border-bottom: 10px solid #fff;
+  }
+  header > .header_bottom > h1.logo {
+    position: absolute; 
+    left: 40px; 
+    top: 50%; 
+    transform: translate(0, -50%);
+  }
+  header > .header_bottom > nav.category > .menu_btn {margin-left: 20px;}
+  header > .header_bottom > nav.util {right: 78px;}
+  header > .header_bottom > nav.util > ul > li {margin: 0 20px;}
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  header {
+    z-index: 100; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    border-bottom: 10px solid #fff;
+  }
+  header > .header_bottom > h1.logo {
+    position: absolute; 
+    left: 40px; 
+    top: 50%; 
+    transform: translate(0, -50%);
+  }
+  header > .header_bottom > nav.category {
+    position: absolute; 
+    top: 50%; 
+    left: 290px; 
+    transform: translate(0, -50%);
+  }
+  header > .header_bottom > nav.category > .menu_btn {display: none;}
+  header > .header_bottom > nav.category > ul {display: flex;}
+  header > .header_bottom > nav.category > ul > li {margin: 0 10px;}
+  header > .header_bottom > nav.category > ul > li > a {font-size: 13px; font-weight: 700; color: #000;}
+  header > .header_bottom > nav.category > ul > li > :not(.text) {font-family: 'Noto Sans KR', sans-serif;}
+  header > .header_bottom > nav.util {right: 40px;}
+  header > .header_bottom > nav.util > ul > li {margin: 0 20px;}
+  header > .header_bottom > nav.util > ul > li.user, li.help {display: block;}
+  header > .header_bottom > nav.util > ul > li.help {margin-right: 0;}
+}

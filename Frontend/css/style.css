@@ -1,0 +1,498 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+	min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+/* 비주얼 영역 */
+.visual {
+  position: relative;
+  background-color: #fff;
+  height: 650px
+}
+.visual > picture > * {
+  position: absolute; 
+  top: 145px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.visual > .title > h2 {
+  z-index: 2;
+  font-size: 33px;
+  font-weight: 900;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 305px;
+  transform: translate(-50%, 0);
+}
+.visual > .title > h2 + h2 {
+  top: 345px;
+}
+.visual > .title > h2 + h2::before, h2 + h2::after {
+  content: '○';
+  margin: 0 10px;
+  font-size: 20px;
+  font-weight: 400;
+  vertical-align: middle;
+}
+.visual > img {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 255px;
+  transform: translate(-50%, 0);
+  width: 200px;
+  height: 197px;
+  object-fit: cover;
+}
+.visual > ul.social_bar {
+  position: absolute; 
+  top: 55px; 
+  left: 50%; 
+  transform: translate(-50%, 0); 
+  display: flex; 
+  align-items: center;
+}
+.visual > ul.social_bar > li {margin: 0 35px;}
+.visual > ul.social_bar > li > a {display: block; font-size: 0; width:34px; height:31px;}
+.visual > ul.social_bar > li > a.facebook { background: url('http://laundry-day.site/images/icon_facebook.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.google {background: url('http://laundry-day.site/images/icon_google.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.youtube {background: url('http://laundry-day.site/images/icon_youtube.png') center / 30px no-repeat;} 
+.visual > ul.social_bar > li > a.instagram {background: url('http://laundry-day.site/images/icon_instagram.png') center / 30px no-repeat;} 
+
+.intro_btn {position: absolute; left: 50%; bottom: 20px; transform: translate(-50%, 0);}
+.intro_btn >.material-symbols-outlined {font-size: 60px; vertical-align: top; cursor: pointer;}
+
+/* SERVICE INTRO 영역 */
+.service_intro {
+  position: relative;
+  box-sizing: border-box;
+  width: 400px;
+  height: 500px;
+  margin: 0 auto;
+  padding: 105px 0;
+}
+.service_intro > .intro_title > h3 {
+  font-size: 33px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+.service_intro > .intro_title > .horizontal-line {
+  background-color: #000;
+  width: 400px;
+  height: 15px;
+  margin-bottom: 20px;
+}
+.service_intro > .intro_content > p {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* SERVICE ABOUT 영역 */
+.service_about {
+  position: relative;
+}
+.service_about > .about_container {
+  background-color: #fff;
+  padding: 70px 0;
+}
+.service_about > .about_container:nth-child(2) {
+  background-color: #CFE6FA;
+}
+.service_about > .about_container > .about_title {
+  position: relative;
+  box-sizing: border-box;
+  width: 400px;
+  margin: 0 auto;
+}
+.service_about > .about_container > .about_title > .about_deco {
+  background: url('http://laundry-day.site/images/main_deco1.svg') center / contain no-repeat;
+  width: 70px;
+  height: 70px;
+}
+.service_about > .about_container:nth-child(2) > .about_title > .about_deco {
+  background: url('http://laundry-day.site/images/main_deco2.svg') center / contain no-repeat;
+}
+.service_about > .about_container:nth-child(3) > .about_title > .about_deco {
+  background: url('http://laundry-day.site/images/main_deco3.svg') center / contain no-repeat;
+}
+.service_about > .about_container > .about_title > h4 {
+  position: absolute;
+  top: 0;
+  left: 90px;
+  width: 300px;
+  font-size: 19px;
+}
+.service_about > .about_container > .about_content {
+  box-sizing: border-box;
+  width: 400px;
+  margin: 0 auto;
+}
+.service_about > .about_container > .about_content > h5 {
+  font-size: 19px;
+  font-weight: 400;
+  margin: 25px 0;
+}
+.service_about > .about_container > .about_content > p {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* SERVICE COMMENT 영역 */
+.service_comment {
+  font-size: 56px;
+  font-weight: 800;
+  white-space: nowrap;
+  position: relative;
+  left: 400px;
+  padding: 70px 0 20px;
+}
+
+/* SERVICE CONTENT 영역 */
+.service_content > .content_container {
+  overflow: hidden;
+}
+.service_content > .content_container:nth-child(even) {
+  background-color: #fff;
+}
+.service_content > .content_container > .content_wrap {
+  box-sizing: border-box;
+  width: 450px;
+  margin: 0 auto;
+}
+.service_content > .content_container > .content_wrap > .content_img {
+  border-radius: 15px;
+  height: 300px;
+  margin: 50px auto 30px;
+}
+.service_content > .content_container:nth-child(1) > .content_wrap > .content_img {
+  background: url('http://laundry-day.site/images/main_img1.png') center / cover no-repeat;
+}
+.service_content > .content_container:nth-child(2) > .content_wrap > .content_img {
+  background: url('http://laundry-day.site/images/main_img2.png') center / cover no-repeat;
+}
+.service_content > .content_container:nth-child(3) > .content_wrap > .content_img {
+  background: url('http://laundry-day.site/images/main_img3.png') center / cover no-repeat;
+}
+.service_content > .content_container:nth-child(4) > .content_wrap > .content_img {
+  background: url('http://laundry-day.site/images/main_img4.png') center / cover no-repeat;
+}
+.service_content > .content_container > .content_wrap > .content_detail {
+  margin: 0 auto 30px;
+}
+.service_content > .content_container > .content_wrap > .content_detail > h4 {
+  font-size: 33px;
+}
+.service_content > .content_container > .content_wrap > .content_detail > p {
+  font-size: 17px;
+  margin: 16px 0;
+}
+.service_content > .content_container > .content_wrap > .content_detail > .button_wrap {
+  margin: 30px 0 60px;
+}
+.service_content > .content_container > .content_wrap > .content_detail > .button_wrap > a {
+  border: 2px solid #000;
+  border-radius: 50px;
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 20px;
+}
+.service_content > .content_container > .content_wrap > .content_detail > .button_wrap > a:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  /* 비주얼 영역 */
+  .visual {
+    height: 990px
+  }
+  .visual > picture > * {
+    top: 170px;
+  }
+  .visual > .title > h2 {
+    font-size: 93px;
+    top: 430px;
+  }
+  .visual > .title > h2 + h2 {
+    top: 530px;
+  }
+  .visual > .title > h2 + h2::before, h2 + h2::after {
+    font-size: 50px;
+  }
+  .visual > img {
+    top: 280px;
+    width: 500px;
+    height: 528px;
+  }
+  .visual > ul.social_bar {
+    z-index: 10;
+    position: fixed;
+    top: 160px; 
+    left: auto;
+    right: 20px;
+    transform: translate(5px, 0); 
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  .visual > ul.social_bar > li {margin: 30px 0;}
+
+  .intro_btn {position: absolute; left: 50%; bottom: 120px; transform: translate(-50%, 0);}
+  .intro_btn >.material-symbols-outlined {font-size: 100px; vertical-align: top; cursor: pointer;}
+
+  /* SERVICE INTRO 영역 */
+  .service_intro {
+    width: 743px;
+    height: 580px;
+  }
+  .service_intro > .intro_title > h3 {
+    font-size: 49px;
+    margin-bottom: 20px;
+  }
+  .service_intro > .intro_title > .horizontal-line {
+    width: 300px;
+    margin-bottom: 57px;
+  }
+  .service_intro > .intro_content > p {
+    font-size: 19px;
+    width: 550px;
+  }
+
+  /* SERVICE ABOUT 영역 */
+  .service_about > .about_container {
+    padding: 50px 0 20px;
+  }
+  .service_about > .about_container > .about_title {
+    position: relative;
+    width: 743px;
+  }
+  .service_about > .about_container > .about_title > .about_deco {
+    width: 108px;
+    height: 108px;
+  }
+  .service_about > .about_container > .about_title > h4 {
+    position: absolute;
+    top: 10px;
+    left: 140px;
+    width: 500px;
+    font-size: 20px;
+  }
+  .service_about > .about_container > .about_content {
+    position: relative;
+    top: -40px;
+    left: 19px;
+    width: 510px;
+    margin: 0 auto;
+  }
+  .service_about > .about_container > .about_content > h5 {
+    font-size: 20px;
+    margin: 0 0 25px 0;
+  }
+  .service_about > .about_container > .about_content > p {
+    font-size: 16px;
+  }
+
+  /* SERVICE COMMENT 영역 */
+  .service_comment {
+    font-size: 65px;
+    font-weight: 800;
+    position: relative;
+    left: 600px;
+    padding: 100px 0 50px;
+  }
+
+  /* SERVICE CONTENT 영역 */
+  .service_content > .content_container {
+    overflow: hidden;
+  }
+  .service_content > .content_container:nth-child(even) {
+    background-color: #fff;
+  }
+  .service_content > .content_container > .content_wrap {
+    display: flex;
+    width: 743px;
+    margin: 0 auto;
+  }
+  .service_content > .content_container > .content_wrap > .content_img {
+    width: 60%;
+    margin: 50px auto 100px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail {
+    position: relative;
+    width: 40%;
+    margin: 0 0 0 30px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail > h4 {
+    position: absolute;
+    top: 60px;
+    font-size: 44px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail > p {
+    position: absolute;
+    top: 190px;
+    font-size: 19px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail > .button_wrap {
+    position: absolute;
+    bottom: -5px;
+  }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  /* 비주얼 영역 */
+  .visual {
+    height: 990px
+  }
+  .visual > picture > * {
+    top: 170px;
+  }
+  .visual > .title > h2 {
+    font-size: 93px;
+    top: 430px;
+  }
+  .visual > .title > h2 + h2 {
+    top: 530px;
+  }
+  .visual > .title > h2 + h2::before, h2 + h2::after {
+    font-size: 50px;
+  }
+  .visual > img {
+    top: 280px;
+    width: 500px;
+    height: 528px;
+  }
+  .visual > ul.social_bar {
+    z-index: 10;
+    position: fixed;
+    top: 160px; 
+    left: auto;
+    right: 20px;
+    transform: translate(5px, 0); 
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  .visual > ul.social_bar > li {margin: 30px 0;}
+
+  .intro_btn {position: absolute; left: 50%; bottom: 120px; transform: translate(-50%, 0);}
+  .intro_btn >.material-symbols-outlined {font-size: 100px; vertical-align: top; cursor: pointer;}
+
+  /* SERVICE INTRO 영역 */
+  .service_intro {
+    width: 743px;
+    height: 580px;
+  }
+  .service_intro > .intro_title > h3 {
+    font-size: 49px;
+    margin-bottom: 20px;
+  }
+  .service_intro > .intro_title > .horizontal-line {
+    width: 300px;
+    margin-bottom: 57px;
+  }
+  .service_intro > .intro_content > p {
+    font-size: 19px;
+    width: 550px;
+  }
+
+  /* SERVICE ABOUT 영역 */
+  .service_about > .about_container {
+    padding: 50px 0 20px;
+  }
+  .service_about > .about_container > .about_title {
+    position: relative;
+    width: 743px;
+  }
+  .service_about > .about_container > .about_title > .about_deco {
+    width: 108px;
+    height: 108px;
+  }
+  .service_about > .about_container > .about_title > h4 {
+    position: absolute;
+    top: 10px;
+    left: 140px;
+    width: 500px;
+    font-size: 20px;
+  }
+  .service_about > .about_container > .about_content {
+    position: relative;
+    top: -40px;
+    left: 19px;
+    width: 510px;
+    margin: 0 auto;
+  }
+  .service_about > .about_container > .about_content > h5 {
+    font-size: 20px;
+    margin: 0 0 25px 0;
+  }
+  .service_about > .about_container > .about_content > p {
+    font-size: 16px;
+  }
+
+  /* SERVICE COMMENT 영역 */
+  .service_comment {
+    font-size: 65px;
+    font-weight: 800;
+    position: relative;
+    left: 600px;
+    padding: 100px 0 50px;
+  }
+
+  /* SERVICE CONTENT 영역 */
+  .service_content > .content_container {
+    overflow: hidden;
+  }
+  .service_content > .content_container:nth-child(even) {
+    background-color: #fff;
+  }
+  .service_content > .content_container > .content_wrap {
+    display: flex;
+    width: 743px;
+    margin: 0 auto;
+  }
+  .service_content > .content_container > .content_wrap > .content_img {
+    width: 60%;
+    margin: 50px auto 100px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail {
+    position: relative;
+    width: 40%;
+    margin: 0 0 0 30px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail > h4 {
+    position: absolute;
+    top: 60px;
+    font-size: 44px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail > p {
+    position: absolute;
+    top: 190px;
+    font-size: 19px;
+  }
+  .service_content > .content_container > .content_wrap > .content_detail > .button_wrap {
+    position: absolute;
+    bottom: -5px;
+  }
+}

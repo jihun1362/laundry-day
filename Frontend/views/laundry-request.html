@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAUNDRY DAY</title>
+
+    <!-- favicon -->
+    <link rel="icon" href="http://laundry-day.site/images/favicon.png" />
+
+    <!-- FONT -->
+    <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0"/>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://laundry-day.site/css/laundry-request.css" />
+    <link rel="stylesheet" href="http://laundry-day.site/css/components/header.css" />
+    <link rel="stylesheet" href="http://laundry-day.site/css/components/footer.css" />
+
+    <!-- ICON -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+
+    <!-- GSAP ScrollToPlugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollToPlugin.min.js"></script>
+    
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+    <!-- VUE -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+    <!-- tosspayments -->
+    <script src="https://js.tosspayments.com/v1/payment"></script>
+
+    <!-- JS -->
+    <script src="http://laundry-day.site/js/components/header.js"></script>
+    <script src="http://laundry-day.site/js/components/footer.js"></script>
+    <script defer type="module" src="http://laundry-day.site/js/laundry-request.js"></script>
+  </head>
+  <body>
+    <div id="laundry-request">
+      <!-- HEADER -->
+      <app-header></app-header>
+
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb">
+        <ul>
+          <li><a href="http://laundry-day.site/index.html"><iconify-icon icon="ion:home-sharp"></iconify-icon>HOME</a></li>
+          <li>세탁신청</li>
+        </ul>
+      </div>
+
+      <form class="request-form">
+        <p class="request-intro">
+          <span>이진희</span>님, 오늘<br>
+          문 앞의 세탁물을 수거하러 갑니다.
+        </p>
+        <div class="delivery-info">
+          <p><b>수거배송비 기준 변경 안내</b><br>서비스 이용 금액에 따라<br>3,000원 또는 5,000원 비용 적용</p>
+          <a href="javascript:void(0)">자세히보기</a>
+        </div>
+        <div class="address-info">
+          <h4>수거/배송 주소</h4>
+          <div class="address-wrap">
+            <p class="user-address"></p>
+            <span class="user-address-detail"></span>
+            <p><span class="access-method"></span><span class="access-method-detail"></span></p>
+          </div>
+          <a href="javascript:void(0)" class="address-modify">수정</a>
+        </div>
+        <div class="service-selection">
+          <h4>세탁서비스 선택하기</h4>
+          <div class="accordion">
+            <div class="accordion-item">
+              <div class="accordion-header">일반 세탁 서비스<span class="material-symbols-outlined">keyboard_arrow_down</span></div>
+              <div class="accordion-content" id="accordion-content-0">
+                <label>
+                  <input type="checkbox" name="menu-1-option-1" value="option-1"> 생활빨래
+                </label>
+                <label>
+                  <input type="checkbox" name="menu-1-option-2" value="option-2"> 개별클리닝
+                </label>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header">당일 세탁 서비스<span class="material-symbols-outlined">keyboard_arrow_down</span></div>
+              <div class="accordion-content" id="accordion-content-1">
+                <label>
+                  <input type="checkbox" name="menu-2-option-1" value="option-1"> 생활빨래
+                </label>
+                <label>
+                  <input type="checkbox" name="menu-2-option-2" value="option-2"> 개별클리닝
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="request-field">
+          <h4>요청사항</h4>
+          <textarea maxlength="60"></textarea>
+          <div class="counter"><span>0</span><strong></strong></div>
+        </div>
+        <div class="payment-method">
+          <h4>결제수단</h4>
+          <div class="payment-method-wrap">
+            <div class="payment-card-container">
+              <div class="selected-payment-card"></div>
+              <span class="selected-payment-card-number"></span>
+              <a href="javascript:void(0)" class="payment-modify">변경</a>
+            </div>
+            <div class="payment-point-container">
+              <span>포인트 우선 사용</span>
+              <div class="payment-available-points">
+                <p>보유 포인트: <span class="point-amount">0</span>P</p>
+              </div>
+              <button class="point-toggle-button" type="button" aria-label="포인트 우선사용 선택">
+                <span class="material-symbols-outlined">toggle_off</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="terms-agreement">
+          <input type="checkbox" id="terms-checkbox" required>
+          <label for="">세탁 고지사항 동의<span>(필수)</span></label>
+          <div class="terms-agreement-notice">
+            <p>· 검수 단계에서 전문가의 의견에 따라 세탁이 불가능하다고 판단될 수 있습니다.</p>
+            <p>· 수거 신청이 완료되면 수거 대상이 되며, 수거되기 전까지 수거신청 정보를 수정하거나 수거신청을 취소할 수 있습니다.</p>
+          </div>
+          <a href="javascript:void(0)">보기</a>
+        </div>
+        <p class="term-validation"><iconify-icon icon="material-symbols:error"></iconify-icon>약관에 동의해야 합니다.</p>
+        <button class="request-btn">수거 신청하기</button>
+      </form>
+
+      <!-- Address Modal -->
+      <div class="address-modal-container">
+        <div class="address-modal">
+          <h3>배송지 설정</h3>
+          <form>
+            <div class="address-section">
+              <h4>배송지 주소</h4>
+              <label for="address-input">주소</label>
+              <input type="text" id="address-input" name="address" placeholder="주소 입력" required />
+              <label for="address-details-input">상세 주소</label>
+              <input type="text" id="address-details-input" name="address-details" placeholder="상세 주소 입력" required />
+            </div>
+            <div class="delivery-method-section">
+              <h4>출입방법</h4>
+              <p>새벽에도 출입 가능한 방법을 선택해주세요.</p>
+              <label>
+                <input type="radio" name="delivery-method" value="password" required />
+                공동현관 비밀번호
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="free-access" required />
+                자유출입 가능 (공동현관 없음)
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="security-call" required />
+                경비실 호출
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="unit-call" required />
+                세대 호출
+              </label>
+              <label>
+                <input type="radio" name="delivery-method" value="other" required />
+                기타
+              </label>
+            </div>
+            <div class="additional-info-section">
+              <label for="detail-input">출입방법 상세설명</label>
+              <textarea id="detail-input" name="detail" maxlength="30" placeholder="30자 이내로 작성해 주세요."></textarea>
+            </div>       
+            <button type="submit" class="modal-actions">저장</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Payment Modal -->
+      <div class="payment-modal-container">
+        <div class="payment-modal">
+          <h3>결제수단 관리</h3>
+          <form>
+            <div class="payment-section">
+              <h4>등록된 카드 목록</h4>
+              <p>대표카드로 결제 금액이 자동결제됩니다.</p>
+            </div>
+            <div class="card-list-section">
+              <ul class="card-list"></ul>
+              <a href="javascript:void(0)" class="payment-add-card"><iconify-icon icon="ph:plus-circle-bold"></iconify-icon>결제수단 추가하기</a>
+            </div>
+            <div class="close-wrap">
+              <a href="javascript:void(0)" class="payment-modal-close-btn">
+                <span>Close<iconify-icon icon="heroicons:x-mark-solid"></iconify-icon></span>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- FOOTER -->
+      <app-footer></app-footer>
+    </div>
+    <script>
+      new Vue({
+        el: '#laundry-request',
+        components: {
+          'app-header': Vue.component('app-header'),
+          'app-footer': Vue.component('app-footer')
+        }
+      });
+    </script>
+  </body>
+</html>

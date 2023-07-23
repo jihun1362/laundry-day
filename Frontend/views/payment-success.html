@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Success</title>
+
+  <!-- favicon -->
+  <link rel="icon" href="http://laundry-day.site/images/favicon.png" />
+</head>
+<body>
+  <h1>Payment was successful!</h1>
+
+  <script>
+    // URL에서 customerKey와 authKey를 추출
+    var urlParams = new URLSearchParams(window.location.search);
+    var customerKey = urlParams.get('customerKey');
+    var authKey = urlParams.get('authKey');
+
+    // 세션 스토리지에 데이터 저장
+    sessionStorage.setItem('customerKey', customerKey);
+    sessionStorage.setItem('authKey', authKey);
+
+    setTimeout(function(){
+      window.location.href = 'laundry-request.html';
+    }, 1000);
+  </script>
+  
+</body>
+</html>

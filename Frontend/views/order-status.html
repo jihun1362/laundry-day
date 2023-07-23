@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAUNDRY DAY</title>
+
+    <!-- favicon -->
+    <link rel="icon" href="http://laundry-day.site/images/favicon.png" />
+
+    <!-- FONT -->
+    <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0"/>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://laundry-day.site/css/order-status.css" />
+    <link rel="stylesheet" href="http://laundry-day.site/css/components/header.css" />
+    <link rel="stylesheet" href="http://laundry-day.site/css/components/footer.css" />
+
+    <!-- ICON -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+
+    <!-- GSAP ScrollToPlugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollToPlugin.min.js"></script>
+    
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+    <!-- VUE -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+    <!-- JS -->
+    <script src="http://laundry-day.site/js/components/header.js"></script>
+    <script src="http://laundry-day.site/js/components/footer.js"></script>
+    <script defer type="module" src="http://laundry-day.site/js/order-status.js"></script>
+  </head>
+  <body>
+    <div id="order-status">
+      <!-- HEADER -->
+      <app-header></app-header>
+
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb">
+        <ul>
+          <li><a href="http://laundry-day.site/index.html"><iconify-icon icon="ion:home-sharp"></iconify-icon>HOME</a></li>
+          <li>이용내역</li>
+        </ul>
+      </div>
+
+      <div class="laundry-receipt">
+        <div class="overall-status">
+          <span id="date"></span>
+          <span class="status-summary"></span>
+          <span class="status-message">스마트팩토리에서 세탁을 진행합니다.</span>
+        </div>
+        <div class="order-details">
+          <ul class="tab-menu">
+            <li class="t_status"><h4><a href="javascript:void(0)">진행상태</a></h4></li>
+            <li class="t_payment"><h4><a href="javascript:void(0)">결제금액</a></h4></li>
+          </ul>
+          <div class="tab-content">
+            <div class="c_status">
+              <h3>세탁인수증</h3>
+              <div class="laundry-container"></div>
+              <div class="laundry-count"><span class="laundry-count-num"></span>개 품목</div>
+            </div>
+
+            <div class="c_payment">
+              <h3>세탁인수증</h3>
+              <div class="laundry-container"></div>
+              <div class="laundry-count"><span class="laundry-count-num"></span>개 품목</div>
+            </div>
+          </div>
+          <div class="payment-details">
+            <h3>결제상세</h3>
+            <ul class="calc-list">
+              <li>
+                <strong>안심정찰가격</strong>
+                <p><em class="total-order-price"></em>원</p>
+              </li>
+              <li>
+                <strong>수거배송</strong>
+                <p><em class="delivery-price"></em>원</p>
+              </li>
+              <li>
+                <strong>추가요금</strong>
+                <p><em class="extra-fee"></em>원</p>
+              </li>
+              <li>
+                <strong>포인트할인</strong>
+                <p>-<em class="point-discount-price"></em>원</p>
+              </li>
+            </ul>
+            <div class="price-sum">
+              <strong class="price-sum-title">결제금액</strong>
+              <p><em class="price-sum-detail"></em>원</p>
+            </div>
+            <div class="notice">
+              <p>· 배송 완료 이후, 자동결제됩니다.</p>
+              <p>· 수거배송비는 16,500원 미만일 경우 왕복 비용 5,000원이 부과되며, 16,500원 이상일 경우 3,000원으로 할인됩니다.</p>
+            </div>
+          </div>
+          <div class="request-field">
+            <h3>세탁 요청사항</h3>
+            <p>티셔츠 어깨부분에 얼룩이 있습니다. 제거 부탁드려요.</p>
+          </div>
+          <div class="order-help">
+            <h3>세탁 진행 중 궁금한 점이 있으시나요?</h3>
+            <a href="javascript:void(0)">1:1 문의하기</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- FOOTER -->
+      <app-footer></app-footer>
+    </div>
+    <script>
+      new Vue({
+        el: '#order-status',
+        components: {
+          'app-header': Vue.component('app-header'),
+          'app-footer': Vue.component('app-footer')
+        }
+      });
+    </script>
+  </body>
+</html>

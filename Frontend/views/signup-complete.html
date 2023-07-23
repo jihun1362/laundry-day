@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAUNDRY DAY</title>
+
+    <!-- favicon -->
+    <link rel="icon" href="http://laundry-day.site/images/favicon.png" />
+
+    <!-- FONT -->
+    <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0"/>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://laundry-day.site/css/signup-complete.css" />
+    <link rel="stylesheet" href="http://laundry-day.site/css/components/header.css" />
+    <link rel="stylesheet" href="http://laundry-day.site/css/components/footer.css" />
+
+    <!-- ICON -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+
+    <!-- GSAP ScrollToPlugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollToPlugin.min.js"></script>
+    
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+    <!-- Lord Icon -->
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+
+    <!-- VUE -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+    <!-- JS -->
+    <script src="http://laundry-day.site/js/components/header.js"></script>
+    <script src="http://laundry-day.site/js/components/footer.js"></script>
+  </head>
+  <body>
+    <div id="signup-complete">
+      <!-- HEADER -->
+      <app-header></app-header>
+
+      <div class="icon-wrap">
+        <lord-icon
+          src="https://cdn.lordicon.com/xxdqfhbi.json"
+          trigger="loop"
+          delay="500"
+          colors="primary:#121331,secondary:#ffc738,tertiary:#4bb3fd"
+          style="width:200px;height:200px">
+        </lord-icon>
+      </div>
+      <div class="signup-complete-wrap">
+        <p class="signup-complete-msg">회원가입이 완료되었습니다.</p>
+        <p class="welcome-msg">WELCOME TO LAUNDRY DAY!</p>
+        <button>로그인</button>
+      </div>
+     
+      <!-- FOOTER -->
+      <app-footer></app-footer>
+    </div>
+    <script>
+      new Vue({
+        el: '#signup-complete',
+        components: {
+          'app-header': Vue.component('app-header'),
+          'app-footer': Vue.component('app-footer')
+        }
+      });
+
+      const loginButton = document.querySelector('button');
+
+      loginButton.addEventListener('click', function() {
+        window.location.href = './login.html';
+      });
+    </script>
+  </body>
+</html>

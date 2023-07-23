@@ -1,0 +1,544 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+.breadcrumb {
+  position: relative;
+  top: 20px;
+  left: 60px;
+}
+.breadcrumb > ul {
+  display: flex;
+}
+.breadcrumb > ul > li {
+  font-size: 14px;
+}
+.breadcrumb > ul > li + li::before {
+  content: '>';
+  color: #000;
+  margin: 0 10px;
+}
+.breadcrumb > ul > li + li {
+  color: #0d6bbd;
+  font-weight: 600;
+}
+.breadcrumb > ul > li > a {
+  color: #000;
+}
+.breadcrumb > ul > li > a > iconify-icon {
+  margin-right: 5px;
+}
+
+#laundry-request {
+  background-color: #fff;
+}
+.request-form {
+  width: 400px;
+  margin: 100px auto 110px;
+}
+.request-form > .request-intro {
+  font-size: 23px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+.request-form > .request-intro > span {
+  font-size: 25px;
+  font-weight: 600;
+}
+.request-form > .delivery-info {
+  border: 1px solid #ddd;
+  position: relative;
+  margin-bottom: 50px;
+  padding: 10px 20px;
+}
+.request-form > .delivery-info > p {
+  font-size: 15px;
+}
+.request-form > .delivery-info > a {
+  color: #000;
+  font-size: 13px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+.request-form > .address-info {
+  position: relative;
+  margin-bottom: 60px;
+}
+.request-form > .address-info > h4 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.request-form > .address-info > .address-wrap {
+  border: 1px solid #ddd;
+  font-size: 15px;
+  padding: 20px;
+}
+.request-form > .address-info > .address-wrap > .user-address {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+}
+.request-form > .address-info > .address-wrap > .user-address-detail {
+  font-size: 16px;
+  font-weight: 500;
+}
+.request-form > .address-info > a {
+  color: #0d6bbd;
+  font-size: 15px;
+  position: absolute;
+  top: 1px;
+  right: 0;
+}
+
+/* Address Modal */
+.address-modal-container {
+  display: none;
+  background-color: #fff;
+  border: 1.5px solid #000;
+  position: fixed;
+  z-index: 1000;
+  top: 102px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 350px;
+  height: 580px;
+}
+.address-modal {
+  width: 300px;
+  margin: 30px auto;
+}
+.address-modal > h3 {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.address-section {
+  position: relative;
+}
+.address-section > h4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+.address-section > label {
+  font-size: 0;
+}
+.address-section > #address-input, #address-details-input {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  box-sizing: border-box;
+  font-size: 13px;
+  text-indent: 15px;
+  border: 1px solid #ddd;
+  outline: none;
+  width: 100%;
+  height: 40px;
+}
+.address-section > #address-details-input {
+  top: 75px;
+}
+.delivery-method-section {
+  position: relative;
+  top: 85px;
+}
+.delivery-method-section > h4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+.delivery-method-section > p {
+  color: #898989;
+  font-size: 12px;
+}
+.delivery-method-section > label {
+  display: block;
+  font-size: 15px;
+  margin-top: 8px;
+}
+.additional-info-section {
+  position: absolute;
+  bottom: 90px;
+  width: 298px;
+}
+.additional-info-section > label {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+}
+.additional-info-section > #detail-input {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  text-indent: 15px;
+  line-height: 35px;
+  outline: none;
+  width: 100%;
+  height: 40px;
+  resize: none;
+  margin-top: 8px;
+}
+.modal-actions {
+  border: 1px solid red;
+  position: relative;
+  bottom: -190px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  vertical-align: top;
+  border: none;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  background-color: #000;
+  cursor: pointer;
+}
+.request-form > .service-selection {
+  position: relative;
+}
+.request-form > .service-selection > h4 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.service-selection {
+  margin-bottom: 60px;
+}
+.service-selection > .accordion {
+  border: 1px solid #ddd;
+}
+.service-selection > .accordion > .accordion-item + .accordion-item {
+  border-top: 1px solid #ddd;
+}
+.service-selection > .accordion > .accordion-item > .accordion-header {
+  position: relative;
+  padding: 15px;
+  cursor: pointer;
+}
+.service-selection > .accordion > .accordion-item > .accordion-header > .material-symbols-outlined {
+  color: #000;
+  position: absolute;
+  right: 10px;
+  transition: all ease .3s;
+}
+.service-selection > .accordion > .accordion-item > .accordion-header > .material-symbols-outlined.on {
+  transform: rotate(180deg);
+}
+.service-selection > .accordion > .accordion-item > .accordion-content {
+  display: none;
+  padding: 15px; 
+}
+.service-selection > .accordion > .accordion-item > .accordion-content > label {
+  display: block;
+  font-size: 15px;
+}
+.service-selection > .accordion > .accordion-item > .accordion-content > label + label {
+  margin-top: 20px;
+}
+.request-form > .request-field {
+  position: relative;
+  margin-bottom: 60px;
+}
+.request-form > .request-field > h4 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.request-form > .request-field > textarea {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  width: 100%;
+  height: 50px;
+  resize: none;
+}
+.request-form > .request-field > textarea:focus {
+  outline: none;
+}
+.request-form > .request-field > .counter {
+  color: #000;
+  font-size: 13px;
+  position: absolute;
+  top: 27px;
+  right: 0;
+}
+.request-form > .payment-method {
+  position: relative;
+  margin-bottom: 60px;
+}
+.request-form > .payment-method > .payment-method-wrap {
+  border: 1px solid #ddd;
+  font-size: 15px;
+  padding: 20px 30px 10px;
+}
+.request-form > .payment-method h4 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.request-form > .payment-method .payment-card-container {
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  position: relative;
+  padding-bottom: 20px;
+}
+.request-form > .payment-method .payment-card-container > .selected-payment-card {
+  font-size: 15px;
+  font-weight: 600;
+}
+.request-form > .payment-method .payment-card-container > .selected-payment-card-number {
+  position: relative;
+  color: #898989;
+  font-size: 13px;
+  font-weight: 400;
+  top: 2px;
+  margin-left: 5px;
+}
+.request-form > .payment-method .payment-card-container > a {
+  color: #0d6bbd;
+  font-size: 15px;
+  position: absolute;
+  right: 0;
+}
+.request-form > .payment-method .payment-point-container {
+  position: relative;
+  height: 50px;
+  padding-top: 20px;
+}
+.request-form > .payment-method .payment-point-container > span {
+  font-weight: 600;
+}
+.request-form > .payment-method .payment-point-container > .payment-available-points {
+  font-size: 13px;
+}
+.request-form > .payment-method .payment-point-container > .point-toggle-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+.request-form > .payment-method .payment-point-container > .point-toggle-button > .material-symbols-outlined {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  font-size: 40px;
+  color: #d5d3d3;
+  transition: transform 0.3s ease;
+}
+
+/* Payment Modal */
+.payment-modal-container {
+  display: none;
+  background-color: #fff;
+  border: 1.5px solid #000;
+  position: fixed;
+  z-index: 1000;
+  top: 102px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 350px;
+  height: 520px;
+}
+.payment-modal {
+  width: 300px;
+  margin: 30px auto;
+}
+.payment-modal > h3 {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.payment-section {
+  position: relative;
+  margin-bottom: 20px;
+}
+.payment-section > h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.payment-section > p {
+  color: #898989;
+  font-size: 12px;
+}
+.card-list-section > .card-list {
+  overflow: hidden;
+  height: 275px;
+  margin-bottom: 20px;
+}
+.card-list-section > .card-list > li {
+  border: 1px solid #8ac4f7;
+  border-radius: 10px;
+  background-color: #fff;
+  position: relative;
+  padding: 20px;
+  cursor: pointer;
+}
+.card-list-section > .card-list > li + li {
+  margin-top: 10px;
+}
+
+
+
+
+.card-list-section > .card-list > li > input[type="radio"] {
+  visibility: hidden;
+}
+.card-list-section > .card-list > li {
+  background-color: #fff;
+}
+.card-list-section > .card-list > li.selected {
+  background-color: #01c1f61d;
+}
+.card-list-section > .card-list > li > label {
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 15px;
+}
+.card-list-section > .card-list > li > .card-number {
+  display: block;
+  color: #898989;
+  font-size: 12px;
+  font-weight: 400;
+  position: relative;
+  left: -3px;
+}
+
+
+
+
+
+.card-list-section > .payment-add-card {
+  position: absolute;
+  text-align: center;
+  color: #ccc;
+  font-size: 14px;
+  font-weight: 600;
+  width: 300px;
+}
+.card-list-section > .payment-add-card > iconify-icon {
+  font-size: 18px;
+  margin-right: 5px;
+  vertical-align: -4px;
+}
+.payment-modal .close-wrap {
+  background-color: #000;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  line-height: 40px;
+}
+.payment-modal .close-wrap > .payment-modal-close-btn > span {
+  font-size: 0;
+  vertical-align: middle;
+}
+.payment-modal .close-wrap > .payment-modal-close-btn > span > iconify-icon {
+  color: #fff;
+  font-size: 20px; 
+  position: absolute; 
+  top: 50%;
+  right: 10px;
+  transform: translate(0, -50%);
+}
+
+.request-form > .terms-agreement {
+  position: relative;
+  margin-bottom: 30px;
+}
+.request-form > .terms-agreement > label {
+  font-weight: 600;
+}
+.request-form > .terms-agreement > label > span {
+  color: #828C94;
+  font-size: 14px;
+  font-weight: 600;
+  vertical-align: 1px;
+  margin-left: 5px;
+}
+.request-form > .terms-agreement > a {
+  color: #0d6bbd;
+  font-size: 15px;
+  position: absolute;
+  right: 0;
+}
+.request-form > .terms-agreement > .terms-agreement-notice > p {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.term-validation {
+  display: none;
+  position: relative;
+  top: -25px;
+  left: 5px;
+  color: #df0c0c;
+  font-size: 14px;
+  margin-top: 22px;
+}
+.term-validation.show {
+  display: block;
+}
+.term-validation > iconify-icon {
+  vertical-align: -1.5px;
+  margin-right: 2px;
+}
+.request-form > .request-btn {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  vertical-align: top;
+  border: none;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 20px;
+  padding: 0;
+  background-color: #000;
+  cursor: pointer;
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  .breadcrumb {
+    position: relative;
+    top: 112px;
+    width: 700px;
+  }
+  .request-form {
+    position: relative;
+    top: 102px;
+    width: 700px;
+    margin: 100px auto 212px;
+  }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  .breadcrumb {
+    position: relative;
+    top: 112px;
+    width: 700px;
+  }
+  .request-form {
+    position: relative;
+    top: 102px;
+    width: 700px;
+    margin: 100px auto 212px;
+  }
+}

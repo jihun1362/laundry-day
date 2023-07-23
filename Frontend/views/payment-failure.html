@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Failure</title>
+
+  <!-- favicon -->
+  <link rel="icon" href="http://laundry-day.site/images/favicon.png" />
+</head>
+<body>
+  <h1>Payment has failed</h1>
+  <p id="error-message"></p>
+
+  <button onclick="window.location.href='laundry-request.html'">Try Again</button>
+
+  <script>
+    // URL에서 error_message 파라미터를 추출
+    var urlParams = new URLSearchParams(window.location.search);
+    var errorMessage = urlParams.get('error_message');
+
+    // 에러 메시지를 화면에 표시
+    document.getElementById('error-message').innerText = errorMessage;
+  </script>
+</body>
+</html>

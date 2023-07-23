@@ -1,0 +1,192 @@
+@charset 'utf-8';
+/* 서체 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&family=Nunito+Sans:wght@400;700&display=swap&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* reset */
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #E6F3FF;
+  min-width: 475px;
+}
+
+h1, h2, h3, h4, h5, h6 {font-size:16px;}
+h1, h2, h3, h4, h5, h6, body, div, p, dl, dt, dd, ul, ol, li, form, fieldset, blockquote, address, table, thead, tbody, tfoot, tr, td, caption {margin:0; padding:0;}
+li {list-style:none;}
+a {text-decoration: none;}
+
+#login {
+  background-color: #fff;
+}
+
+.login-form {
+  width: 400px;
+  margin: 100px auto 110px;
+}
+.login-form > h3 {
+  border-bottom: 2px solid #000;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 60px;
+  padding-bottom: 30px;
+}
+.login-form > .id_input {
+  position: relative;
+  margin-bottom: 10px;
+}
+.login-form > .id_input > label {
+  position: absolute;
+  font-size: 0;
+}
+.login-form > .id_input > #email {
+  box-sizing: border-box;
+  font-size: 13px;
+  text-indent: 15px;
+  border: 1px solid #ddd;
+  outline: none;
+  width: 100%;
+  height: 44px;
+}
+.login-form > .pw_input {
+  position: relative;
+  margin-bottom: 20px;
+}
+.login-form > .pw_input > label {
+  position: absolute;
+  font-size: 0;
+}
+.login-form > .pw_input > #password {
+  box-sizing: border-box;
+  font-size: 13px;
+  text-indent: 15px;
+  border: 1px solid #ddd;
+  outline: none;
+  width: 100%;
+  height: 44px;
+}
+.login-form > .login_check {
+  position: relative;
+} 
+.login-form > .login_check > .chkBoxId > input {
+  vertical-align: top;
+  background: #fff;
+  border: 1px solid #999;
+  outline: none;
+  width: 19px;
+  height: 19px;
+  margin-left: 0;
+}
+.login-form > .login_check > .chkBoxId > label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+}
+.login-form > .login_check > ul {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.login-form > .login_check > ul > li + li::before {
+  content: '|';
+  color: #ccc;
+  font-size: 12px;
+  vertical-align: text-top;
+  margin: 0 8px;
+}
+.login-form > .login_check > ul > li > a {
+  font-size: 15px;
+  color: #000;
+}
+.login-form > .login_btn {
+  margin-top: 35px;
+}
+.login-form > .login_btn > button {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  vertical-align: top;
+  border: none;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 20px;
+  padding: 0;
+  background-color: #000;
+  cursor: pointer;
+}
+.login-form > .login_btn > a.btn {
+  box-sizing: border-box;
+  color: #000;
+  font-weight: 600;
+  text-align: center;
+  line-height: 50px;
+  display: block;
+  border: 1px solid #bbb;
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+}
+.login-form > .login_sns {
+  position: relative;
+  border-top: 1px solid #ccc;
+  margin-top: 80px;
+}
+.login-form > .login_sns > h3 {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  vertical-align: top;
+  line-height: 20px;
+  margin: -10px 0 30px 0;
+  padding: 0 20px;
+  background-color: #fff;
+}
+.login-form > .login_sns > .sns_wrap {
+  text-align: center;
+  margin-top: 20px;
+}
+.login-form > .login_sns > .sns_wrap > a {
+  display: inline-block;
+  font-size: 0;
+  width: 45px;
+  height: 45px;
+}
+.login-form > .login_sns > .sns_wrap > a.naver {
+  background: url(http://laundry-day.site/images/sns_naver.svg) center / contain no-repeat;
+}
+.login-form > .login_sns > .sns_wrap > a.kakao {
+  margin: 0 30px;
+  background: url(http://laundry-day.site/images/sns_kakao.svg) center / contain no-repeat;
+}
+.login-form > .login_sns > .sns_wrap > a.apple {
+  background: url(http://laundry-day.site/images/sns_apple.svg) center / contain no-repeat;
+}
+
+/* ~ 767 */
+@media screen and (max-width:767px) {
+  
+}
+/* 768 ~ 989까지 */
+@media screen and (min-width:768px) and (max-width: 989px) {
+  .login-form {
+    position: relative;
+    top: 102px;
+    width: 400px;
+    margin: 100px auto 212px;
+  }
+} 
+
+/* 990 ~ */
+@media screen and (min-width:990px) {
+  .login-form {
+    position: relative;
+    top: 102px;
+    width: 400px;
+    margin: 100px auto 212px;
+  }
+}
