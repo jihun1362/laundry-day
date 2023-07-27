@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>laundry day</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+
+</head>
+<script>
+    window.onload = function () {
+        showOrders();
+        console.log("aaa");
+    }
+
+
+    function payment() {
+        let orderId = $('#orderId').val();
+        console.log(orderId);
+
+        $.ajax({
+            type: "POST",
+            url: `http://3.35.18.15:8080/api/payment/${orderId}`,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+
+    function laundryRegistDone() {
+
+
+        let progressId = $('#progressId').val();
+        console.log(progressId);
+
+        $.ajax({
+            type: "PATCH",
+            url: `http://3.35.18.15:8080/api/order/laundry/done/${progressId}`,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+
+    function laundryStatus(laundryId) {
+        let status = $(`#laundryStatus${laundryId} option:selected`).val();
+        console.log(status);
+        console.log(laundryId);
+
+        $.ajax({
+            type: "PATCH",
+            url: `http://3.35.18.15:8080/api/order/laundry/${laundryId}?status=${status}`,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+
+    // function progressStatus() {
+    //     let status = $('#progressStatus option:selected').val();
+    //     console.log(status);
+    //     let progressId = $('#progressId').val();
+    //     console.log(progressId);
+    //
+    //     $.ajax({
+    //         type: "PATCH",
+    //         url: `http://3.35.18.15:8080/api/order/progress/${progressId}?status=${status}`,
+    //         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    //         data: {},
+    //         beforeSend: function (xhr) {
+    //             xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+    //         },
+    //         success: function (response) {
+    //             alert(response["msg"])
+    //             window.location.reload();
+    //         }
+    //     })
+    // }
+    function progressStatus1() {
+        let status = "세탁완료";
+        console.log(status);
+        let progressId = $('#progressId').val();
+        console.log(progressId);
+
+        $.ajax({
+            type: "PATCH",
+            url: `http://3.35.18.15:8080/api/order/progress/${progressId}?status=${status}`,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+    function progressStatus2() {
+        let status = "배송진행중";
+        console.log(status);
+        let progressId = $('#progressId').val();
+        console.log(progressId);
+
+        $.ajax({
+            type: "PATCH",
+            url: `http://3.35.18.15:8080/api/order/progress/${progressId}?status=${status}`,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+    function progressStatus3() {
+        let status = "배송완료";
+        console.log(status);
+        let progressId = $('#progressId').val();
+        console.log(progressId);
+
+        $.ajax({
+            type: "PATCH",
+            url: `http://3.35.18.15:8080/api/order/progress/${progressId}?status=${status}`,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+
+    function serachStablePrice() {
+        $('#tempStablePrice').empty()
+
+        $.ajax({
+            type: 'GET',
+            url: "http://3.35.18.15:8080/api/stable-price",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                let rows = response['data']
+                console.log(response['data']);
+                for (let i = 0; i < rows.length; i++) {
+                    let typeName = rows[i]['typeName']
+                    let stablePricingList = rows[i]['stablePricingList']
+
+                    for (let j = 0; j < stablePricingList.length; j++) {
+                        let stablePricingId = stablePricingList[j]['stablePricingId']
+                        let clothesType = stablePricingList[j]['clothesType']
+
+                        temp_html =
+                            `<option id="stablePricingId${stablePricingId}" value="${stablePricingId}">${typeName} - ${clothesType}</option>`
+
+                        $('#tempStablePrice').append(temp_html)
+                    }
+                }
+            }
+        });
+    }
+
+    function showOrders() {
+        $('#tempOrder').empty()
+
+        $.ajax({
+            type: 'GET',
+            url: "http://3.35.18.15:8080/api/order/all",
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                let rows = response['data']
+                console.log(response['data']);
+                for (let i = 0; i < rows.length; i++) {
+                    let orderId = rows[i]['orderId']
+                    let username = rows[i]['username']
+                    let laundryType = rows[i]['laundryType']
+                    let washingMethod = rows[i]['washingMethod']
+                    let address = rows[i]['address']
+                    let orderRequest = rows[i]['orderRequest']
+                    let status = rows[i]['status']
+                    let paymentDone = rows[i]['paymentDone']
+                    let createAt = rows[i]['createAt']
+
+                    let statusName;
+                    if (status === 1) {
+                        statusName = "진행중"
+                    } else {
+                        statusName = "완료"
+                    }
+
+                    let paymentDoneName;
+                    if (paymentDone === 1) {
+                        paymentDoneName = "미결제"
+                    } else {
+                        paymentDoneName = "결제"
+                    }
+
+                    temp_html =
+                        `<tr class="text-white">
+                            <td>${createAt}</td>
+                            <td>${username}</td>
+                            <td>${laundryType}</td>
+                            <td>${washingMethod}</td>
+                            <td style="width: 250px">${address}</td>
+                            <td style="width: 300px">
+                                ${orderRequest}
+                            </td>
+                            <td>${statusName}</td>
+                            <td>${paymentDoneName}</td>
+                            <td><a id="orderIdDetail${orderId}" onclick="showDetail(${orderId})" class="btn btn-outline-info" data-bs-toggle="modal" href="#exampleModalToggle"
+                                   role="button">Detail</a></td>
+                            <td><a id="orderIdPaymrnt${orderId}" class="btn btn-outline-primary" role="button" data-bs-toggle="modal"
+                                   data-bs-target="#exampleModal2">pay</a></td>
+                        </tr>`
+
+                    $('#tempOrder').append(temp_html)
+                }
+            }
+        });
+    }
+
+    function showDetail(orderId) {
+        $('#tempLaundry').empty()
+        $('#tempProgressHeader').empty()
+        $('#tempProgressBody').empty()
+
+        $.ajax({
+            type: 'GET',
+            url: `http://3.35.18.15:8080/api/order/progress/${orderId}`,
+            data: {},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                let rows = response['data']
+                console.log(response['data']);
+                let progressId = rows['progressId']
+                let status = rows['status']
+                let laundryResponseDtoList = rows['laundryResponseDtoList']
+
+                for (i = 0; i < laundryResponseDtoList.length; i++) {
+                    let laundryId = laundryResponseDtoList[i]['laundryId']
+                    let imageUrl = laundryResponseDtoList[i]['imageUrl']
+                    let clothesType = laundryResponseDtoList[i]['clothesType']
+                    let surcharge = laundryResponseDtoList[i]['surcharge']
+                    let surchargeDetail = laundryResponseDtoList[i]['surchargeDetail']
+                    let status = laundryResponseDtoList[i]['status']
+
+                    temp_data =
+                        `<div id="laundryId${laundryId}" class="card" style="width: 18rem; font-weight: 1000; margin-left: 65px;">
+                                <img src="${imageUrl}"
+                                     class="card-img-top" alt="..."
+                                     style="display: block; margin: 0 auto;width:200px; height:200px;">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">종류 : ${clothesType}</li>
+                                    <li class="list-group-item">추가요금 : ${surcharge}</li>
+                                    <li class="list-group-item">추가요금 사유 : ${surchargeDetail}</li>
+                                    <li class="list-group-item">세탁 진행 상태 : ${status}</li>
+                                    <li class="list-group-item row">
+                                        <select style="margin-bottom: 10px" id="laundryStatus${laundryId}">
+                                            <option value="세탁준비중">세탁준비중</option>
+                                            <option value="세탁진행중">세탁진행중</option>
+                                            <option value="세탁완료">세탁완료</option>
+                                        </select>
+                                        <button type="button" class="btn btn-outline-success" onclick="laundryStatus(${laundryId})">상태변경</button>
+                                    </li>
+                                </ul>
+                            </div>`
+
+                    $('#tempLaundry').append(temp_data)
+                }
+
+
+                temp_html_header =
+                    `<div style=" font-weight: 1000; font-size: 30px">세탁 진행 상태 조회</div>
+                        <input  style="display: none" id="orderId" value="${orderId}">
+                        <input  style="display: none" id="progressId" value="${progressId}">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`
+
+                $('#tempProgressHeader').append(temp_html_header)
+
+                temp_html_Body =
+                    `<p style=" font-weight: 1000; font-size: 20px">주문 진행 상태 : ${status}</p>`
+
+                $('#tempProgressBody').append(temp_html_Body)
+
+            }
+        });
+    }
+
+    function upload() {
+        let stablePricingId = $('#tempStablePrice option:selected').val();
+        console.log(stablePricingId);
+        let orderId = $('#orderId').val();
+        console.log(orderId);
+        let surchargeDetail = $('#surchargeDetail').val();
+        console.log(surchargeDetail);
+        let surcharge = $('#surcharge').val();
+        console.log(surcharge);
+
+        const imageInput = $("#imageInput")[0];
+        // 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+        console.log("imageInput: ", imageInput.files);
+
+        if (imageInput.files.length === 0) {
+            alert("파일은 선택해주세요");
+            return;
+        }
+
+        let data = {
+            surchargeDetail: `x`,
+            surcharge: 0,
+        }
+
+        const formData = new FormData();
+        formData.append("image", imageInput.files[0]);
+        formData.append("requestDto", new Blob([JSON.stringify(data)], {type: "application/json"}));
+
+        $.ajax({
+            type: "POST",
+            url: `http://3.35.18.15:8080/api/order/laundry/${stablePricingId}/${orderId}`,
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWh1bjEzNjJAbmF2ZXIuY29tIiwiYXV0aCI6IkFETUlOIiwiZXhwIjoxNjkyMDYyOTI5LCJpYXQiOjE2ODc3NDI5Mjl9.EQgeA8pta1Qf7fQBv6re7v3VNaL1EBUOVDSle0vJnI8");
+            },
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload();
+            }
+        })
+    }
+</script>
+
+<body>
+<div class="container-fluid position-relative d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner"
+         class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-secondary navbar-dark">
+            <a href="main.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-info"><i class=""></i>LaundryDay</h3>
+            </a>
+            <div class="d-flex align-items-center ms-4 mb-4">
+                <div class="position-relative">
+                    <img class="rounded-circle" src="https://laundry-day.s3.ap-northeast-2.amazonaws.com/laundry-images/KakaoTalk_20230126_141252002_04.jpg" alt="" style="width: 40px; height: 40px;">
+                    <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0">백지훈</h6>
+                    <span>Admin</span>
+                </div>
+            </div>
+            <div class="navbar-nav w-100">
+                <a href="main.html" class="nav-item nav-link"><i class="fa bi-code-slash me-2"></i>관리자 메인</a>
+                <a href="/" class="nav-item nav-link active"><i class="fa fa-laptop me-2"></i>주문 관리</a>
+                <a href="stableprice.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>안정가 관리</a>
+                <a href="announcement.html" class="nav-item nav-link"><i class="fa bi-megaphone-fill me-2"></i>공지사항
+                    관리</a>
+                <a href="event.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>이벤트 관리</a>
+                <a href="payment.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>매출 내역</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="far bi-chat-dots-fill me-2"></i>고객센터</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="question.html" class="dropdown-item">자주하는 질문</a>
+                        <a href="inquery.html" class="dropdown-item">고객문의 조회</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars text-info"></i>
+            </a>
+
+            <div class="navbar-nav align-items-center ms-auto">
+                <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                    <img class="rounded-circle me-lg-2" src="https://laundry-day.s3.ap-northeast-2.amazonaws.com/laundry-images/KakaoTalk_20230126_141252002_04.jpg" alt="" style="width: 40px; height: 40px;">
+                    <span class="d-none d-lg-inline-flex">백지훈</span>
+                </a>
+
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <!-- Recent Sales Start -->
+        <div class="container-fluid pt-4 px-4" style="margin-left: auto;width: 1600px; height: 1000px">
+            <div class="bg-secondary text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">주문 관리</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                        <tr class="text-white">
+                            <th scope="col">주문일자</th>
+                            <th scope="col">주문자</th>
+                            <th scope="col">세탁타입</th>
+                            <th scope="col">세탁방법</th>
+                            <th scope="col">주소</th>
+                            <th scope="col">요청사항</th>
+                            <th scope="col">주문상태</th>
+                            <th scope="col">결제상태</th>
+                            <th scope="col">진행상태</th>
+                            <th scope="col">결제요청</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tempOrder">
+
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example" style="margin-left: 45%;margin-top: 30px;">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link text-info" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link text-info" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link text-info" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link text-info" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link text-info" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- Recent Sales End -->
+
+        <!-- Modal Start -->
+        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+
+                <div class="modal-content">
+                    <div class="modal-header" id="tempProgressHeader">
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div id="tempProgressBody">
+
+                        </div>
+                        <div>
+<!--                            <select id="progressStatus">-->
+<!--                                <option value="수거준비중">수거준비중</option>-->
+<!--                                <option value="수거진행중">수거진행중</option>-->
+<!--                                <option value="수거완료">수거완료</option>-->
+<!--                                <option value="세탁준비중">세탁준비중</option>-->
+<!--                                <option value="세탁완료">세탁완료</option>-->
+<!--                                <option value="배송준비중">배송준비중</option>-->
+<!--                                <option value="배송진행중">배송진행중</option>-->
+<!--                                <option value="배송완료">배송완료</option>-->
+<!--                            </select>-->
+<!--                            <button type="button" class="btn btn-outline-success" onclick="progressStatus()">상태변경-->
+<!--                            </button>-->
+                            <button type="button" class="btn btn-outline-success" onclick="progressStatus1()">세탁완료</button>
+                            <button type="button" class="btn btn-outline-success" onclick="progressStatus2()">배송진행중</button>
+                            <button type="button" class="btn btn-outline-success" onclick="progressStatus3()">배송완료</button>
+                            <br>
+                        </div>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                href="#exampleModal3" onclick="serachStablePrice()" style="margin-top: 20px">세탁물 등록
+                        </button>
+                        <p>
+                            <button class="btn btn-outline-danger" data-bs-toggle="modal" href="#exampleModal4">모든
+                                세탁물 등록 완료
+                            </button>
+                        </p>
+                        <hr>
+                        <div class="row row-cols-1 row-cols-md-4 g-4" id="tempLaundry">
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-info" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Modal End -->
+
+        <!-- Modal2 -->
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" style=" font-weight: 1000; font-size: 20px">확인</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        정말로 자동결제를 진행하시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="payment()">Check</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal2 End -->
+
+        <!-- Modal3 -->
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="">세탁물 등록 창</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <input type="file" id="imageInput"/>
+                            </form>
+                            <div style="margin-top: 10px">
+                                <select id="tempStablePrice" style="margin-bottom: 10px">
+
+                                </select>
+                            </div>
+<!--                            <hr/>-->
+<!--                            <textarea id="surchargeDetail" placeholder="추가 금액의 사유를 적어 주세요."></textarea>-->
+<!--                            <br>-->
+<!--                            추가금액 : <input type="number" id="surcharge" value="0">-->
+                            <hr/>
+                            <div id="tempRegist">
+                                <button class="btn btn-outline-info" onclick="upload()">세탁물 등록</button>
+                            </div>
+                            <hr/>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal3 End -->
+
+        <!-- Modal4 -->
+        <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" style=" font-weight: 1000; font-size: 20px">확인</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        세탁물 등록이 완료되면 다시 되돌릴 수 없습니다.
+                        정말로 세탁물 등록을 완료하시겠습니까?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="laundryRegistDone()">Check</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal4 End -->
+
+        <!-- Footer Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-secondary rounded-top p-4">
+                <div class="row">
+                    <div class="col-12 col-sm-6 text-center text-sm-start">
+                        &copy; <a href="#" class="text-info">Your Site Name</a>, All Right Reserved.
+                    </div>
+                    <div class="col-12 col-sm-6 text-center text-sm-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="text-info" href="https://htmlcodex.com">HTML Codex</a>
+                        <br>Distributed By: <a class="text-info" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+    </div>
+    <!-- Content End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-info btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="lib/chart/chart.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="lib/tempusdominus/js/moment.min.js"></script>
+<script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="js/main.js"></script>
+</body>
+
+</html>
